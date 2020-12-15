@@ -1,6 +1,10 @@
 <template>
   <div >
-     <common-card />
+     <common-card
+         title="今日交易用户数"
+     >
+
+     </common-card>
   </div>
 </template>
 <script>
