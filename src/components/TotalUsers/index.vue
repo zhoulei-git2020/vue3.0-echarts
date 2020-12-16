@@ -5,9 +5,7 @@
          value="1,087,503"
      >
       <template>
-          <div id="total-users-chart" :style="{width:'100%',height:'100%'}">
-           
-          </div>
+         <v-chart :options='getOptions()'/>
       </template>
        <template v-slot:footer>  
           <div class="total-users-footer">
@@ -27,11 +25,11 @@
 import CommonCardMixin from '../../mixins/commonCardMixin'
 export default {
    mixins:[CommonCardMixin],
-   mounted(){
-      const chartDom = document.getElementById('total-users-chart')
-      const chart = this.$echarts.init(chartDom)
-      chart.setOption({
-         xAxis:{
+   methods:{
+     
+      getOptions(){
+         return{
+            xAxis:{
             type:'value',
             show:false
          },
@@ -112,9 +110,10 @@ export default {
             }
       
             
-         }
+          }
          ]
-      })
+         }
+      }
    }
 }
 </script> 
