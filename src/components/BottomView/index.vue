@@ -26,7 +26,13 @@
                 <el-table-column prop="count" label="总搜索量" />
                 <el-table-column prop="users" label="搜索用户数"/>
               </el-table>
-              <el-pagination/>
+              <el-pagination 
+                layout="prev,pager,next"
+                :total="100"
+                :page-size="4"
+                background
+                @current-change="onPageChange"
+              />
             </div>
           </div>
         </template>
@@ -46,15 +52,132 @@
           </div>
         </template>
         <template>
-          <v-chart :options="categoryOptions"/>
+          <div class="chart-wrapper">
+            <v-chart :options="categoryOptions"/>
+          </div>
         </template>
       </el-card>
     </div>
   </div>
 </template>
-
 <script>
+
 export default {
+  methods:{
+    onPageChange(page){ //返回页面索引值
+      console.log(page)
+    },
+
+    renderPieChart(){
+      const mockData = [
+        {
+        legendname:'粉面粥店',
+        value:67,
+        percent:'15.40%',
+        itemStyle:{
+          color:'#e7e702'
+        },
+        name:'粉面粥店 | 15.40%'
+        },
+        {
+        legendname:'简餐便当',
+        value:97,
+        percent:'22.30%',
+        itemStyle:{
+          color:'#8d7fec'
+        },
+        name:'简餐便当 | 22.30%'
+        },
+        {
+        legendname:'汉堡披萨',
+        value:92,
+        percent:'21.15%',
+         itemStyle:{
+          color:'#5085f2'
+        },
+        name:'汉堡披萨 | 21.15%'
+        },      
+      ]
+      this.categoryOptions = {
+        title:[ {
+            text:'品类分布',
+            textStyle:{
+              fontSize:14,
+              color:'#666'
+            },
+            left:20,
+            top:20
+          },
+          {
+            text:'累计订单量',
+            subtext:320,
+            x:'34.5%',
+            y:'42.5%',
+            textStyle:{
+              fontSize:14,
+              color:'#999'
+            },
+            subtextStyle:{
+              fontSize:28,
+              color:'#333'
+            },
+            textAlign:'center'
+          }
+          ],
+        series:[{
+          name:'品类分布',
+          type:'pie',
+          data:mockData,
+          label:{
+            normal:{
+              show:true,
+              position:'outter',
+              formatter:function(params){
+               return `${params.data.legendname}`
+              }
+            }
+          },
+          center:['35%','50%'],
+          radius:['45%','60%'],
+          labelLine:{
+            normal:{
+              length:5,
+              length2:3,
+            }
+          },
+          clockwise:true,
+          itemStyle:{
+            borderWidth:4,
+            borderColor:'#fff'
+          }
+        }],
+        legend:{
+          type:'scroll',
+          orient:'vertical',
+          height:250,
+          left:'70%',
+          top:'middle',
+          textStyle:{
+            color:'#8c8c8c'
+          }
+        },
+        tooltip:{
+          trigger:'item',
+          formatter:function(params){
+            const str = params.seriesName+ '<br />' + 
+            params.marker + params.data.legendname + '<br />'+
+            "\u3000"+'数量' + params.data.value + '<br />' +
+            "\u3000"+'占比' + params.data.percent 
+            return str 
+          }
+        }
+      }
+     },
+
+  },
+  mounted(){
+    this.renderPieChart()
+  },
   data(){
     return{
       searchUserOption:{
@@ -95,7 +218,10 @@ export default {
         {id:1, rank:4, keyword:'北京', count:100, users:90, range:'90%'},
         ],
       radioSelect:"品类",
-      categoryOptions:{},
+
+      categoryOptions:{//饼图
+
+      },
     }
   }
 }
@@ -160,7 +286,11 @@ export default {
           flex: 1;
           margin-top: 20px;
           padding: 0 20px 20px;
-
+          .el-pagination{
+            display: flex;
+            justify-content: flex-end;
+            margin-top: 15px;
+          }
         }
       }
     }
