@@ -47,7 +47,6 @@
                <div class="list-item-money">{{item.money}}</div>
              </div>
              </div>
-
            </div>
         </div>
      </el-card>
@@ -140,12 +139,7 @@ export default {
                 left:60,
                 right:60,
                 bottom:50
-
-
-
             }
-
-
           }]
       },
       ranData:[
@@ -220,8 +214,8 @@ export default {
         height: 270px;
     
         .echarts{
-          flex: 0 0 75%;
-          width: 70%;
+          flex: 0 0 70%;
+          width: 75%;
           height: 100%;
         }
         .sales-view-list{
@@ -253,7 +247,7 @@ export default {
               height: 20px; 
               color:#333 ;
               }
-              &.top-no{
+              .top-no{
                 background: #000;
                 border-radius: 50%;
                 color: #fff;
@@ -266,9 +260,7 @@ export default {
               .list-item-money{
                 flex: 1;
                 text-align: right;
-              }
-            
-            
+              }           
           }
         }      
        }
