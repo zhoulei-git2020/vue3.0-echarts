@@ -25,7 +25,7 @@ export default {
 <style lang="scss" scoped>
   .home{
     width:100%;    /*宽度100%*/
-    height: 100%;  /*高度100%*/
+   //height: 100%;  /*高度100%*/
     padding: 20px; /*上下左右间隔20px*/
     background:#eee;/*背景色*/
     box-sizing: border-box;

@@ -1,10 +1,9 @@
 <template>
-   
      <ve-bmap
         :settings="chartSetting"
         :title="title"
         height="100%"
-        tooltip="{}"
+        
         :series='chartSeries'
      ></ve-bmap>
    
