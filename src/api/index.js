@@ -1,12 +1,12 @@
 import request from '../utils/request'
 
-export function test(){
+export function wordcloud(){
     return request({
-        url:'/test',
+        url:'',
         method:'get',
-        params:{ //get添加请求参数 post用data传递数据
-            a:1
-        }
+         params:{ //get添加请求参数 post用data传递数据
+           icode:'13926EAFCAA16CC3'
+         }
 
 
     })

@@ -11,7 +11,7 @@ import TopView from "../components/TopView"
 import SalesView from "../components/SalesView"
 import MapView from "../components/MapView"
 import BottomView from "../components/BottomView"
-import {test} from '../api/index'
+import {wordcloud} from '../api/index'
 export default {
   name: 'Home',
   components:{
@@ -21,9 +21,7 @@ export default {
     BottomView
   },
   mounted(){
-    test().catch(err =>{
-      alert(err.message)
-    })
+     wordcloud()
   }
   
 }
