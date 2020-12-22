@@ -24,7 +24,9 @@
             </div>
           </template>
           <template>
-            <div class="chart-wrapper">111</div>
+            <div class="chart-wrapper">
+              <word-cloud />
+            </div>
           </template>
         </el-card>
       </div>
@@ -34,10 +36,12 @@
 <script>
 import BMapScatter from '../BMapScatter/index'
 import LiquidFill from '../LiquidFill/index'
+import WordCloud from '../WordCloud/index'
 export default {
   components:{
     BMapScatter,
-    LiquidFill
+    LiquidFill,
+    WordCloud
   }
 }
 </script> 
