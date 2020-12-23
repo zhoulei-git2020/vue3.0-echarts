@@ -1,23 +1,30 @@
 <template>
-    
-        <ve-liquidfill  :data="chartData" height="100%" :settings="chartSettings"/>
+       
+            <div>
+                {{this.getLiquidfillData}}
+            </div>
+        <!-- <ve-liquidfill  :data="chartData" height="100%" :settings="chartSettings"/> -->
     
 </template>
 
 <script>
+import commonDataMinix from '../../mixins/commonDataMinxin'
+
 function getColor(value){ //针对不同的值给不同的颜色
     return value > 0 && value<=0.5 ? 'rgba(97,216,0,.7)'
         : value > 0.5 && value <= 0.8 ?  'rgba(204,178,26,.7)'
        : value > 0.8 ? 'rgba(241,47,28,.7)': '#c7c7cb'
 }
 export default {
+    mixins:[commonDataMinix],
+
     data(){
         return{
             chartData:{
                 columns:['title','percent'],
                 rows:[{
                     title:'rate',
-                    percent:0.4,
+                    percent: 0.3,
                 }]
             },
             chartSettings:{
@@ -66,7 +73,12 @@ export default {
                    }
                }
         }
-    }
+
+        // console.log(this.getLiquidfillData());
+    },
+
+      
+    
 }
 </script>>
 

@@ -11,7 +11,7 @@ import TopView from "../components/TopView"
 import SalesView from "../components/SalesView"
 import MapView from "../components/MapView"
 import BottomView from "../components/BottomView"
-import {wordcloud} from '../api/index'
+import {wordcloud,liquidfill} from '../api/index'
 export default {
   name: 'Home',
   components:{
@@ -20,8 +20,24 @@ export default {
     MapView,
     BottomView
   },
+  data(){
+    return{
+     
+    }
+  },
+  methods:{
+    getLiquidfillData(){
+      return this.liquidfillData
+    }
+  },
+  provide(){
+    return{
+      getLiquidfillData:this.getLiquidfillData,
+    }
+  },
   mounted(){
-     wordcloud()
+     wordcloud(),
+     liquidfill().then(value => this.liquidfillData = value) //把请求返回值赋值
   }
   
 }
