@@ -22,22 +22,24 @@ export default {
   },
   data(){
     return{
-     
+     liquidfillData:null
     }
   },
   methods:{
     getLiquidfillData(){
+      
       return this.liquidfillData
     }
   },
   provide(){
     return{
-      getLiquidfillData:this.getLiquidfillData,
+      liquidfillData:this.getLiquidfillData
     }
   },
   mounted(){
-     wordcloud(),
-     liquidfill().then(value => this.liquidfillData = value) //把请求返回值赋值
+    
+     liquidfill().then(value => {this.liquidfillData = value}) //把请求返回值赋值
+     
   }
   
 }

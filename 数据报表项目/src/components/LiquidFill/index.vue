@@ -1,9 +1,9 @@
 <template>
        
-            <div>
-                {{this.getLiquidfillData}}
-            </div>
-        <!-- <ve-liquidfill  :data="chartData" height="100%" :settings="chartSettings"/> -->
+            <!-- <div>
+                {{liquidfill_Data}}
+            </div> -->
+        <ve-liquidfill  :data="chartData" height="100%" :settings="chartSettings"/>
     
 </template>
 
@@ -17,23 +17,16 @@ function getColor(value){ //针对不同的值给不同的颜色
 }
 export default {
     mixins:[commonDataMinix],
-
-    data(){
-        return{
-            chartData:{
-                columns:['title','percent'],
+    watch:{
+        liquidfill_Data(){
+            this.chartData={
+                  columns:['title','percent'],
                 rows:[{
                     title:'rate',
-                    percent: 0.3,
+                    percent: this.liquidfill_Data
                 }]
             },
-            chartSettings:{
-
-            }
-        }
-    },
-    mounted(){
-        this.chartSettings = {
+                this.chartSettings = {
                            seriesMap:{
                    rate:{
                        radius:'80%',
@@ -72,7 +65,23 @@ export default {
 
                    }
                }
+         }
         }
+    },
+
+    data(){
+        return{
+          
+            chartData:{
+              
+            },
+            chartSettings:{
+
+            }
+        }
+    },
+    mounted(){
+    
 
         // console.log(this.getLiquidfillData());
     },
