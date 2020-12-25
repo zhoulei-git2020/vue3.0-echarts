@@ -6,7 +6,7 @@ export default {
         liquidfill_Data(){
             //console.log(typeof(this.getliquidfillData));
           
-            return this.getliquidfillData && (this.getliquidfillData.v[1])/100
+            return this.getliquidfillData && (this.getliquidfillData.data)/100
         }
 
     },

@@ -16,7 +16,7 @@ router.all('*', function(req, res, next) {
 router.get('/', function(req, res, next) {
     res.json({
         error:0,
-        v:[80 ,70 ,30]
+        data:30,
     })
 });
 

@@ -1,0 +1,15 @@
+{
+  "name": "datav-lib-dev",
+  "version": "1.0.0",
+  "description": "datav components libary",
+  "main": "index.js",
+  "scripts": {
+    "dev": "rollup -wc rollup.config.dev.js"
+  },
+  "keywords": [],
+  "author": "zl <812515692@qq.com>",
+  "license": "ISC",
+  "devDependencies": {
+    "rollup": "^2.35.1"
+  }
+}
