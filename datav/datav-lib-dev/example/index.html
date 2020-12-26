@@ -2,10 +2,24 @@
 <html>
   <head>
       <title>datav library example</title>
+      <script src="https://cdn.jsdelivr.net/npm/vue@3.0.4/dist/vue.global.js"></script>
       <script src="../dist/datav.js"></script>
   </head>
   <body>
-    
+      <div id="app">
+        {{message}}
+        <test></test>
+      </div>
+      <script>
+        Vue.createApp({
+          setup(){
+            var message = 'hello lll'
+            return {
+              message
+            }
+          }
+        }).use(Datav).mount('#app')
+      </Script>
   </body>
 </html>
 

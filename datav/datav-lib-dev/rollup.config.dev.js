@@ -18,7 +18,10 @@ module.exports= {
     {
       file:outputPath,
       format:'umd',
-      name:'Datav'
+      name:'Datav',
+      globals:{
+        'vue':'vue'
+      }
     },
     {
       file:outputEsPath,
@@ -34,7 +37,7 @@ module.exports= {
     }),
     json(),//执行rollup-plugin-json ***npm i -D rollup-plugin-json --save***
    
-    postcss({//执行rollup-plugin-postcss ***npm i -D rollup-plugin-postcss --save
+    postcss({//执行rollup-plugin-postcss ***npm i -D rollup-plugin-postcss --save 依赖于psstcss8 需要***npm i postcss --save***
       plugins:[]
     }),
     

@@ -1,1 +1,84 @@
-var l={name:"datav-lib-dev",version:"1.0.0",description:"datav components libary",main:"index.js",scripts:{dev:"rollup -wc rollup.config.dev.js",build:"rollup -c rollup.config.dev.js","build:prod":"rollup -c rollup.config.prod.js"},keywords:[],author:"zl <812515692@qq.com>",license:"ISC",devDependencies:{"@babel/core":"^7.12.10","@babel/preset-env":"^7.12.11",rollup:"^2.35.1","rollup-plugin-babel":"^4.4.0","rollup-plugin-commonjs":"^10.1.0","rollup-plugin-node-resolve":"^5.2.0","rollup-plugin-terser":"^7.0.2"},dependencies:{"rollup-plugin-json":"^4.0.0","sam-test-data":"0.0.5"}};console.log(1),console.log(l);export default function(){return 3}
+import { ref, computed, pushScopeId, popScopeId, openBlock, createBlock, createVNode, toDisplayString, withScopeId } from 'vue';
+
+var script = {
+  name: 'Test',
+  setup: function setup() {
+    var message = 'hello world';
+    var count = ref(1);
+    var doubleCount = computed(function () {
+      return count.value * 2;
+    });
+
+    var add = function add() {
+      count.value++;
+    };
+
+    return {
+      message: message,
+      doubleCount: doubleCount,
+      add: add
+    };
+  }
+};
+
+var _withId = /*#__PURE__*/withScopeId("data-v-07bdddea");
+
+pushScopeId("data-v-07bdddea");
+
+var _hoisted_1 = {
+  "class": "test"
+};
+
+popScopeId();
+
+var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createBlock("div", _hoisted_1, [createVNode("div", null, toDisplayString($setup.message), 1
+  /* TEXT */
+  ), createVNode("div", null, " doubleCount:" + toDisplayString($setup.doubleCount), 1
+  /* TEXT */
+  ), createVNode("button", {
+    onClick: _cache[1] || (_cache[1] = function () {
+      return $setup.add && $setup.add.apply($setup, arguments);
+    })
+  }, "AddCount")]);
+});
+
+function styleInject(css, ref) {
+  if ( ref === void 0 ) ref = {};
+  var insertAt = ref.insertAt;
+
+  if (!css || typeof document === 'undefined') { return; }
+
+  var head = document.head || document.getElementsByTagName('head')[0];
+  var style = document.createElement('style');
+  style.type = 'text/css';
+
+  if (insertAt === 'top') {
+    if (head.firstChild) {
+      head.insertBefore(style, head.firstChild);
+    } else {
+      head.appendChild(style);
+    }
+  } else {
+    head.appendChild(style);
+  }
+
+  if (style.styleSheet) {
+    style.styleSheet.cssText = css;
+  } else {
+    style.appendChild(document.createTextNode(css));
+  }
+}
+
+var css_248z = ".test[data-v-07bdddea] {\n  color: red;\n}";
+styleInject(css_248z);
+
+script.render = render;
+script.__scopeId = "data-v-07bdddea";
+script.__file = "src/Test.vue";
+
+function index (Vue) {
+  Vue.component(script.name, script);
+}
+
+export default index;
