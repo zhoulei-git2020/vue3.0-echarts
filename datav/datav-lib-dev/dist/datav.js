@@ -1,12 +1,1 @@
-(function (global, factory) {
-	typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory() :
-	typeof define === 'function' && define.amd ? define(factory) :
-	(global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.Datav = factory());
-}(this, (function () { 'use strict';
-
-	console.log('zl_datav!!');
-	var index = {};
-
-	return index;
-
-})));
+!function(e,o){"object"==typeof exports&&"undefined"!=typeof module?module.exports=o():"function"==typeof define&&define.amd?define(o):(e="undefined"!=typeof globalThis?globalThis:e||self).Datav=o()}(this,(function(){"use strict";var e={name:"datav-lib-dev",version:"1.0.0",description:"datav components libary",main:"index.js",scripts:{dev:"rollup -wc rollup.config.dev.js",build:"rollup -c rollup.config.dev.js","build:prod":"rollup -c rollup.config.prod.js"},keywords:[],author:"zl <812515692@qq.com>",license:"ISC",devDependencies:{"@babel/core":"^7.12.10","@babel/preset-env":"^7.12.11",rollup:"^2.35.1","rollup-plugin-babel":"^4.4.0","rollup-plugin-commonjs":"^10.1.0","rollup-plugin-node-resolve":"^5.2.0","rollup-plugin-terser":"^7.0.2"},dependencies:{"rollup-plugin-json":"^4.0.0","sam-test-data":"0.0.5"}};console.log(1),console.log(e);return function(){return 3}}));
