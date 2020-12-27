@@ -4,109 +4,9 @@
     (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.Datav = factory(global.Vue));
 }(this, (function (vue) { 'use strict';
 
-    /* eslint-disable */
-
-    var script = {
-      name: 'Test',
-      setup: function setup() {
-        var message = 'hello world';
-        var count = vue.ref(1);
-        var doubleCount = vue.computed(function () {
-          return count.value * 2;
-        });
-
-        var add = function add() {
-          count.value++;
-        };
-
-        return {
-          message: message,
-          doubleCount: doubleCount,
-          add: add
-        };
-      }
-    };
-
-    var _withId = /*#__PURE__*/vue.withScopeId("data-v-07bdddea");
-
     vue.pushScopeId("data-v-07bdddea");
 
-    var _hoisted_1 = {
-      "class": "test"
-    };
-
-    var _hoisted_2 = /*#__PURE__*/vue.createVNode("svg", {
-      width: "30",
-      height: "30",
-      style: {
-        "color": "black"
-      }
-    }, [/*#__PURE__*/vue.createVNode("use", {
-      href: "#more"
-    })], -1
-    /* HOISTED */
-    );
-
-    var _hoisted_3 = /*#__PURE__*/vue.createVNode("svg", {
-      width: "0",
-      height: "0",
-      viewBox: "0 0 100 100"
-    }, [/*#__PURE__*/vue.createVNode("defs", null, [/*#__PURE__*/vue.createVNode("symbol", {
-      id: "more",
-      viewBox: "0 0 100 100"
-    }, [/*#__PURE__*/vue.createVNode("circle", {
-      r: "5",
-      cx: "20",
-      cy: "25",
-      fill: "currentColor"
-    }), /*#__PURE__*/vue.createVNode("circle", {
-      r: "5",
-      cx: "20",
-      cy: "50",
-      fill: "currentColor"
-    }), /*#__PURE__*/vue.createVNode("circle", {
-      r: "5",
-      cx: "20",
-      cy: "75",
-      fill: "currentColor"
-    }), /*#__PURE__*/vue.createVNode("line", {
-      x1: "40",
-      y1: "25",
-      x2: "90",
-      y2: "25",
-      "stroke-width": "8",
-      stroke: "currentColor"
-    }), /*#__PURE__*/vue.createVNode("line", {
-      x1: "40",
-      y1: "50",
-      x2: "90",
-      y2: "50",
-      "stroke-width": "8",
-      stroke: "currentColor"
-    }), /*#__PURE__*/vue.createVNode("line", {
-      x1: "40",
-      y1: "75",
-      x2: "90",
-      y2: "75",
-      "stroke-width": "8",
-      stroke: "currentColor"
-    })])])], -1
-    /* HOISTED */
-    );
-
     vue.popScopeId();
-
-    var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data, $options) {
-      return vue.openBlock(), vue.createBlock("div", _hoisted_1, [vue.createVNode("div", null, vue.toDisplayString($setup.message), 1
-      /* TEXT */
-      ), vue.createVNode("div", null, " doubleCount:" + vue.toDisplayString($setup.doubleCount), 1
-      /* TEXT */
-      ), vue.createVNode("button", {
-        onClick: _cache[1] || (_cache[1] = function () {
-          return $setup.add && $setup.add.apply($setup, arguments);
-        })
-      }, "AddCount"), _hoisted_2, _hoisted_3]);
-    });
 
     function styleInject(css, ref) {
       if ( ref === void 0 ) ref = {};
@@ -138,12 +38,52 @@
     var css_248z = ".test[data-v-07bdddea] {\n  color: red;\n}";
     styleInject(css_248z);
 
+    /* eslint-disable */
+
+    var script = {
+      name: 'SvgAnimation'
+    };
+
+    var _withId = /*#__PURE__*/vue.withScopeId("data-v-5a151e4f");
+
+    vue.pushScopeId("data-v-5a151e4f");
+
+    var _hoisted_1 = /*#__PURE__*/vue.createVNode("div", {
+      "class": "container"
+    }, [/*#__PURE__*/vue.createVNode("svg", {
+      width: "500",
+      height: "200",
+      viewBox: "0 0 500 200"
+    }, [/*#__PURE__*/vue.createCommentVNode(" x起始点0 y起始点0 宽100px 高50px fill=填充色红色  transform=向x轴右偏移10px向下偏移10 rotate(30)顺时针旋转30度"), /*#__PURE__*/vue.createVNode("rect", {
+      x: "0",
+      y: "0",
+      width: "100",
+      height: "50",
+      fill: "red",
+      transform: "translate(10, 10) rotate(30)"
+    })])], -1
+    /* HOISTED */
+    );
+
+    vue.popScopeId();
+
+    var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data, $options) {
+      return vue.openBlock(), vue.createBlock("div", null, [_hoisted_1]);
+    });
+
+    var css_248z$1 = ".container[data-v-5a151e4f] svg {\n  border: 1px solid;\n}";
+    styleInject(css_248z$1);
+
     script.render = render;
-    script.__scopeId = "data-v-07bdddea";
-    script.__file = "src/Test.vue";
+    script.__scopeId = "data-v-5a151e4f";
+    script.__file = "src/components/SvgAnimation/SvgAnimation.vue";
+
+    function SvgAnimation (Vue) {
+      Vue.component(script.name, script);
+    }
 
     function index (Vue) {
-      Vue.component(script.name, script);
+      Vue.use(SvgAnimation);
     }
 
     return index;
