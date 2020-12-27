@@ -20,7 +20,7 @@ module.exports= {
       format:'umd',
       name:'Datav',
       globals:{
-        'vue':'vue'
+        'vue':'Vue' //更矮全局变量名称
       }
     },
     {

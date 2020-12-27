@@ -1,5 +1,7 @@
 import { ref, computed, pushScopeId, popScopeId, openBlock, createBlock, createVNode, toDisplayString, withScopeId } from 'vue';
 
+/* eslint-disable */
+
 var script = {
   name: 'Test',
   setup: function setup() {
@@ -29,6 +31,65 @@ var _hoisted_1 = {
   "class": "test"
 };
 
+var _hoisted_2 = /*#__PURE__*/createVNode("svg", {
+  width: "30",
+  height: "30",
+  style: {
+    "color": "black"
+  }
+}, [/*#__PURE__*/createVNode("use", {
+  href: "#more"
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_3 = /*#__PURE__*/createVNode("svg", {
+  width: "0",
+  height: "0",
+  viewBox: "0 0 100 100"
+}, [/*#__PURE__*/createVNode("defs", null, [/*#__PURE__*/createVNode("symbol", {
+  id: "more",
+  viewBox: "0 0 100 100"
+}, [/*#__PURE__*/createVNode("circle", {
+  r: "5",
+  cx: "20",
+  cy: "25",
+  fill: "currentColor"
+}), /*#__PURE__*/createVNode("circle", {
+  r: "5",
+  cx: "20",
+  cy: "50",
+  fill: "currentColor"
+}), /*#__PURE__*/createVNode("circle", {
+  r: "5",
+  cx: "20",
+  cy: "75",
+  fill: "currentColor"
+}), /*#__PURE__*/createVNode("line", {
+  x1: "40",
+  y1: "25",
+  x2: "90",
+  y2: "25",
+  "stroke-width": "8",
+  stroke: "currentColor"
+}), /*#__PURE__*/createVNode("line", {
+  x1: "40",
+  y1: "50",
+  x2: "90",
+  y2: "50",
+  "stroke-width": "8",
+  stroke: "currentColor"
+}), /*#__PURE__*/createVNode("line", {
+  x1: "40",
+  y1: "75",
+  x2: "90",
+  y2: "75",
+  "stroke-width": "8",
+  stroke: "currentColor"
+})])])], -1
+/* HOISTED */
+);
+
 popScopeId();
 
 var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data, $options) {
@@ -40,7 +101,7 @@ var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data,
     onClick: _cache[1] || (_cache[1] = function () {
       return $setup.add && $setup.add.apply($setup, arguments);
     })
-  }, "AddCount")]);
+  }, "AddCount"), _hoisted_2, _hoisted_3]);
 });
 
 function styleInject(css, ref) {

@@ -4,6 +4,8 @@
     (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.Datav = factory(global.Vue));
 }(this, (function (vue) { 'use strict';
 
+    /* eslint-disable */
+
     var script = {
       name: 'Test',
       setup: function setup() {
@@ -33,6 +35,65 @@
       "class": "test"
     };
 
+    var _hoisted_2 = /*#__PURE__*/vue.createVNode("svg", {
+      width: "30",
+      height: "30",
+      style: {
+        "color": "black"
+      }
+    }, [/*#__PURE__*/vue.createVNode("use", {
+      href: "#more"
+    })], -1
+    /* HOISTED */
+    );
+
+    var _hoisted_3 = /*#__PURE__*/vue.createVNode("svg", {
+      width: "0",
+      height: "0",
+      viewBox: "0 0 100 100"
+    }, [/*#__PURE__*/vue.createVNode("defs", null, [/*#__PURE__*/vue.createVNode("symbol", {
+      id: "more",
+      viewBox: "0 0 100 100"
+    }, [/*#__PURE__*/vue.createVNode("circle", {
+      r: "5",
+      cx: "20",
+      cy: "25",
+      fill: "currentColor"
+    }), /*#__PURE__*/vue.createVNode("circle", {
+      r: "5",
+      cx: "20",
+      cy: "50",
+      fill: "currentColor"
+    }), /*#__PURE__*/vue.createVNode("circle", {
+      r: "5",
+      cx: "20",
+      cy: "75",
+      fill: "currentColor"
+    }), /*#__PURE__*/vue.createVNode("line", {
+      x1: "40",
+      y1: "25",
+      x2: "90",
+      y2: "25",
+      "stroke-width": "8",
+      stroke: "currentColor"
+    }), /*#__PURE__*/vue.createVNode("line", {
+      x1: "40",
+      y1: "50",
+      x2: "90",
+      y2: "50",
+      "stroke-width": "8",
+      stroke: "currentColor"
+    }), /*#__PURE__*/vue.createVNode("line", {
+      x1: "40",
+      y1: "75",
+      x2: "90",
+      y2: "75",
+      "stroke-width": "8",
+      stroke: "currentColor"
+    })])])], -1
+    /* HOISTED */
+    );
+
     vue.popScopeId();
 
     var render = /*#__PURE__*/_withId(function (_ctx, _cache, $props, $setup, $data, $options) {
@@ -44,7 +105,7 @@
         onClick: _cache[1] || (_cache[1] = function () {
           return $setup.add && $setup.add.apply($setup, arguments);
         })
-      }, "AddCount")]);
+      }, "AddCount"), _hoisted_2, _hoisted_3]);
     });
 
     function styleInject(css, ref) {
