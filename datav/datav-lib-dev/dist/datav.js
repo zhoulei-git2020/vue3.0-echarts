@@ -51,16 +51,25 @@
     var _hoisted_1 = /*#__PURE__*/vue.createVNode("div", {
       "class": "container"
     }, [/*#__PURE__*/vue.createVNode("svg", {
-      width: "500",
-      height: "200",
-      viewBox: "0 0 500 200"
-    }, [/*#__PURE__*/vue.createCommentVNode(" x起始点0 y起始点0 宽100px 高50px fill=填充色红色  transform=向x轴右偏移10px向下偏移10 rotate(30)顺时针旋转30度"), /*#__PURE__*/vue.createVNode("rect", {
-      x: "0",
-      y: "0",
-      width: "100",
-      height: "50",
-      fill: "red",
-      transform: "translate(10, 10) rotate(30)"
+      width: "440",
+      height: "440",
+      viewBox: "0 0 440 440"
+    }, [/*#__PURE__*/vue.createVNode("circle", {
+      cx: "220",
+      cy: "220",
+      r: "200",
+      "stroke-width": "20",
+      stroke: "#d1d3d7",
+      fill: "none"
+    }), /*#__PURE__*/vue.createCommentVNode(" 2*3.1415926*180 = 1131 "), /*#__PURE__*/vue.createVNode("circle", {
+      "class": "circle",
+      cx: "220",
+      cy: "220",
+      r: "200",
+      "stroke-width": "20",
+      stroke: "#00a5e0",
+      fill: "none",
+      transform: "matrix(0 -1 1 0 0 440)"
     })])], -1
     /* HOISTED */
     );
@@ -71,7 +80,7 @@
       return vue.openBlock(), vue.createBlock("div", null, [_hoisted_1]);
     });
 
-    var css_248z$1 = ".container[data-v-5a151e4f] svg {\n  border: 1px solid;\n}";
+    var css_248z$1 = ".container[data-v-5a151e4f] svg {\n  border: 1px solid #000;\n}\n\n.circle[data-v-5a151e4f] {\n  animation: circle-5a151e4f 3s linear infinite;\n}\n\n@keyframes circle-5a151e4f {\n  from {\n    stroke-dasharray: 0 1257;\n  }\n  to {\n    stroke-dasharray: 1257 0;\n  }\n}";
     styleInject(css_248z$1);
 
     script.render = render;
