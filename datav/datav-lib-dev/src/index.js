@@ -1,8 +1,5 @@
-import Test from './Test.vue'
-import SvgAnimation from './components/SvgAnimation/index'
-
-
+import Loading from './components/Loading/index'
 export default function(Vue){
-    Vue.use(SvgAnimation)
+    Vue.use(Loading)
     
 }

@@ -1,10 +1,20 @@
 <template>
   <div id="nav">
-    <router-link to="/">Home</router-link> |
-    <router-link to="/about">About</router-link>
-    <SvgAnimation/>
+    <!-- <router-link to="/">Home</router-link> |
+    <router-link to="/about">About</router-link> -->
+    <Loading 
+      width="100"
+      height="100"
+
+      duration='1'
+    > 
+    <div style="font-size:10px;color:red">
+      数据加载中，，.
+    </div>
+    
+    </Loading>
   </div>
-  <router-view/>
+  <!-- <router-view/> -->
 </template>
 
 <style lang="scss">

@@ -1,7 +1,6 @@
    
 <template>
     <div>
-      
         <div class="container" >
             <svg width="440" height="440" viewBox="0 0 440 440">
                 <circle cx="220" cy="220" r="200"  stroke-width="20" stroke="#d1d3d7" fill="none"></circle>
@@ -10,9 +9,15 @@
                  <circle class="circle" cx="220" cy="220" r="200" stroke-width="20" stroke="#00a5e0" fill="none"
                     transform = "matrix(0 -1 1 0 0 440)"
                  ></circle>
-
             </svg>
         </div> 
+        <div class="container">
+            <svg width="200" height="200">
+                <rect x="0" y="0" fill="red" width="100" height="50">
+                     <set attributeName="x" attributeType="XML" to="10" begin="5s"></set>  
+                </rect>
+            </svg>
+        </div>
     </div>
     
 </template>
