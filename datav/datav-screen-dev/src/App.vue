@@ -6,13 +6,15 @@
       width="100"
       height="100"
 
-      duration='1'
+      duration='2'
     > 
     <div style="font-size:10px;color:red">
       数据加载中，，.
     </div>
     
     </Loading>
+
+      <flybox></flybox>
   </div>
   <!-- <router-view/> -->
 </template>
