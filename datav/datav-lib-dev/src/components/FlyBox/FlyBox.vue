@@ -3,12 +3,12 @@
         <svg  :width="width" :height="height">
             <defs>
                 <path
-                    id="fly-box-path"
+                    :id="pathId"
                     :d="path"
                     fill="none"
                 />
                 <radialGradient
-                    id="radial-gradient"
+                    :id="radialGradientId"
                     cx="50%"
                     cy="50%"
                     fx="100%"
@@ -18,11 +18,10 @@
                     <stop offset="0%" stop-color="#fff" stop-opacity="1"></stop>
                     <stop offset="100%" stop-color="#fff" stop-opacity="0"></stop>
                 </radialGradient>
-
-                <mask id="fly-box-mask" >
-                    <circle r="150" cx="0" cy="0" fill="url(#radial-gradient)">
+                <mask :id="maskId" >
+                    <circle :r="starLength" cx="0" cy="0" :fill="`url(#${radialGradientId})`">
                         <animateMotion
-                          dur="2s"
+                          :dur="`${starDuration}s`"
                           :path="path"  
                           rotate="auto"
                           repeatCount="indefinite"
@@ -30,14 +29,14 @@
                     </circle>
                 </mask>
             </defs>
-            <use href="#fly-box-path" 
+            <use :href="`#${pathId}`" 
                     stroke-width="1"
-                    stroke="#235fa7"
+                    :stroke="lineColor"
             />
-            <use href="#fly-box-path" 
+            <use :href="`#${pathId}`" 
                     stroke-width="3"
-                    stroke="#4fd2dd"
-                    mask="url(#fly-box-mask)"
+                    :stroke="starColor"
+                    :mask="`url(#${maskId})`"
             />
         </svg>
         <div class="fly-box-content">
@@ -48,17 +47,41 @@
 
 <script>
 import {computed , ref, onMounted, getCurrentInstance } from 'vue'
+import {v4 as uuidv4} from 'uuid'
 export default {
     name:'flybox',
     props:{
+        //外边框颜色
+        lineColor:{
+            type:String,
+            default:"#235fa7"
+        },
+        //流星颜色
+        starColor:{
+            type:String,
+            default:"#4fd2dd"
+        },
+        //流星长度
+        starLength:{
+            type:[String,Number],
+            default:200
+        },
+        
+        //流星运动速度
+        starDuration:{
+            type:[String,Number],
+            default:3
+        }
 
-    },
-
-  
+    }, 
     setup(ctx){
+        const uuid = uuidv4()
         const width = ref(0)
         const height = ref(0)
         const refName = "flybox"
+        const pathId = `${refName}-path-${uuid}` 
+        const radialGradientId = `${refName}-gradient-${uuid}` 
+        const maskId = `${refName}-mask-${uuid}` 
         const path = computed( () => `M5 5 L${width.value -5} 5 L${width.value -5} ${height.value -5} L5 ${height.value -5} Z` )
 
        
@@ -76,7 +99,10 @@ export default {
             width,
             height,
             refName,
-            path
+            path,
+            pathId,
+            radialGradientId,
+            maskId
         }
     }
 }
@@ -99,7 +125,8 @@ export default {
     .fly-box-content{
         width:100%;
         height:100%;
-        background: #333;
+        padding: 5px;
+        box-sizing: border-box;
     }
 
 </style>

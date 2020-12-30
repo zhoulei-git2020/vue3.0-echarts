@@ -14,16 +14,27 @@
     
     </Loading>
 
-      <flybox>
-        <div>111</div>
-        <div>222</div>
-        <div>333</div>
-        <div>444</div>
-        <div>555</div>
-        <div>666</div>
-        <div>666</div><div>666</div>
+    <div style="width:50%; background:#333">
 
-      </flybox>
+          <flybox starDuration=6 starLength=100>
+            <div>111</div>
+            <div>222</div>
+            <div>333</div>
+            <div>444</div>
+            <div>555</div>
+            <div>666</div>
+            <div>666</div><div>666</div>
+          </flybox>
+        
+    </div>
+
+    <div >
+     <container/>
+    </div>
+        
+
+
+
   </div>
   <!-- <router-view/> -->
 </template>
