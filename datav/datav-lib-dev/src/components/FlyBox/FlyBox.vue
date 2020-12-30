@@ -1,10 +1,10 @@
 <template>
-    <div class="flybox" >
-        <svg width="400" height="400">
+    <div class="flybox" :ref="refName" >
+        <svg  :width="width" :height="height">
             <defs>
                 <path
                     id="fly-box-path"
-                    d="M5 5 L395 5 L395 395 L5 395 Z"
+                    :d="path"
                     fill="none"
                 />
                 <radialGradient
@@ -22,8 +22,8 @@
                 <mask id="fly-box-mask" >
                     <circle r="150" cx="0" cy="0" fill="url(#radial-gradient)">
                         <animateMotion
-                          dur="3s"
-                          path="M5 5 L395 5 L395 395 L5 395 Z"  
+                          dur="2s"
+                          :path="path"  
                           rotate="auto"
                           repeatCount="indefinite"
                         />
@@ -40,18 +40,66 @@
                     mask="url(#fly-box-mask)"
             />
         </svg>
+        <div class="fly-box-content">
+            <slot></slot>
+        </div>
     </div>
 </template>
 
 <script>
+import {computed , ref, onMounted, getCurrentInstance } from 'vue'
 export default {
-    name:'flybox'
+    name:'flybox',
+    props:{
+
+    },
+
+  
+    setup(ctx){
+        const width = ref(0)
+        const height = ref(0)
+        const refName = "flybox"
+        const path = computed( () => `M5 5 L${width.value -5} 5 L${width.value -5} ${height.value -5} L5 ${height.value -5} Z` )
+
+       
+        const init = ()=>{
+          const  instance = getCurrentInstance()
+          const  dom = instance.ctx.$refs[refName]
+          width.value = dom.clientWidth
+          height.value = dom.clientHeight
+        }
+        onMounted(()=>{
+            init()
+    })
+
+    return{
+            width,
+            height,
+            refName,
+            path
+        }
+    }
 }
 </script>
 
 <style lang="scss" scoped>
     .flybox{
+        position: relative; 
+        width:100%;
+        height: 100%;
+            svg{
+               position: absolute;
+               top:0;
+               left:0;
+               width: 100%;
+               height: 100%;
+            }
+        
+    }
+    .fly-box-content{
+        width:100%;
+        height:100%;
         background: #333;
     }
 
-</style>>
+</style>

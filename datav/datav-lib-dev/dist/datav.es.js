@@ -1,4 +1,4 @@
-import { computed, pushScopeId, popScopeId, openBlock, createBlock, createCommentVNode, createVNode, renderSlot, withScopeId } from 'vue';
+import { computed, pushScopeId, popScopeId, openBlock, createBlock, createCommentVNode, createVNode, renderSlot, withScopeId, ref, onMounted, getCurrentInstance } from 'vue';
 
 var script = {
   name: 'Loading',
@@ -164,25 +164,40 @@ function Loading (Vue) {
 }
 
 var script$1 = {
-  name: 'flybox'
+  name: 'flybox',
+  props: {},
+  setup: function setup(ctx) {
+    var width = ref(0);
+    var height = ref(0);
+    var refName = "flybox";
+    var path = computed(function () {
+      return "M5 5 L".concat(width.value - 5, " 5 L").concat(width.value - 5, " ").concat(height.value - 5, " L5 ").concat(height.value - 5, " Z");
+    });
+
+    var init = function init() {
+      var instance = getCurrentInstance();
+      var dom = instance.ctx.$refs[refName];
+      width.value = dom.clientWidth;
+      height.value = dom.clientHeight;
+    };
+
+    onMounted(function () {
+      init();
+    });
+    return {
+      width: width,
+      height: height,
+      refName: refName,
+      path: path
+    };
+  }
 };
 
 var _withId$1 = /*#__PURE__*/withScopeId("data-v-513cc2e2");
 
 pushScopeId("data-v-513cc2e2");
 
-var _hoisted_1$1 = {
-  "class": "flybox"
-};
-
-var _hoisted_2$1 = /*#__PURE__*/createVNode("svg", {
-  width: "400",
-  height: "400"
-}, [/*#__PURE__*/createVNode("defs", null, [/*#__PURE__*/createVNode("path", {
-  id: "fly-box-path",
-  d: "M5 5 L395 5 L395 395 L5 395 Z",
-  fill: "none"
-}), /*#__PURE__*/createVNode("radialGradient", {
+var _hoisted_1$1 = /*#__PURE__*/createVNode("radialGradient", {
   id: "radial-gradient",
   cx: "50%",
   cy: "50%",
@@ -197,38 +212,71 @@ var _hoisted_2$1 = /*#__PURE__*/createVNode("svg", {
   offset: "100%",
   "stop-color": "#fff",
   "stop-opacity": "0"
-})]), /*#__PURE__*/createVNode("mask", {
-  id: "fly-box-mask"
-}, [/*#__PURE__*/createVNode("circle", {
-  r: "150",
-  cx: "0",
-  cy: "0",
-  fill: "url(#radial-gradient)"
-}, [/*#__PURE__*/createVNode("animateMotion", {
-  dur: "3s",
-  path: "M5 5 L395 5 L395 395 L5 395 Z",
-  rotate: "auto",
-  repeatCount: "indefinite"
-})])])]), /*#__PURE__*/createVNode("use", {
-  href: "#fly-box-path",
-  "stroke-width": "1",
-  stroke: "#235fa7"
-}), /*#__PURE__*/createVNode("use", {
-  href: "#fly-box-path",
-  "stroke-width": "3",
-  stroke: "#4fd2dd",
-  mask: "url(#fly-box-mask)"
 })], -1
 /* HOISTED */
 );
 
+var _hoisted_2$1 = {
+  id: "fly-box-mask"
+};
+var _hoisted_3 = {
+  r: "150",
+  cx: "0",
+  cy: "0",
+  fill: "url(#radial-gradient)"
+};
+
+var _hoisted_4 = /*#__PURE__*/createVNode("use", {
+  href: "#fly-box-path",
+  "stroke-width": "1",
+  stroke: "#235fa7"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_5 = /*#__PURE__*/createVNode("use", {
+  href: "#fly-box-path",
+  "stroke-width": "3",
+  stroke: "#4fd2dd",
+  mask: "url(#fly-box-mask)"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_6 = {
+  "class": "fly-box-content"
+};
+
 popScopeId();
 
 var render$1 = /*#__PURE__*/_withId$1(function (_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createBlock("div", _hoisted_1$1, [_hoisted_2$1]);
+  return openBlock(), createBlock("div", {
+    "class": "flybox",
+    ref: $setup.refName
+  }, [(openBlock(), createBlock("svg", {
+    width: $setup.width,
+    height: $setup.height
+  }, [createVNode("defs", null, [createVNode("path", {
+    id: "fly-box-path",
+    d: $setup.path,
+    fill: "none"
+  }, null, 8
+  /* PROPS */
+  , ["d"]), _hoisted_1$1, createVNode("mask", _hoisted_2$1, [createVNode("circle", _hoisted_3, [createVNode("animateMotion", {
+    dur: "2s",
+    path: $setup.path,
+    rotate: "auto",
+    repeatCount: "indefinite"
+  }, null, 8
+  /* PROPS */
+  , ["path"])])])]), _hoisted_4, _hoisted_5], 8
+  /* PROPS */
+  , ["width", "height"])), createVNode("div", _hoisted_6, [renderSlot(_ctx.$slots, "default")])], 512
+  /* NEED_PATCH */
+  );
 });
 
-var css_248z$1 = ".flybox[data-v-513cc2e2] {\n  background: #333;\n}";
+var css_248z$1 = ".flybox[data-v-513cc2e2] {\n  position: relative;\n  width: 100%;\n  height: 100%;\n}\n.flybox[data-v-513cc2e2] svg {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n}\n\n.fly-box-content[data-v-513cc2e2] {\n  width: 100%;\n  height: 100%;\n  background: #333;\n}";
 styleInject(css_248z$1);
 
 script$1.render = render$1;
