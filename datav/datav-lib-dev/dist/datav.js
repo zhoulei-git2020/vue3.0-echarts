@@ -1,12 +1,8 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('vue'), require('crypto')) :
-  typeof define === 'function' && define.amd ? define(['vue', 'crypto'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.Datav = factory(global.Vue, global.crypto));
-}(this, (function (vue, crypto) { 'use strict';
-
-  function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
-
-  var crypto__default = /*#__PURE__*/_interopDefaultLegacy(crypto);
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('vue'), require('uuid')) :
+  typeof define === 'function' && define.amd ? define(['vue', 'uuid'], factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.Datav = factory(global.Vue, global.uuid));
+}(this, (function (vue, uuid) { 'use strict';
 
   var script = {
     name: 'Loading',
@@ -171,71 +167,6 @@
     Vue.component(script.name, script);
   }
 
-  const rnds8Pool = new Uint8Array(256); // # of random values to pre-allocate
-
-  let poolPtr = rnds8Pool.length;
-  function rng() {
-    if (poolPtr > rnds8Pool.length - 16) {
-      crypto__default['default'].randomFillSync(rnds8Pool);
-      poolPtr = 0;
-    }
-
-    return rnds8Pool.slice(poolPtr, poolPtr += 16);
-  }
-
-  var REGEX = /^(?:[0-9a-f]{8}-[0-9a-f]{4}-[1-5][0-9a-f]{3}-[89ab][0-9a-f]{3}-[0-9a-f]{12}|00000000-0000-0000-0000-000000000000)$/i;
-
-  function validate(uuid) {
-    return typeof uuid === 'string' && REGEX.test(uuid);
-  }
-
-  /**
-   * Convert array of 16 byte values to UUID string format of the form:
-   * XXXXXXXX-XXXX-XXXX-XXXX-XXXXXXXXXXXX
-   */
-
-  const byteToHex = [];
-
-  for (let i = 0; i < 256; ++i) {
-    byteToHex.push((i + 0x100).toString(16).substr(1));
-  }
-
-  function stringify(arr, offset = 0) {
-    // Note: Be careful editing this code!  It's been tuned for performance
-    // and works in ways you may not expect. See https://github.com/uuidjs/uuid/pull/434
-    const uuid = (byteToHex[arr[offset + 0]] + byteToHex[arr[offset + 1]] + byteToHex[arr[offset + 2]] + byteToHex[arr[offset + 3]] + '-' + byteToHex[arr[offset + 4]] + byteToHex[arr[offset + 5]] + '-' + byteToHex[arr[offset + 6]] + byteToHex[arr[offset + 7]] + '-' + byteToHex[arr[offset + 8]] + byteToHex[arr[offset + 9]] + '-' + byteToHex[arr[offset + 10]] + byteToHex[arr[offset + 11]] + byteToHex[arr[offset + 12]] + byteToHex[arr[offset + 13]] + byteToHex[arr[offset + 14]] + byteToHex[arr[offset + 15]]).toLowerCase(); // Consistency check for valid UUID.  If this throws, it's likely due to one
-    // of the following:
-    // - One or more input array values don't map to a hex octet (leading to
-    // "undefined" in the uuid)
-    // - Invalid input values for the RFC `version` or `variant` fields
-
-    if (!validate(uuid)) {
-      throw TypeError('Stringified UUID is invalid');
-    }
-
-    return uuid;
-  }
-
-  function v4(options, buf, offset) {
-    options = options || {};
-    const rnds = options.random || (options.rng || rng)(); // Per 4.4, set bits for version and `clock_seq_hi_and_reserved`
-
-    rnds[6] = rnds[6] & 0x0f | 0x40;
-    rnds[8] = rnds[8] & 0x3f | 0x80; // Copy bytes to buffer, if provided
-
-    if (buf) {
-      offset = offset || 0;
-
-      for (let i = 0; i < 16; ++i) {
-        buf[offset + i] = rnds[i];
-      }
-
-      return buf;
-    }
-
-    return stringify(rnds);
-  }
-
   var script$1 = {
     name: 'flybox',
     props: {
@@ -261,13 +192,13 @@
       }
     },
     setup: function setup(ctx) {
-      var uuid = v4();
+      var uuid$1 = uuid.v4();
       var width = vue.ref(0);
       var height = vue.ref(0);
       var refName = "flybox";
-      var pathId = "".concat(refName, "-path-").concat(uuid);
-      var radialGradientId = "".concat(refName, "-gradient-").concat(uuid);
-      var maskId = "".concat(refName, "-mask-").concat(uuid);
+      var pathId = "".concat(refName, "-path-").concat(uuid$1);
+      var radialGradientId = "".concat(refName, "-gradient-").concat(uuid$1);
+      var maskId = "".concat(refName, "-mask-").concat(uuid$1);
       var path = vue.computed(function () {
         return "M5 5 L".concat(width.value - 5, " 5 L").concat(width.value - 5, " ").concat(height.value - 5, " L5 ").concat(height.value - 5, " Z");
       });
@@ -393,24 +324,87 @@
 
   var script$2 = {
     name: 'container',
-    props: {},
+    props: {
+      //用于接收数据大屏的宽高
+      options: Object
+    },
     setup: function setup(ctx) {
-      return {};
+      var refName = 'Container';
+      var width = vue.ref(0);
+      var height = vue.ref(0); //组件视口宽
+
+      var originalWidth = vue.ref(0); //组件视口高
+
+      var originalHeight = vue.ref(0);
+      var context, dom;
+
+      var init = function init() {
+        dom = context.$refs[refName];
+
+        if (ctx.options && ctx.options.width && ctx.options.height) {
+          //判断是否传入宽高
+          //将传入的宽高记录下来
+          width.value = ctx.options.width;
+          height.value = ctx.options.height;
+        } else {
+          //如果用户没有传入宽高就从dom去拿
+          width.value = dom.clientWidth;
+          height.value = dom.clientHeight;
+        } //判断是否拿到真实的视口宽高，没有拿到则赋值
+
+
+        if (!originalWidth.value || !originalHeight.value) {
+          //传入真实视口的宽
+          originalWidth.value = screen.width; //传入真实视口的高
+
+          originalHeight.value = screen.height;
+        }
+      };
+
+      var updateSize = function updateSize() {
+        //判断当前有没有宽高
+        if (width.value && height.value) {
+          dom.style.width = "".concat(width.value, "px");
+          dom.style.height = "".concat(height.value, "px");
+        } else {
+          dom.style.width = "".concat(originalWidth.value, "px");
+          dom.style.height = "".concat(originalHeight.value, "px");
+        }
+      };
+
+      var updateScale = function updateScale() {
+        //拿到当前实际视口的宽高 
+        c; //创建变量计算出宽度压缩比和高度压缩比
+
+        var widthScale = 1;
+        var heightScale = 1;
+        dom.style.transform = "scale(".concat(widthScale, ",").concat(heightScale, ")");
+      };
+
+      vue.onMounted(function () {
+        context = vue.getCurrentInstance().ctx; //第一步调用init方法拿到视口的尺寸
+
+        init(); //视口压缩算法
+
+        updateScale(); //更新窗口大小
+
+        updateSize();
+      });
+      return {
+        refName: refName
+      };
     }
   };
 
   var _withId$2 = /*#__PURE__*/vue.withScopeId("data-v-807af65a");
 
-  vue.pushScopeId("data-v-807af65a");
-
-  var _hoisted_1$2 = {
-    id: "container"
-  };
-
-  vue.popScopeId();
-
   var render$2 = /*#__PURE__*/_withId$2(function (_ctx, _cache, $props, $setup, $data, $options) {
-    return vue.openBlock(), vue.createBlock("div", _hoisted_1$2, " 11111 ");
+    return vue.openBlock(), vue.createBlock("div", {
+      id: "container",
+      ref: $setup.refName
+    }, [vue.renderSlot(_ctx.$slots, "default")], 512
+    /* NEED_PATCH */
+    );
   });
 
   var css_248z$2 = "";

@@ -127,6 +127,6 @@ export default {
         height:100%;
         padding: 5px;
         box-sizing: border-box;
-    }
+     }
 
 </style>
