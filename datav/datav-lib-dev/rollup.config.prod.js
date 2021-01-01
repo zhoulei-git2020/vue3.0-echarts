@@ -33,7 +33,16 @@ module.exports= {
     resolve(), //执行rollup-plugin-node-resolve ***npm i -D rollup-plugin-node-resolve --save***
     commonjs(),//执行rollup-plugin-commonjs ***npm i -D rollup-plugin-commonjs --save***
     babel({//执行rollup-plugin-babel ***npm i -D rollup-plugin-babel --save***
-      exclude:'node_modules/**'//哪些文件夹不进行babel编译
+      exclude:'node_modules/**',//哪些文件夹不进行babel编译
+      runtimeHelpers:true,
+      plugins:[
+     
+            [ '@babel/transform-runtime',{ //解决async 异步函数问题
+              regenerator:true
+            }]
+
+          
+      ]
     }),
     json(),//执行rollup-plugin-json ***npm i -D rollup-plugin-json --save***
     postcss({//执行rollup-plugin-postcss ***npm i -D rollup-plugin-postcss --save 依赖于psstcss8 需要***npm i postcss --save***

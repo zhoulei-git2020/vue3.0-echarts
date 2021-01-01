@@ -6,6 +6,7 @@ const json = require('rollup-plugin-json')
 const vue = require('rollup-plugin-vue')
 const postcss = require('rollup-plugin-postcss')
 
+
 const inputPath = path.resolve(__dirname,'./src/index.js') //得到绝对路径+输入文件路径
 const outputPath = path.resolve(__dirname,'./dist/datav.js')//输出文件路径
 const outputEsPath = path.resolve(__dirname,'./dist/datav.es.js')//输出文件路径
@@ -33,7 +34,16 @@ module.exports= {
     resolve(), //执行rollup-plugin-node-resolve ***npm i -D rollup-plugin-node-resolve --save***
     commonjs(),//执行rollup-plugin-commonjs ***npm i -D rollup-plugin-commonjs --save***
     babel({//执行rollup-plugin-babel ***npm i -D rollup-plugin-babel --save***
-      exclude:'node_modules/**'//哪些文件夹不进行babel编译
+      exclude:'node_modules/**',//哪些文件夹不进行babel编译
+      runtimeHelpers:true,
+      plugins:[
+     
+            [ '@babel/transform-runtime',{ //解决async 异步函数问题
+              regenerator:true
+            }]
+
+          
+      ]
     }),
     json(),//执行rollup-plugin-json ***npm i -D rollup-plugin-json --save***
    

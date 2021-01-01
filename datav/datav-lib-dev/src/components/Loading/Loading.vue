@@ -118,5 +118,12 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+    .loading{
+       
+        display: flex; /*居中显示*/
+        flex-direction: column;/*竖向排列 */
+        align-items: center;
+        justify-content: center;
 
+    }
 </style>
