@@ -8,17 +8,27 @@
       <container id="container" :options="{width:3840,height:2160}" v-else>
       
       <!-- 头部 -->
-      <div class="header">1</div>
+      <div class="header">
+        <topHeader>
+          
+        </topHeader>
+      </div>
 
       <!-- 分割线 -->
-      <div class="separator">222</div>
+      <div class="separator"/>
       
       <!-- 大屏中间部分 -->
       <div class="center">
        
         <!-- 左侧 -->
         <div class="left">
-            <div class="left1">333</div>
+            <div class="left1">
+              <TotalUser
+                :todays-temperature = "TodaysTemperature"
+                :yesterday-temperature = "YesterdayTemperature"
+                :growth-rate = "GrowthRate"
+              />
+            </div>
             <div class="left2">444</div>
             <div class="left3">555</div>
             <div class="left4">666</div>
@@ -51,6 +61,7 @@
 
 <script>
 import {ref,onMounted} from 'vue'
+import useTemperatureData from '../hooks/useScreenData'
 export default {
   name: 'Home',
   setup(){
@@ -61,7 +72,8 @@ export default {
       },1000)
     })
     return{
-      loading
+      loading,
+      ...useTemperatureData()
     }
   }
 }
@@ -76,9 +88,9 @@ export default {
     justify-content: center;
     width:100%;
     height: 100%;
-    background: rgb(29,29,29);
     color:#fff ;
     font-size: 48px;
+    background: black;
 
     /*container组件scc*/
     #container{
@@ -97,14 +109,15 @@ export default {
     .header{
       width: 100%;
       height: 167px;/*高度167px*/
-      background: rgb(255, 0, 221);
+      
     }
 
     /*分割线css*/
     .separator{
       width: 100%;
       height: 10px;
-      background: black;
+      background: rgb(92,88,89);
+                           
     }
 
     /*中间大屏展示部分scc*/
@@ -112,7 +125,7 @@ export default {
       display: flex;
       width: 100%;
       flex: 1;
-      background: cornflowerblue;
+                
 
       /*左边展示区*/
       .left{
@@ -124,10 +137,10 @@ export default {
         justify-content: space-between; /*内部元素中间元素有间隙顶头和最下方元素无间隙*/
         padding-bottom: 20px; /*最底部元素留出20px间隙*/
         box-sizing: border-box;
-        background: crimson;
+       
          .left1{
           height: 300px;
-          background: burlywood;
+         
         }
          .left2{
           height: 320px;

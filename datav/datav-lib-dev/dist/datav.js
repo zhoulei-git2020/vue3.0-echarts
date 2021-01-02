@@ -1365,7 +1365,7 @@
       id: "container",
       ref: $setup.refName,
       style: _ctx.style
-    }, [_ctx.ready ? vue.renderSlot(_ctx.$slots, "default", {
+    }, [$setup.ready ? vue.renderSlot(_ctx.$slots, "default", {
       key: 0
     }) : vue.createCommentVNode("v-if", true)], 4
     /* STYLE */
@@ -1382,10 +1382,459 @@
     Vue.component(script$2.name, script$2);
   }
 
+  var script$3 = {
+    name: 'topHeader',
+    props: {}
+  };
+
+  var _withId$2 = /*#__PURE__*/vue.withScopeId("data-v-1303fca8");
+
+  vue.pushScopeId("data-v-1303fca8");
+
+  var _hoisted_1$2 = {
+    "class": "top_header"
+  };
+  var _hoisted_2$2 = {
+    "class": "logo-wrapper"
+  };
+
+  var _hoisted_3$1 = /*#__PURE__*/vue.createVNode("div", {
+    "class": "logo-text"
+  }, [/*#__PURE__*/vue.createCommentVNode(" 中文标题 "), /*#__PURE__*/vue.createVNode("div", {
+    "class": "cn-text"
+  }, "物联网传感器数据大盘"), /*#__PURE__*/vue.createCommentVNode(" 英文标题 "), /*#__PURE__*/vue.createVNode("div", {
+    "class": "en-text"
+  }, "Internet of things sensor data market")], -1
+  /* HOISTED */
+  );
+
+  vue.popScopeId();
+
+  var render$3 = /*#__PURE__*/_withId$2(function (_ctx, _cache, $props, $setup, $data, $options) {
+    var _component_headerLogo = vue.resolveComponent("headerLogo");
+
+    return vue.openBlock(), vue.createBlock("div", _hoisted_1$2, [vue.createCommentVNode(" <img class=\"logo\" src=\"http://www.youbaobao.xyz/resource.imooc.png\"> "), vue.createCommentVNode(" 使用headerLogo 组件 SVG图标作为logo "), vue.createVNode("div", _hoisted_2$2, [vue.createVNode(_component_headerLogo, {
+      stroke: "#f40be2",
+      "stroke-width": "10"
+    })]), vue.createCommentVNode(" 标题文字 "), _hoisted_3$1]);
+  });
+
+  var css_248z$3 = "@charset \"UTF-8\";\n/*top_header布局*/\n.top_header[data-v-1303fca8] {\n  display: flex;\n  /*左右布局*/\n  align-items: center;\n  width: 100%;\n  height: 100%;\n  background: #241f20;\n  padding: 0 64px;\n  box-sizing: border-box;\n  /*svg logo图标容器样式样式*/\n  /*logo样式*/\n  /*logo文字样式*/\n}\n.top_header[data-v-1303fca8] .logo-wrapper {\n  width: 160px;\n  height: 160px;\n}\n.top_header[data-v-1303fca8] .logo {\n  width: 120px;\n  height: 120px;\n}\n.top_header[data-v-1303fca8] .logo-text {\n  flex: 1;\n  /*充满余下整个空间*/\n  margin-left: 40px;\n  /*距离左边40px*/\n  /*中文标题样式*/\n  /*英文标题样式*/\n}\n.top_header[data-v-1303fca8] .logo-text .cn-text {\n  color: white;\n  /*文字颜色*/\n  font-weight: bold;\n  /*文字粗体*/\n  font-size: 60px;\n  /*文字大小*/\n  letter-spacing: 2px;\n  /*文字间距*/\n}\n.top_header[data-v-1303fca8] .logo-text .en-text {\n  color: white;\n  font-size: 35px;\n  letter-spacing: 2px;\n}";
+  styleInject(css_248z$3);
+
+  script$3.render = render$3;
+  script$3.__scopeId = "data-v-1303fca8";
+  script$3.__file = "src/components/top-header/TopHeader.vue";
+
+  function topHeader (Vue) {
+    Vue.component(script$3.name, script$3);
+  }
+
+  var script$4 = {
+    name: 'headerLogo',
+    props: {
+      strokeWidth: {
+        type: [String, Number],
+        "default": 1
+      },
+      stroke: {
+        type: String,
+        "default": '#000'
+      }
+    },
+    setup: function setup() {
+      vue.onMounted(function () {
+        //获取svg的长度必须以path标签内的元素 
+        //如果有多条线段的不规则图形就以最长的线段为基准
+        //得出最长线段为6617
+        var logo = document.getElementsByClassName('headerLogo_path')[0];
+        console.log(logo.getTotalLength());
+      });
+    }
+  };
+
+  var _withId$3 = /*#__PURE__*/vue.withScopeId("data-v-5e81d1e6");
+
+  vue.pushScopeId("data-v-5e81d1e6");
+
+  var _hoisted_1$3 = {
+    t: "1609564740298",
+    "class": "header_logo",
+    viewBox: "0 0 1024 1024",
+    version: "1.1",
+    xmlns: "http://www.w3.org/2000/svg",
+    "p-id": "26347",
+    width: "200",
+    height: "200"
+  };
+
+  vue.popScopeId();
+
+  var render$4 = /*#__PURE__*/_withId$3(function (_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createBlock("svg", _hoisted_1$3, [vue.createVNode("path", {
+      "class": "headerLogo_path",
+      stroke: $props.stroke,
+      "stroke-width": $props.strokeWidth,
+      d: "M843.5 284.4c-24.4-94.6-110.1-164.5-212.2-164.5-45.4 0-87.5 13.8-122.5 37.4-35-23.6-77.1-37.4-122.5-37.4-102.2 0-187.8 69.9-212.2 164.5-87.2 29-150.2 111.2-150.2 208.1 0 99.4 66 183.2 156.6 210.2-4.8 13-8.3 27-10.6 41-22.1 79.7-42 184.9-54.8 280.2h715c1.2-77-3.9-187.3-22.7-314.4 105.5-16 186.5-106.9 186.5-216.9-0.2-97-63.1-179.2-150.4-208.2zM243.4 574.1c-45.1 0-81.7-36.6-81.7-81.7s36.6-81.7 81.7-81.7 81.7 36.6 81.7 81.7c-0.1 45.1-36.6 81.7-81.7 81.7zM406.7 278c45.1 0 81.7 36.6 81.7 81.7s-36.6 81.7-81.7 81.7-81.7-36.6-81.7-81.7 36.6-81.7 81.7-81.7z m173.6 475.3H427.1c-45.1 0-81.7-39.4-81.7-84.5s36.6-84.5 81.7-84.5c0.9 0 1.7 0.2 2.6 0.2 9-35.3 40.9-61.5 79-61.5 38.2 0 70.2 26.2 79.1 61.7 41.5 3.8 74 41.6 74 84.1 0.1 45.1-36.4 84.5-81.5 84.5z m30.6-311.9c-45.1 0-81.7-36.6-81.7-81.7s36.6-81.7 81.7-81.7 81.7 36.6 81.7 81.7c-0.1 45.1-36.6 81.7-81.7 81.7zM764 574.1c-45.1 0-81.7-36.6-81.7-81.7s36.6-81.7 81.7-81.7 81.7 36.6 81.7 81.7-36.6 81.7-81.7 81.7z m77.4-429.4c2.4 0.6 59.6 15.4 46.2 83.1-0.7 3.3 0.4 6.7 2.7 9 2.4 2.3 5.7 3.3 9 2.7 2.4-0.5 59-11.4 77.7 62.7 1.2 4.6 5.4 7.7 10 7.5 0.7 0 1.4-0.1 2-0.3 5.3-1.4 8.6-6.7 7.2-12.1-17.3-68.5-64-78-87.4-78.3 7.5-75.5-62.1-93.5-62.8-93.6-5.3-1.3-10.7 1.9-12 7.3-1.2 5.3 2.1 10.7 7.4 12z",
+      fill: "#1296db",
+      "p-id": "26348"
+    }, null, 8
+    /* PROPS */
+    , ["stroke", "stroke-width"])]);
+  });
+
+  var css_248z$4 = "@charset \"UTF-8\";\n/*svg容器样式*/\n.header_logo[data-v-5e81d1e6] {\n  width: 100%;\n  height: 100%;\n}\n\n/*svg图形线段样式*/\n.headerLogo_path[data-v-5e81d1e6] {\n  fill: none;\n  animation: headerlogo_animation-5e81d1e6 5s linear infinite forwards;\n}\n\n/*svg图形描边动画*/\n@keyframes headerlogo_animation-5e81d1e6 {\n  /*整个图形不出现*/\n  0% {\n    stroke-dasharray: 6825;\n    stroke-dashoffset: 6825;\n  }\n  /*在50%的时间内绘制完整个logo*/\n  100% {\n    stroke-dasharray: 6825;\n    stroke-dashoffset: 0;\n  }\n  /*在剩余50%的时间内保持整个动画绘制完成状态*/\n  100% {\n    stroke-dasharray: 6825;\n    stroke-dashoffset: 0;\n    fill: #f40be2;\n  }\n}";
+  styleInject(css_248z$4);
+
+  script$4.render = render$4;
+  script$4.__scopeId = "data-v-5e81d1e6";
+  script$4.__file = "src/components/top-header/header-logo/headerLogo.vue";
+
+  function headerLogo (Vue) {
+    Vue.component(script$4.name, script$4);
+  }
+
+  var script$5 = {
+    name: 'TotalUser',
+    props: {
+      //今日温度
+      todaysTemperature: {
+        type: Number,
+        "default": 0
+      },
+      //昨日温度
+      yesterdayTemperature: {
+        type: Number,
+        "default": 0
+      },
+      //增长率
+      growthRate: {
+        type: Number,
+        "default": 0
+      }
+    }
+  };
+
+  var _withId$4 = /*#__PURE__*/vue.withScopeId("data-v-52530eaf");
+
+  vue.pushScopeId("data-v-52530eaf");
+
+  var _hoisted_1$4 = {
+    "class": "TemperatureIncrease"
+  };
+
+  var _hoisted_2$3 = /*#__PURE__*/vue.createVNode("div", {
+    "class": "title"
+  }, "今日实时温度", -1
+  /* HOISTED */
+  );
+
+  var _hoisted_3$2 = /*#__PURE__*/vue.createVNode("div", {
+    "class": "sub-title"
+  }, "Real time temperature today", -1
+  /* HOISTED */
+  );
+
+  var _hoisted_4 = {
+    "class": "total"
+  };
+  var _hoisted_5 = {
+    "class": "percent-text"
+  };
+  var _hoisted_6 = {
+    "class": "percent-text-1"
+  };
+  var _hoisted_7 = {
+    "class": "percent-text-2"
+  };
+
+  vue.popScopeId();
+
+  var render$5 = /*#__PURE__*/_withId$4(function (_ctx, _cache, $props, $setup, $data, $options) {
+    var _component_CountTo = vue.resolveComponent("CountTo");
+
+    return vue.openBlock(), vue.createBlock("div", _hoisted_1$4, [_hoisted_2$3, _hoisted_3$2, vue.createVNode("div", _hoisted_4, [vue.createVNode(_component_CountTo, {
+      startVal: 0,
+      endVal: 2017,
+      duration: 4000
+    }), vue.createCommentVNode(" 今日温度{{`${todaysTemperature}°`}} ")]), vue.createVNode("div", _hoisted_5, [vue.createVNode("span", _hoisted_6, " 昨日温度" + vue.toDisplayString("".concat($props.yesterdayTemperature, "\xB0")), 1
+    /* TEXT */
+    ), vue.createVNode("span", _hoisted_7, " 同比增长" + vue.toDisplayString("".concat($props.growthRate, "%")), 1
+    /* TEXT */
+    )])]);
+  });
+
+  var css_248z$5 = "@charset \"UTF-8\";\n/*总体布局*/\n.TemperatureIncrease[data-v-52530eaf] {\n  width: 100%;\n  height: 100%;\n  background: #424446;\n  box-shadow: 1 10px 10px rgba(0, 0, 0, 0.3);\n  padding: 20px 40px;\n  box-sizing: border-box;\n  /*大标题*/\n  /*小标题*/\n}\n.TemperatureIncrease[data-v-52530eaf] .title {\n  font-size: 32px;\n}\n.TemperatureIncrease[data-v-52530eaf] .sub-title {\n  font-size: 16px;\n  letter-spacing: 1px;\n  margin-top: 10px;\n}\n.TemperatureIncrease[data-v-52530eaf] .total {\n  font-family: DIN;\n  font-size: 68px;\n  font-weight: bolder;\n  letter-spacing: 2px;\n  padding: 10px 0;\n}\n.TemperatureIncrease[data-v-52530eaf] .percent-text {\n  font-size: 28px;\n  font-family: DIN;\n  letter-spacing: 2px;\n}";
+  styleInject(css_248z$5);
+
+  script$5.render = render$5;
+  script$5.__scopeId = "data-v-52530eaf";
+  script$5.__file = "src/components/TotalUser/TotalUser.vue";
+
+  function TotalUser (Vue) {
+    Vue.component(script$5.name, script$5);
+  }
+
+  var lastTime = 0;
+  var prefixes = 'webkit moz ms o'.split(' '); // 各浏览器前缀
+
+  var requestAnimationFrame;
+  var cancelAnimationFrame;
+  var isServer = typeof window === 'undefined';
+
+  if (isServer) {
+    requestAnimationFrame = function requestAnimationFrame() {
+      return;
+    };
+
+    cancelAnimationFrame = function cancelAnimationFrame() {
+      return;
+    };
+  } else {
+    requestAnimationFrame = window.requestAnimationFrame;
+    cancelAnimationFrame = window.cancelAnimationFrame;
+    var prefix; // 通过遍历各浏览器前缀，来得到requestAnimationFrame和cancelAnimationFrame在当前浏览器的实现形式
+
+    for (var i = 0; i < prefixes.length; i++) {
+      if (requestAnimationFrame && cancelAnimationFrame) {
+        break;
+      }
+
+      prefix = prefixes[i];
+      requestAnimationFrame = requestAnimationFrame || window[prefix + 'RequestAnimationFrame'];
+      cancelAnimationFrame = cancelAnimationFrame || window[prefix + 'CancelAnimationFrame'] || window[prefix + 'CancelRequestAnimationFrame'];
+    } // 如果当前浏览器不支持requestAnimationFrame和cancelAnimationFrame，则会退到setTimeout
+
+
+    if (!requestAnimationFrame || !cancelAnimationFrame) {
+      requestAnimationFrame = function requestAnimationFrame(callback) {
+        var currTime = new Date().getTime(); // 为了使setTimteout的尽可能的接近每秒60帧的效果
+
+        var timeToCall = Math.max(0, 16 - (currTime - lastTime));
+        var id = window.setTimeout(function () {
+          callback(currTime + timeToCall);
+        }, timeToCall);
+        lastTime = currTime + timeToCall;
+        return id;
+      };
+
+      cancelAnimationFrame = function cancelAnimationFrame(id) {
+        window.clearTimeout(id);
+      };
+    }
+  }
+
+  var script$6 = {
+    name: 'CountTo',
+    props: {
+      startVal: {
+        type: Number,
+        required: false,
+        "default": 0
+      },
+      endVal: {
+        type: Number,
+        required: false,
+        "default": 2017
+      },
+      duration: {
+        type: Number,
+        required: false,
+        "default": 3000
+      },
+      autoplay: {
+        type: Boolean,
+        required: false,
+        "default": true
+      },
+      decimals: {
+        type: Number,
+        required: false,
+        "default": 0,
+        validator: function validator(value) {
+          return value >= 0;
+        }
+      },
+      decimal: {
+        type: String,
+        required: false,
+        "default": '.'
+      },
+      separator: {
+        type: String,
+        required: false,
+        "default": ','
+      },
+      prefix: {
+        type: String,
+        required: false,
+        "default": ''
+      },
+      suffix: {
+        type: String,
+        required: false,
+        "default": ''
+      },
+      useEasing: {
+        type: Boolean,
+        required: false,
+        "default": true
+      },
+      easingFn: {
+        type: Function,
+        "default": function _default(t, b, c, d) {
+          return c * (-Math.pow(2, -10 * t / d) + 1) * 1024 / 1023 + b;
+        }
+      }
+    },
+    data: function data() {
+      return {
+        localStartVal: this.startVal,
+        displayValue: this.formatNumber(this.startVal),
+        printVal: null,
+        paused: false,
+        localDuration: this.duration,
+        startTime: null,
+        timestamp: null,
+        remaining: null,
+        rAF: null
+      };
+    },
+    computed: {
+      countDown: function countDown() {
+        return this.startVal > this.endVal;
+      }
+    },
+    watch: {
+      startVal: function startVal() {
+        if (this.autoplay) {
+          this.start();
+        }
+      },
+      endVal: function endVal() {
+        if (this.autoplay) {
+          this.start();
+        }
+      }
+    },
+    mounted: function mounted() {
+      if (this.autoplay) {
+        this.start();
+      }
+
+      this.$emit('mountedCallback');
+    },
+    methods: {
+      start: function start() {
+        this.localStartVal = this.startVal;
+        this.startTime = null;
+        this.localDuration = this.duration;
+        this.paused = false;
+        this.rAF = requestAnimationFrame(this.count);
+      },
+      pauseResume: function pauseResume() {
+        if (this.paused) {
+          this.resume();
+          this.paused = false;
+        } else {
+          this.pause();
+          this.paused = true;
+        }
+      },
+      pause: function pause() {
+        cancelAnimationFrame(this.rAF);
+      },
+      resume: function resume() {
+        this.startTime = null;
+        this.localDuration = +this.remaining;
+        this.localStartVal = +this.printVal;
+        requestAnimationFrame(this.count);
+      },
+      reset: function reset() {
+        this.startTime = null;
+        cancelAnimationFrame(this.rAF);
+        this.displayValue = this.formatNumber(this.startVal);
+      },
+      count: function count(timestamp) {
+        if (!this.startTime) this.startTime = timestamp;
+        this.timestamp = timestamp;
+        var progress = timestamp - this.startTime;
+        this.remaining = this.localDuration - progress;
+
+        if (this.useEasing) {
+          if (this.countDown) {
+            this.printVal = this.localStartVal - this.easingFn(progress, 0, this.localStartVal - this.endVal, this.localDuration);
+          } else {
+            this.printVal = this.easingFn(progress, this.localStartVal, this.endVal - this.localStartVal, this.localDuration);
+          }
+        } else {
+          if (this.countDown) {
+            this.printVal = this.localStartVal - (this.localStartVal - this.endVal) * (progress / this.localDuration);
+          } else {
+            this.printVal = this.localStartVal + (this.endVal - this.localStartVal) * (progress / this.localDuration);
+          }
+        }
+
+        if (this.countDown) {
+          this.printVal = this.printVal < this.endVal ? this.endVal : this.printVal;
+        } else {
+          this.printVal = this.printVal > this.endVal ? this.endVal : this.printVal;
+        }
+
+        this.displayValue = this.formatNumber(this.printVal);
+
+        if (progress < this.localDuration) {
+          this.rAF = requestAnimationFrame(this.count);
+        } else {
+          this.$emit('callback');
+        }
+      },
+      isNumber: function isNumber(val) {
+        return !isNaN(parseFloat(val));
+      },
+      formatNumber: function formatNumber(num) {
+        num = num.toFixed(this.decimals);
+        num += '';
+        var x = num.split('.');
+        var x1 = x[0];
+        var x2 = x.length > 1 ? this.decimal + x[1] : '';
+        var rgx = /(\d+)(\d{3})/;
+
+        if (this.separator && !this.isNumber(this.separator)) {
+          while (rgx.test(x1)) {
+            x1 = x1.replace(rgx, '$1' + this.separator + '$2');
+          }
+        }
+
+        return this.prefix + x1 + x2 + this.suffix;
+      }
+    },
+    destroyed: function destroyed() {
+      cancelAnimationFrame(this.rAF);
+    }
+  };
+
+  function render$6(_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createBlock("span", null, vue.toDisplayString($data.displayValue), 1
+    /* TEXT */
+    );
+  }
+
+  script$6.render = render$6;
+  script$6.__file = "src/components/VueCountTo/vue-countTo.vue";
+
+  function VueCountTo (Vue) {
+    Vue.component(script$6.name, script$6);
+  }
+
   function index (Vue) {
     Vue.use(Loading);
     Vue.use(flybox);
     Vue.use(container);
+    Vue.use(topHeader);
+    Vue.use(headerLogo);
+    Vue.use(TotalUser);
+    Vue.use(VueCountTo);
   }
 
   return index;
