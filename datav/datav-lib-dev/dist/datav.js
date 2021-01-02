@@ -1365,7 +1365,7 @@
       id: "container",
       ref: $setup.refName,
       style: _ctx.style
-    }, [$setup.ready ? vue.renderSlot(_ctx.$slots, "default", {
+    }, [_ctx.ready ? vue.renderSlot(_ctx.$slots, "default", {
       key: 0
     }) : vue.createCommentVNode("v-if", true)], 4
     /* STYLE */
@@ -1512,6 +1512,38 @@
         type: Number,
         "default": 0
       }
+    },
+    setup: function setup(props) {
+      var startVal = vue.ref(0); //今日温度起始值
+
+      var startPercent = vue.ref(0); //昨日此时温度起始值
+
+      var startPercent2 = vue.ref(0); //同比增长起始值
+      //watch方法在数据渲染之前起作用
+      //监听今日温度起始值是否改变,将上一次今日温度值赋值给今日温度起始值
+
+      vue.watch(function () {
+        return props.todaysTemperature;
+      }, function (nextValue, prevValue) {
+        startVal.value = prevValue;
+      }); //监听昨日此时温度起始值是否改变,将上一次昨日此时温度值赋值给昨日此时温度起始值
+
+      vue.watch(function () {
+        return props.growthRate;
+      }, function (nextValue, prevValue) {
+        startPercent2.value = prevValue;
+      }); //监听增长率起始值是否改变,将上一次增长率值赋值给增长率起始值
+
+      vue.watch(function () {
+        return props.yesterdayTemperature;
+      }, function (nextValue, prevValue) {
+        startPercent.value = prevValue;
+      });
+      return {
+        startVal: startVal,
+        startPercent: startPercent,
+        startPercent2: startPercent2
+      };
     }
   };
 
@@ -1544,8 +1576,20 @@
   var _hoisted_6 = {
     "class": "percent-text-1"
   };
-  var _hoisted_7 = {
+
+  var _hoisted_7 = /*#__PURE__*/vue.createTextVNode(" 昨日此时温度: ");
+
+  var _hoisted_8 = {
     "class": "percent-text-2"
+  };
+
+  var _hoisted_9 = /*#__PURE__*/vue.createTextVNode(" 同比增长: ");
+
+  var _hoisted_10 = {
+    "class": "percent"
+  };
+  var _hoisted_11 = {
+    "class": "percent-inner-wrapper"
   };
 
   vue.popScopeId();
@@ -1554,17 +1598,38 @@
     var _component_CountTo = vue.resolveComponent("CountTo");
 
     return vue.openBlock(), vue.createBlock("div", _hoisted_1$4, [_hoisted_2$3, _hoisted_3$2, vue.createVNode("div", _hoisted_4, [vue.createVNode(_component_CountTo, {
-      startVal: 0,
-      endVal: 2017,
-      duration: 4000
-    }), vue.createCommentVNode(" 今日温度{{`${todaysTemperature}°`}} ")]), vue.createVNode("div", _hoisted_5, [vue.createVNode("span", _hoisted_6, " 昨日温度" + vue.toDisplayString("".concat($props.yesterdayTemperature, "\xB0")), 1
-    /* TEXT */
-    ), vue.createVNode("span", _hoisted_7, " 同比增长" + vue.toDisplayString("".concat($props.growthRate, "%")), 1
-    /* TEXT */
-    )])]);
+      startVal: $setup.startVal,
+      endVal: $props.todaysTemperature,
+      duration: 1000,
+      decimals: 1
+    }, null, 8
+    /* PROPS */
+    , ["startVal", "endVal"])]), vue.createVNode("div", _hoisted_5, [vue.createVNode("span", _hoisted_6, [_hoisted_7, vue.createVNode(_component_CountTo, {
+      startVal: $setup.startPercent,
+      endVal: $props.yesterdayTemperature,
+      duration: 1000,
+      decimals: 1
+    }, null, 8
+    /* PROPS */
+    , ["startVal", "endVal"])]), vue.createVNode("span", _hoisted_8, [_hoisted_9, vue.createVNode(_component_CountTo, {
+      startVal: $setup.startPercent2,
+      endVal: $props.growthRate,
+      duration: 1000,
+      decimals: 1,
+      suffix: "%"
+    }, null, 8
+    /* PROPS */
+    , ["startVal", "endVal"])])]), vue.createCommentVNode(" 进度条 "), vue.createVNode("div", _hoisted_10, [vue.createVNode("div", _hoisted_11, [vue.createVNode("div", {
+      "class": "percent-inner",
+      style: {
+        width: "".concat($props.growthRate, "%")
+      }
+    }, null, 4
+    /* STYLE */
+    )])])]);
   });
 
-  var css_248z$5 = "@charset \"UTF-8\";\n/*总体布局*/\n.TemperatureIncrease[data-v-52530eaf] {\n  width: 100%;\n  height: 100%;\n  background: #424446;\n  box-shadow: 1 10px 10px rgba(0, 0, 0, 0.3);\n  padding: 20px 40px;\n  box-sizing: border-box;\n  /*大标题*/\n  /*小标题*/\n}\n.TemperatureIncrease[data-v-52530eaf] .title {\n  font-size: 32px;\n}\n.TemperatureIncrease[data-v-52530eaf] .sub-title {\n  font-size: 16px;\n  letter-spacing: 1px;\n  margin-top: 10px;\n}\n.TemperatureIncrease[data-v-52530eaf] .total {\n  font-family: DIN;\n  font-size: 68px;\n  font-weight: bolder;\n  letter-spacing: 2px;\n  padding: 10px 0;\n}\n.TemperatureIncrease[data-v-52530eaf] .percent-text {\n  font-size: 28px;\n  font-family: DIN;\n  letter-spacing: 2px;\n}";
+  var css_248z$5 = "@charset \"UTF-8\";\n/*总体布局*/\n.TemperatureIncrease[data-v-52530eaf] {\n  width: 100%;\n  height: 100%;\n  background: #424446;\n  box-shadow: 1 10px 10px rgba(0, 0, 0, 0.3);\n  padding: 20px 40px;\n  box-sizing: border-box;\n  /*大标题*/\n  /*小标题*/\n  /*进度条容器*/\n}\n.TemperatureIncrease[data-v-52530eaf] .title {\n  font-size: 32px;\n}\n.TemperatureIncrease[data-v-52530eaf] .sub-title {\n  font-size: 16px;\n  letter-spacing: 1px;\n  margin-top: 10px;\n}\n.TemperatureIncrease[data-v-52530eaf] .total {\n  font-family: DIN;\n  font-size: 68px;\n  font-weight: bolder;\n  letter-spacing: 2px;\n  padding: 10px 0;\n}\n.TemperatureIncrease[data-v-52530eaf] .percent-text {\n  font-size: 28px;\n  font-family: DIN;\n  letter-spacing: 2px;\n}\n.TemperatureIncrease[data-v-52530eaf] .percent {\n  widows: 100%;\n  height: 20px;\n  box-sizing: border-box;\n  border: 1px solid #fff;\n  margin-top: 20px;\n}\n.TemperatureIncrease[data-v-52530eaf] .percent .percent-inner-wrapper {\n  height: 100%;\n  padding: 2px;\n  box-sizing: border-box;\n  overflow: hidden;\n  /*进度条*/\n}\n.TemperatureIncrease[data-v-52530eaf] .percent .percent-inner-wrapper .percent-inner {\n  width: 10%;\n  height: 100%;\n  background: #969696;\n  transition: width 1s linear;\n  /*增加一个过度动画 宽度线性变化*/\n}";
   styleInject(css_248z$5);
 
   script$5.render = render$5;
