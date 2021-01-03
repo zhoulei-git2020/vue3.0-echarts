@@ -1,12 +1,21 @@
 import {ref, onMounted,onUnmounted} from 'vue'
 import { mapActions } from 'vuex'
 
+//平均年龄组件
 const ageMockData = [
     {"startValue":0,"value":131107,"axis":"0-20","color":"rgb(116,166,49)"},
     {"startValue":0,"value":330831,"axis":"20-30","color":"rgb(190,245,99)"},
     {"startValue":0,"value":551238,"axis":"30-50","color":"rgb(202,252,137)"},
     {"startValue":0,"value":31088,"axis":">50","color":"rgb(251,253,142)"}
 ]
+
+//登录设备组件
+const deviceMockData = {"totalDevices":1070909,
+                            "devices":[
+                                {"key":"Android","value":423676},
+                                {"key":"iOS","value":373581},
+                                {"key":"PC","value":273652}
+                         ]}
 
 //随机数方法
 function random(val){
@@ -22,6 +31,7 @@ export default function(){
     const ageData = ref(ageMockData)
     const averageAge = ref(0)
     let task
+    const deviceData = ref(deviceMockData)
 
     onMounted(()=>{
       task =  setInterval(()=>{
@@ -49,7 +59,8 @@ export default function(){
         YesterdayTemperature,
         GrowthRate,
         ageData,
-        averageAge
+        averageAge,
+        deviceData
     }
 }
 

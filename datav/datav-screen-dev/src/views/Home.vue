@@ -36,11 +36,13 @@
               />
             </div>
             <div class="left3">
-             <VueEcharts
-               :options="options"
-            />    
+              <TotalDevice
+                :data="deviceData"
+              />
             </div>
-            <div class="left4">666</div>
+            <div class="left4">
+             
+            </div>
             <div class="left5">777</div>
             <div class="left6">888</div>
         </div>
@@ -71,7 +73,6 @@
 <script>
 import {ref,onMounted} from 'vue'
 import useTemperatureData from '../hooks/useScreenData'
-import 'echarts/lib/chart/bar' 
 export default {
   name: 'Home',
   setup(){
@@ -84,17 +85,6 @@ export default {
     return{
       loading,
       ...useTemperatureData(),
-      options:{
-        xAxis:{
-          data:['a','b','c','d']
-          },
-        yAxis:{},
-        series:[{
-          name:'sales',
-          type:'bar',
-          data:[10,15,20,43]
-        }]  
-      }
     }
   }
 }

@@ -42,6 +42,7 @@
 
 <script>
   import { ref,watch,onMounted } from 'vue'
+  import 'echarts/lib/chart/bar' 
 
   // const color = ['rgb(116,166,49)', 'rgb(190,245,99)', 'rgb(202,252,137)', 'rgb(251,253,142)']
 
@@ -55,7 +56,7 @@
       const startAge = ref(0)
       const options = ref(null) 
       const updateChart = () =>{
-        const newData = []
+        const newData = ['指标']
         const color = []
         let max = 0
         const axis = ['指标']
@@ -68,7 +69,17 @@
           axis.push(item.axis)
         });
         options.value = {
-          color,
+         tooltip:{
+           textStyle:{
+             fontSize:28,
+           }
+         },
+         color,
+          grid:{
+            left:40,
+            right:40,
+            top:0,
+          },
           dataset:{
             source:[
               axis,
@@ -77,12 +88,44 @@
           },
           xAxis:{
             type:'value',
-            max
+            max,
+            splitLine:{show:false},
+            axisTick:{show:false},
+            axisLabel:{
+              color:'rgb(98,105,113)',
+              fontSize:18
+            },
+            axisLine:{
+              lineStyle:{
+                color:'rgb(50,51,53)',
+                width:3
+                    
+              }
+            }
           },
           yAxis:{
-            type:'category'
-            
-          }
+            type:'category',
+            show:false
+          },
+          series:[
+            {
+              type:'bar',
+              stack:'total',
+              barWidth:15,
+            },
+            {
+              type:'bar',
+              stack:'total'
+            },
+            {
+              type:'bar',
+              stack:'total'
+            },
+            {
+              type:'bar',
+              stack:'total'
+            }
+          ]
         }
       }
       watch(()=>ctx.avgAge, (nextValue,prevValue)=>{
