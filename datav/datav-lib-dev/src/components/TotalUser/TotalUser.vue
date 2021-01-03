@@ -8,6 +8,7 @@
             :endVal='todaysTemperature' 
             :duration=1000 
             :decimals="1"
+            suffix='°'
             />
        </div>
        <div class="percent-text">
@@ -18,6 +19,7 @@
            :endVal='yesterdayTemperature'
            :duration=1000 
            :decimals="1"
+           suffix='°'
            />
            </span>
            <span class="percent-text-2">

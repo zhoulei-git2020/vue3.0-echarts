@@ -5,7 +5,7 @@
           数据大屏加载中...
         </div>
       </Loading>
-      <container id="container" :options="{width:3840,height:2160}" v-else>
+      <container id="container" :option="{width:3840,height:2160}" v-else>
       
       <!-- 头部 -->
       <div class="header">
@@ -29,8 +29,17 @@
                 :growth-rate = "GrowthRate"
               />
             </div>
-            <div class="left2">444</div>
-            <div class="left3">555</div>
+            <div class="left2">
+              <averageAge
+                :avgAge = averageAge
+                :data = ageData
+              />
+            </div>
+            <div class="left3">
+             <VueEcharts
+               :options="options"
+            />    
+            </div>
             <div class="left4">666</div>
             <div class="left5">777</div>
             <div class="left6">888</div>
@@ -62,6 +71,7 @@
 <script>
 import {ref,onMounted} from 'vue'
 import useTemperatureData from '../hooks/useScreenData'
+import 'echarts/lib/chart/bar' 
 export default {
   name: 'Home',
   setup(){
@@ -73,7 +83,18 @@ export default {
     })
     return{
       loading,
-      ...useTemperatureData()
+      ...useTemperatureData(),
+      options:{
+        xAxis:{
+          data:['a','b','c','d']
+          },
+        yAxis:{},
+        series:[{
+          name:'sales',
+          type:'bar',
+          data:[10,15,20,43]
+        }]  
+      }
     }
   }
 }
@@ -140,15 +161,14 @@ export default {
        
          .left1{
           height: 300px;
-         
         }
          .left2{
-          height: 320px;
-          background: darkgreen;
+          height: 320px;  
+
         }
          .left3{
           height: 280px;
-          background: darkseagreen;
+         
         }
          .left4{
           height: 230px;

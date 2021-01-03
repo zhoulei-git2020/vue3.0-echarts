@@ -53,7 +53,8 @@ module.exports= {
     
   ],
   external:[
-    'vue' //将vue模块进行外部引用而不是将模块代码打包进文件
+    'vue', //将vue模块进行外部引用而不是将模块代码打包进文件
+    'echarts'
   ]
 
   

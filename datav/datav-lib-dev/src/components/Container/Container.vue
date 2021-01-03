@@ -13,7 +13,7 @@ export default {
     name:'container',
     props:{
         //用于接收数据大屏的宽高
-        options:Object 
+        option:Object 
     }, 
     setup(ctx){
         const refName = 'Container'
@@ -30,10 +30,10 @@ export default {
             return new Promise((resolve) => {
                 nextTick( () => {
                     dom =  context.$refs[refName]
-                    if(ctx.options && ctx.options.width && ctx.options.height){ //获取大屏的真实尺寸
+                    if(ctx.option && ctx.option.width && ctx.option.height){ //获取大屏的真实尺寸
                         //将传入的宽高记录下来
-                        width.value = ctx.options.width 
-                        height.value = ctx.options.height
+                        width.value = ctx.option.width 
+                        height.value = ctx.option.height
                     }else{
                         //如果用户没有传入宽高就从dom去拿
                         width.value = dom.clientWidth

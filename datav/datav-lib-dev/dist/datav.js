@@ -1,12 +1,13 @@
 (function (global, factory) {
-  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('vue'), require('crypto')) :
-  typeof define === 'function' && define.amd ? define(['vue', 'crypto'], factory) :
-  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.Datav = factory(global.Vue, global.crypto));
-}(this, (function (vue, crypto) { 'use strict';
+  typeof exports === 'object' && typeof module !== 'undefined' ? module.exports = factory(require('vue'), require('crypto'), require('echarts')) :
+  typeof define === 'function' && define.amd ? define(['vue', 'crypto', 'echarts'], factory) :
+  (global = typeof globalThis !== 'undefined' ? globalThis : global || self, global.Datav = factory(global.Vue, global.crypto, global.Echarts$1));
+}(this, (function (vue, crypto, Echarts$1) { 'use strict';
 
   function _interopDefaultLegacy (e) { return e && typeof e === 'object' && 'default' in e ? e : { 'default': e }; }
 
   var crypto__default = /*#__PURE__*/_interopDefaultLegacy(crypto);
+  var Echarts__default = /*#__PURE__*/_interopDefaultLegacy(Echarts$1);
 
   var script = {
     name: 'Loading',
@@ -1202,7 +1203,7 @@
     name: 'container',
     props: {
       //用于接收数据大屏的宽高
-      options: Object
+      option: Object
     },
     setup: function setup(ctx) {
       var refName = 'Container';
@@ -1220,11 +1221,11 @@
           vue.nextTick(function () {
             dom = context.$refs[refName];
 
-            if (ctx.options && ctx.options.width && ctx.options.height) {
+            if (ctx.option && ctx.option.width && ctx.option.height) {
               //获取大屏的真实尺寸
               //将传入的宽高记录下来
-              width.value = ctx.options.width;
-              height.value = ctx.options.height;
+              width.value = ctx.option.width;
+              height.value = ctx.option.height;
             } else {
               //如果用户没有传入宽高就从dom去拿
               width.value = dom.clientWidth;
@@ -1365,7 +1366,7 @@
       id: "container",
       ref: $setup.refName,
       style: _ctx.style
-    }, [_ctx.ready ? vue.renderSlot(_ctx.$slots, "default", {
+    }, [$setup.ready ? vue.renderSlot(_ctx.$slots, "default", {
       key: 0
     }) : vue.createCommentVNode("v-if", true)], 4
     /* STYLE */
@@ -1601,14 +1602,16 @@
       startVal: $setup.startVal,
       endVal: $props.todaysTemperature,
       duration: 1000,
-      decimals: 1
+      decimals: 1,
+      suffix: "°"
     }, null, 8
     /* PROPS */
     , ["startVal", "endVal"])]), vue.createVNode("div", _hoisted_5, [vue.createVNode("span", _hoisted_6, [_hoisted_7, vue.createVNode(_component_CountTo, {
       startVal: $setup.startPercent,
       endVal: $props.yesterdayTemperature,
       duration: 1000,
-      decimals: 1
+      decimals: 1,
+      suffix: "°"
     }, null, 8
     /* PROPS */
     , ["startVal", "endVal"])]), vue.createVNode("span", _hoisted_8, [_hoisted_9, vue.createVNode(_component_CountTo, {
@@ -1892,6 +1895,223 @@
     Vue.component(script$6.name, script$6);
   }
 
+  var script$7 = {
+    name: 'averageAge',
+    props: {
+      data: Array,
+      avgAge: Number
+    },
+    setup: function setup(ctx) {
+      var startAge = vue.ref(0);
+      var options = vue.ref(null);
+
+      var updateChart = function updateChart() {
+        var newData = [];
+        var color = [];
+        var max = 0;
+        var axis = ['指标'];
+        console.log(ctx.data);
+        ctx.data.forEach(function (item) {
+          newData.push(item.value);
+          max += +item.value;
+          color.push(item.color);
+          axis.push(item.axis);
+        });
+        options.value = {
+          color: color,
+          dataset: {
+            source: [axis, newData]
+          },
+          xAxis: {
+            type: 'value',
+            max: max
+          },
+          yAxis: {
+            type: 'category'
+          }
+        };
+      };
+
+      vue.watch(function () {
+        return ctx.avgAge;
+      }, function (nextValue, prevValue) {
+        startAge.value = prevValue;
+      });
+      vue.watch(function () {
+        return ctx.data;
+      }, function () {
+        updateChart();
+      });
+      vue.onMounted(function () {
+      });
+      return {
+        startAge: startAge,
+        options: options
+      };
+    }
+  };
+
+  var _withId$5 = /*#__PURE__*/vue.withScopeId("data-v-53a210cf");
+
+  vue.pushScopeId("data-v-53a210cf");
+
+  var _hoisted_1$5 = {
+    "class": "average-age"
+  };
+  var _hoisted_2$4 = {
+    "class": "title-wrapper"
+  };
+
+  var _hoisted_3$3 = /*#__PURE__*/vue.createVNode("div", {
+    "class": "average-age-left"
+  }, [/*#__PURE__*/vue.createVNode("div", {
+    "class": "title"
+  }, "慕课外卖用户年龄分布&平均年龄"), /*#__PURE__*/vue.createVNode("div", {
+    "class": "sub-title"
+  }, "Distribution of Age")], -1
+  /* HOISTED */
+  );
+
+  var _hoisted_4$1 = {
+    "class": "average-age-right"
+  };
+  var _hoisted_5$1 = {
+    "class": "age"
+  };
+
+  var _hoisted_6$1 = /*#__PURE__*/vue.createVNode("span", {
+    "class": "age-unit"
+  }, "岁", -1
+  /* HOISTED */
+  );
+
+  var _hoisted_7$1 = {
+    id: "average-age-chart"
+  };
+  var _hoisted_8$1 = {
+    "class": "average-data-wrapper"
+  };
+  var _hoisted_9$1 = {
+    "class": "average-data-value"
+  };
+  var _hoisted_10$1 = {
+    "class": "average-data-axis"
+  };
+  var _hoisted_11$1 = {
+    "class": "text"
+  };
+
+  vue.popScopeId();
+
+  var render$7 = /*#__PURE__*/_withId$5(function (_ctx, _cache, $props, $setup, $data, $options) {
+    var _component_CountTo = vue.resolveComponent("CountTo");
+
+    var _component_VueEcharts = vue.resolveComponent("VueEcharts");
+
+    return vue.openBlock(), vue.createBlock("div", _hoisted_1$5, [vue.createVNode("div", _hoisted_2$4, [_hoisted_3$3, vue.createVNode("div", _hoisted_4$1, [vue.createVNode("div", _hoisted_5$1, [vue.createVNode(_component_CountTo, {
+      "start-val": $setup.startAge,
+      "end-val": $props.avgAge,
+      duration: 1000,
+      decimals: 2
+    }, null, 8
+    /* PROPS */
+    , ["start-val", "end-val"]), _hoisted_6$1])])]), vue.createVNode("div", _hoisted_7$1, [vue.createVNode(_component_VueEcharts, {
+      options: $setup.options
+    }, null, 8
+    /* PROPS */
+    , ["options"])]), vue.createVNode("div", _hoisted_8$1, [(vue.openBlock(true), vue.createBlock(vue.Fragment, null, vue.renderList($props.data, function (item, index) {
+      return vue.openBlock(), vue.createBlock("div", {
+        "class": "average-data",
+        key: index
+      }, [vue.createVNode("div", _hoisted_9$1, [vue.createVNode(_component_CountTo, {
+        "start-val": item.startValue,
+        "end-val": item.value,
+        duration: 1000
+      }, null, 8
+      /* PROPS */
+      , ["start-val", "end-val"])]), vue.createVNode("div", _hoisted_10$1, [vue.createVNode("div", {
+        "class": "point",
+        style: {
+          background: item.color
+        }
+      }, null, 4
+      /* STYLE */
+      ), vue.createVNode("div", _hoisted_11$1, vue.toDisplayString(item.axis), 1
+      /* TEXT */
+      )])]);
+    }), 128
+    /* KEYED_FRAGMENT */
+    ))])]);
+  });
+
+  var css_248z$6 = ".average-age[data-v-53a210cf] {\n  width: 100%;\n  height: 100%;\n  background: #2b2c2e;\n  padding: 20px 40px;\n  box-sizing: border-box;\n}\n.average-age[data-v-53a210cf] .title-wrapper {\n  display: flex;\n  align-items: center;\n}\n.average-age[data-v-53a210cf] .title-wrapper .average-age-left .title {\n  font-size: 32px;\n}\n.average-age[data-v-53a210cf] .title-wrapper .average-age-left .sub-title {\n  font-size: 16px;\n  margin-top: 10px;\n}\n.average-age[data-v-53a210cf] .title-wrapper .average-age-right {\n  flex: 1;\n  margin-left: 40px;\n  font-weight: bold;\n}\n.average-age[data-v-53a210cf] .title-wrapper .average-age-right .age {\n  font-size: 68px;\n  font-family: DIN;\n}\n.average-age[data-v-53a210cf] .title-wrapper .average-age-right .age .age-unit {\n  font-size: 20px;\n}\n.average-age[data-v-53a210cf] #average-age-chart {\n  height: 120px;\n}\n.average-age[data-v-53a210cf] .average-data-wrapper {\n  display: flex;\n}\n.average-age[data-v-53a210cf] .average-data-wrapper .average-data {\n  flex: 1;\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n  justify-content: center;\n  font-size: 30px;\n  font-weight: bolder;\n}\n.average-age[data-v-53a210cf] .average-data-wrapper .average-data .average-data-value {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n}\n.average-age[data-v-53a210cf] .average-data-wrapper .average-data .average-data-axis {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n  margin-top: 5px;\n}\n.average-age[data-v-53a210cf] .average-data-wrapper .average-data .average-data-axis .point {\n  width: 10px;\n  height: 10px;\n  border-radius: 50%;\n}\n.average-age[data-v-53a210cf] .average-data-wrapper .average-data .average-data-axis .text {\n  margin-left: 10px;\n  font-size: 16px;\n}";
+  styleInject(css_248z$6);
+
+  script$7.render = render$7;
+  script$7.__scopeId = "data-v-53a210cf";
+  script$7.__file = "src/components/AverageAge/AverageAge.vue";
+
+  function AverageAge (Vue) {
+    Vue.component(script$7.name, script$7);
+  }
+
+  var script$8 = {
+    name: 'VueEcharts',
+    props: {
+      options: Object,
+      theme: [String, Object]
+    },
+    setup: function setup(ctx) {
+      var dom;
+      var chart;
+
+      var initChart = function initChart() {
+        if (!chart) {
+          dom = document.getElementsByClassName('echarts')[0];
+          chart = Echarts__default['default'].init(dom, ctx.theme);
+        }
+
+        if (ctx.options) {
+          chart.setOption(ctx.options);
+        }
+      };
+
+      vue.onMounted(function () {
+        initChart();
+      });
+      vue.watch(function () {
+        return ctx.options;
+      }, function () {
+        initChart();
+      });
+    }
+  };
+
+  var _withId$6 = /*#__PURE__*/vue.withScopeId("data-v-1f52796f");
+
+  vue.pushScopeId("data-v-1f52796f");
+
+  var _hoisted_1$6 = {
+    "class": "echarts"
+  };
+
+  vue.popScopeId();
+
+  var render$8 = /*#__PURE__*/_withId$6(function (_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createBlock("div", _hoisted_1$6);
+  });
+
+  var css_248z$7 = ".echarts[data-v-1f52796f] {\n  width: 100%;\n  height: 100%;\n}";
+  styleInject(css_248z$7);
+
+  script$8.render = render$8;
+  script$8.__scopeId = "data-v-1f52796f";
+  script$8.__file = "src/components/VueEcharts/vueEcharts.vue";
+
+  function Echarts (Vue) {
+    Vue.component(script$8.name, script$8);
+  }
+
   function index (Vue) {
     Vue.use(Loading);
     Vue.use(flybox);
@@ -1900,6 +2120,8 @@
     Vue.use(headerLogo);
     Vue.use(TotalUser);
     Vue.use(VueCountTo);
+    Vue.use(AverageAge);
+    Vue.use(Echarts);
   }
 
   return index;

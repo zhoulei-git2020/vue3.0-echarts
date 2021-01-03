@@ -5,6 +5,8 @@ import topHeader from './components/top-header/index'
 import headerLogo from './components/top-header/header-logo/index'
 import TotalUser from './components/TotalUser/index'
 import VueCountTo from './components/VueCountTo/index'
+import AverageAge from './components/AverageAge/index'
+import Echarts from './components/VueEcharts/index';
 export default function(Vue){
     Vue.use(Loading)
     Vue.use(flybox)
@@ -13,5 +15,7 @@ export default function(Vue){
     Vue.use(headerLogo)
     Vue.use(TotalUser)
     Vue.use(VueCountTo)
+    Vue.use(AverageAge)
+    Vue.use(Echarts)
     
 }
