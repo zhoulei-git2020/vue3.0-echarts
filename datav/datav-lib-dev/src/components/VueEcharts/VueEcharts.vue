@@ -1,5 +1,5 @@
 <template>
-    <div class="echarts">
+    <div :class="[className,'echarts']">
 
     </div>
 </template>
@@ -7,6 +7,7 @@
 <script>
 import {watch,onMounted} from 'vue'
 import Echarts from 'echarts'
+import {v4 as uuidv4} from 'uuid'
 export default {
     name:'VueEcharts',
     props:{
@@ -17,9 +18,11 @@ export default {
     setup(ctx){
         let dom
         let chart
+        let className = `echarts${uuidv4()}`
         const initChart = () =>{
             if(!chart){
-                dom = document.getElementsByClassName('echarts')[0]
+                dom = document.getElementsByClassName(className)[0]
+                
                 chart = Echarts.init(dom,ctx.theme)
             } 
             if(ctx.options){
@@ -32,10 +35,11 @@ export default {
         })
         watch(()=>ctx.options,()=>{
             initChart()
-            
-         }
+         })
 
-        )
+         return{
+           className  
+         }
     }
 }
 </script>

@@ -8,6 +8,8 @@ import VueCountTo from './components/VueCountTo/index'
 import AverageAge from './components/AverageAge/index'
 import Echarts from './components/VueEcharts/index';
 import TotalDevice from './components/TotalDevice/index'
+import TotalGender from './components/TotalGender/index'
+import TotalRider from './components/TotalRider/index';
 export default function(Vue){
     Vue.use(Loading)
     Vue.use(flybox)
@@ -19,5 +21,7 @@ export default function(Vue){
     Vue.use(AverageAge)
     Vue.use(Echarts)
     Vue.use(TotalDevice)
+    Vue.use(TotalGender)
+    Vue.use(TotalRider)
     
 }

@@ -1,12 +1,16 @@
 <template>
   <div class="total-device">
     <div class="total-device-left">
-      <div id="total-device-chart" />
+      <div id="total-device-chart"> 
+        <VueEcharts
+          :options="options"
+        />
+      </div>
     </div>
     <div class="total-device-right">
       <div class="title-wrapper">
         <div class="total-device-right-left">
-          <div class="title">慕课外卖登录设备</div>
+          <div class="title">登录设备</div>
           <div class="sub-title">Distribution of Internet devices</div>
         </div>
         <div class="total-device-right-right">
@@ -40,7 +44,6 @@
 </template>
 
 <script>
-  import Echarts from 'echarts'
   import { ref, watch, onMounted } from 'vue'
 
   const color = ['rgb(176,207,120)', 'rgb(157,195,91)', 'rgb(131,167,72)']
@@ -51,38 +54,32 @@
       data: Object
     },
     setup(props) {
-      let chart
+      console.log(props);
       const refData = ref([])
       const num = ref(0)
       const startNum = ref(0)
+      const options = ref({})
       const updateChart = () => {
-        function createOption() {
-          return {
-            series: [{
-              name: '访问来源',
-              type: 'pie',
-              radius: '70%',
-              selectedMode: 'multiple',
-              selectedOffset: 10,
-              clockwise: true,
-              center: ['50%', '50%'],
-              color,
-              emphasis: {
-                itemStyle: {
-                  color: 'rgb(140,251,182)'
-                }
-              },
-              data: refData.value,
-              roseType: 'radius',
-              label: { show: false }
-            }]
-          }
+        options.value = {
+          series:[{
+            name:'设备总数',
+            type:'pie',
+            data:refData.value,
+            roseType:'radius',//南丁格尔图
+            label:{ show:false },//外圆指示文字
+            emphasis:{ //鼠标移动上去的颜色变化
+              itemStyle:{
+                color:'rgb(140,251,182)'
+              }
+            },
+            radius:'70%',//半径大小
+            clockwise:true,  //true 数据从大到小顺时针排列 false 数据从大到小逆时针排列
+            color,//颜色
+            selectedMode:'multiple', //可以一次点击多个区域
+            selectedOffset:15,         //点击之后扇形图偏移的距离
+            tooltip:{}
+          }]
         }
-
-        if (!chart) {
-          chart = Echarts.init(document.getElementById('total-device-chart'))
-        }
-        chart.setOption(createOption())
       }
       const update = (newData) => {
         if (refData.value.length > 0) {
@@ -113,7 +110,8 @@
       return {
         refData,
         num,
-        startNum
+        startNum,
+        options
       }
     }
   }

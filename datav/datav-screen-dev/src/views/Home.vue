@@ -31,19 +31,25 @@
             </div>
             <div class="left2">
               <averageAge
-                :avgAge = averageAge
-                :data = ageData
+                :avgAge = "averageAge"
+                :data = "ageData"
               />
             </div>
             <div class="left3">
               <TotalDevice
-                :data="deviceData"
+                :data= "deviceData"
               />
             </div>
             <div class="left4">
-             
+              <TotalGender
+                :data= "genderData"
+              />
             </div>
-            <div class="left5">777</div>
+            <div class="left5">
+              <TotalRider
+                :data= "riderData"
+              />
+            </div>
             <div class="left6">888</div>
         </div>
 
@@ -162,15 +168,15 @@ export default {
         }
          .left4{
           height: 230px;
-          background: deepskyblue;
+         
         }
          .left5{
           height: 360px;
-          background: lightgoldenrodyellow;
+         
         }
         .left6{
           height: 360px;
-          background: lightslategrey;
+          
         }
       }
 

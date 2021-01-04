@@ -44857,7 +44857,6 @@
         var color = [];
         var max = 0;
         var axis = ['指标'];
-        console.log(ctx.data);
         ctx.data.forEach(function (item) {
           newData.push(item.value);
           max += +item.value;
@@ -44954,7 +44953,7 @@
     "class": "average-age-left"
   }, [/*#__PURE__*/vue.createVNode("div", {
     "class": "title"
-  }, "慕课外卖用户年龄分布&平均年龄"), /*#__PURE__*/vue.createVNode("div", {
+  }, "用户年龄分布&平均年龄"), /*#__PURE__*/vue.createVNode("div", {
     "class": "sub-title"
   }, "Distribution of Age")], -1
   /* HOISTED */
@@ -45052,10 +45051,11 @@
     setup: function setup(ctx) {
       var dom;
       var chart;
+      var className = "echarts".concat(v4());
 
       var initChart = function initChart() {
         if (!chart) {
-          dom = document.getElementsByClassName('echarts')[0];
+          dom = document.getElementsByClassName(className)[0];
           chart = Echarts__default['default'].init(dom, ctx.theme);
         }
 
@@ -45072,21 +45072,20 @@
       }, function () {
         initChart();
       });
+      return {
+        className: className
+      };
     }
   };
 
   var _withId$6 = /*#__PURE__*/vue.withScopeId("data-v-1f52796f");
 
-  vue.pushScopeId("data-v-1f52796f");
-
-  var _hoisted_1$6 = {
-    "class": "echarts"
-  };
-
-  vue.popScopeId();
-
   var render$8 = /*#__PURE__*/_withId$6(function (_ctx, _cache, $props, $setup, $data, $options) {
-    return vue.openBlock(), vue.createBlock("div", _hoisted_1$6);
+    return vue.openBlock(), vue.createBlock("div", {
+      "class": [$setup.className, 'echarts']
+    }, null, 2
+    /* CLASS */
+    );
   });
 
   var css_248z$7 = ".echarts[data-v-1f52796f] {\n  width: 100%;\n  height: 100%;\n}";
@@ -45107,42 +45106,43 @@
       data: Object
     },
     setup: function setup(props) {
-      var chart;
+      console.log(props);
       var refData = vue.ref([]);
       var num = vue.ref(0);
       var startNum = vue.ref(0);
+      var options = vue.ref({});
 
       var updateChart = function updateChart() {
-        function createOption() {
-          return {
-            series: [{
-              name: '访问来源',
-              type: 'pie',
-              radius: '70%',
-              selectedMode: 'multiple',
-              selectedOffset: 10,
-              clockwise: true,
-              center: ['50%', '50%'],
-              color: color$2,
-              emphasis: {
-                itemStyle: {
-                  color: 'rgb(140,251,182)'
-                }
-              },
-              data: refData.value,
-              roseType: 'radius',
-              label: {
-                show: false
+        options.value = {
+          series: [{
+            name: '设备总数',
+            type: 'pie',
+            data: refData.value,
+            roseType: 'radius',
+            //南丁格尔图
+            label: {
+              show: false
+            },
+            //外圆指示文字
+            emphasis: {
+              //鼠标移动上去的颜色变化
+              itemStyle: {
+                color: 'rgb(140,251,182)'
               }
-            }]
-          };
-        }
-
-        if (!chart) {
-          chart = Echarts__default['default'].init(document.getElementById('total-device-chart'));
-        }
-
-        chart.setOption(createOption());
+            },
+            radius: '70%',
+            //半径大小
+            clockwise: true,
+            //true 数据从大到小顺时针排列 false 数据从大到小逆时针排列
+            color: color$2,
+            //颜色
+            selectedMode: 'multiple',
+            //可以一次点击多个区域
+            selectedOffset: 15,
+            //点击之后扇形图偏移的距离
+            tooltip: {}
+          }]
+        };
       };
 
       var update = function update(newData) {
@@ -45182,7 +45182,8 @@
       return {
         refData: refData,
         num: num,
-        startNum: startNum
+        startNum: startNum,
+        options: options
       };
     }
   };
@@ -45191,90 +45192,93 @@
 
   vue.pushScopeId("data-v-6ca3fa45");
 
-  var _hoisted_1$7 = {
+  var _hoisted_1$6 = {
     "class": "total-device"
   };
-
-  var _hoisted_2$5 = /*#__PURE__*/vue.createVNode("div", {
+  var _hoisted_2$5 = {
     "class": "total-device-left"
-  }, [/*#__PURE__*/vue.createVNode("div", {
-    id: "total-device-chart"
-  })], -1
-  /* HOISTED */
-  );
-
+  };
   var _hoisted_3$4 = {
-    "class": "total-device-right"
+    id: "total-device-chart"
   };
   var _hoisted_4$2 = {
+    "class": "total-device-right"
+  };
+  var _hoisted_5$2 = {
     "class": "title-wrapper"
   };
 
-  var _hoisted_5$2 = /*#__PURE__*/vue.createVNode("div", {
+  var _hoisted_6$2 = /*#__PURE__*/vue.createVNode("div", {
     "class": "total-device-right-left"
   }, [/*#__PURE__*/vue.createVNode("div", {
     "class": "title"
-  }, "慕课外卖登录设备"), /*#__PURE__*/vue.createVNode("div", {
+  }, "登录设备"), /*#__PURE__*/vue.createVNode("div", {
     "class": "sub-title"
   }, "Distribution of Internet devices")], -1
   /* HOISTED */
   );
 
-  var _hoisted_6$2 = {
+  var _hoisted_7$2 = {
     "class": "total-device-right-right"
   };
-  var _hoisted_7$2 = {
+  var _hoisted_8$2 = {
     "class": "age"
   };
 
-  var _hoisted_8$2 = /*#__PURE__*/vue.createVNode("span", {
+  var _hoisted_9$2 = /*#__PURE__*/vue.createVNode("span", {
     "class": "age-unit"
   }, "台", -1
   /* HOISTED */
   );
 
-  var _hoisted_9$2 = {
+  var _hoisted_10$2 = {
     "class": "average-data-wrapper"
   };
-  var _hoisted_10$2 = {
+  var _hoisted_11$2 = {
     "class": "average-data-value"
   };
-  var _hoisted_11$2 = {
+  var _hoisted_12 = {
     "class": "average-data-axis"
   };
-  var _hoisted_12 = {
+  var _hoisted_13 = {
     "class": "text"
   };
 
   vue.popScopeId();
 
   var render$9 = /*#__PURE__*/_withId$7(function (_ctx, _cache, $props, $setup, $data, $options) {
+    var _component_VueEcharts = vue.resolveComponent("VueEcharts");
+
     var _component_count_to = vue.resolveComponent("count-to");
 
-    return vue.openBlock(), vue.createBlock("div", _hoisted_1$7, [_hoisted_2$5, vue.createVNode("div", _hoisted_3$4, [vue.createVNode("div", _hoisted_4$2, [_hoisted_5$2, vue.createVNode("div", _hoisted_6$2, [vue.createVNode("div", _hoisted_7$2, [vue.createVNode(_component_count_to, {
+    return vue.openBlock(), vue.createBlock("div", _hoisted_1$6, [vue.createVNode("div", _hoisted_2$5, [vue.createVNode("div", _hoisted_3$4, [vue.createVNode(_component_VueEcharts, {
+      options: $setup.options
+    }, null, 8
+    /* PROPS */
+    , ["options"])])]), vue.createVNode("div", _hoisted_4$2, [vue.createVNode("div", _hoisted_5$2, [_hoisted_6$2, vue.createVNode("div", _hoisted_7$2, [vue.createVNode("div", _hoisted_8$2, [vue.createVNode(_component_count_to, {
       startVal: $setup.startNum,
       endVal: $setup.num,
       duration: 1000
     }, null, 8
     /* PROPS */
-    , ["startVal", "endVal"]), _hoisted_8$2])])]), vue.createVNode("div", _hoisted_9$2, [(vue.openBlock(true), vue.createBlock(vue.Fragment, null, vue.renderList($setup.refData, function (item, index) {
+    , ["startVal", "endVal"]), _hoisted_9$2])])]), vue.createVNode("div", _hoisted_10$2, [(vue.openBlock(true), vue.createBlock(vue.Fragment, null, vue.renderList($setup.refData, function (item, index) {
       return vue.openBlock(), vue.createBlock("div", {
         "class": "average-data",
         key: index
-      }, [vue.createVNode("div", _hoisted_10$2, [vue.createVNode(_component_count_to, {
+      }, [vue.createVNode("div", _hoisted_11$2, [vue.createVNode(_component_count_to, {
         startVal: item.startValue,
         endVal: item.value,
         duration: 1000
       }, null, 8
       /* PROPS */
-      , ["startVal", "endVal"])]), vue.createVNode("div", _hoisted_11$2, [vue.createVNode("div", {
+      , ["startVal", "endVal"])]), vue.createVNode("div", _hoisted_12, [vue.createVNode("div", {
         "class": "point",
         style: {
           background: item.color
         }
       }, null, 4
       /* STYLE */
-      ), vue.createVNode("div", _hoisted_12, vue.toDisplayString(item.name), 1
+      ), vue.createVNode("div", _hoisted_13, vue.toDisplayString(item.name), 1
       /* TEXT */
       )])]);
     }), 128
@@ -45293,6 +45297,352 @@
     Vue.component(script$9.name, script$9);
   }
 
+  var script$a = {
+    name: 'TotalGender',
+    props: {
+      data: Array
+    },
+    setup: function setup(props) {
+      var startMale = vue.ref(0);
+      var endMale = vue.ref(0);
+      var startFemale = vue.ref(0);
+      var endFemale = vue.ref(0);
+
+      var update = function update(newData) {
+        startMale.value = endMale.value;
+        endMale.value = newData[0].value;
+        startFemale.value = endFemale.value;
+        endFemale.value = newData[1].value;
+      };
+
+      vue.onMounted(function () {
+        update(props.data);
+      });
+      vue.watch(function () {
+        return props.data;
+      }, function (newData) {
+        update(newData);
+      });
+      return {
+        startFemale: startFemale,
+        startMale: startMale,
+        endFemale: endFemale,
+        endMale: endMale
+      };
+    }
+  };
+
+  var _withId$8 = /*#__PURE__*/vue.withScopeId("data-v-0be980ca");
+
+  vue.pushScopeId("data-v-0be980ca");
+
+  var _hoisted_1$7 = {
+    "class": "total-gender"
+  };
+  var _hoisted_2$6 = {
+    "class": "total-gender-wrapper"
+  };
+
+  var _hoisted_3$5 = /*#__PURE__*/vue.createVNode("div", {
+    "class": "total-gender-left"
+  }, [/*#__PURE__*/vue.createVNode("img", {
+    src: "https://www.youbaobao.xyz/datav-res/datav/datav_circle.png"
+  })], -1
+  /* HOISTED */
+  );
+
+  var _hoisted_4$3 = {
+    "class": "total-gender-right"
+  };
+
+  var _hoisted_5$3 = /*#__PURE__*/vue.createVNode("div", {
+    "class": "title"
+  }, "男性用户人数", -1
+  /* HOISTED */
+  );
+
+  var _hoisted_6$3 = /*#__PURE__*/vue.createVNode("div", {
+    "class": "sub-title"
+  }, "Number of male users", -1
+  /* HOISTED */
+  );
+
+  var _hoisted_7$3 = {
+    "class": "age"
+  };
+
+  var _hoisted_8$3 = /*#__PURE__*/vue.createVNode("span", {
+    "class": "age-unit"
+  }, "万人", -1
+  /* HOISTED */
+  );
+
+  var _hoisted_9$3 = {
+    "class": "total-gender-wrapper"
+  };
+
+  var _hoisted_10$3 = /*#__PURE__*/vue.createVNode("div", {
+    "class": "total-gender-left"
+  }, [/*#__PURE__*/vue.createVNode("img", {
+    src: "https://www.youbaobao.xyz/datav-res/datav/datav_circle.png"
+  })], -1
+  /* HOISTED */
+  );
+
+  var _hoisted_11$3 = {
+    "class": "total-gender-right"
+  };
+
+  var _hoisted_12$1 = /*#__PURE__*/vue.createVNode("div", {
+    "class": "title"
+  }, "女性用户人数", -1
+  /* HOISTED */
+  );
+
+  var _hoisted_13$1 = /*#__PURE__*/vue.createVNode("div", {
+    "class": "sub-title"
+  }, "Number of female users", -1
+  /* HOISTED */
+  );
+
+  var _hoisted_14 = {
+    "class": "age"
+  };
+
+  var _hoisted_15 = /*#__PURE__*/vue.createVNode("span", {
+    "class": "age-unit"
+  }, "万人", -1
+  /* HOISTED */
+  );
+
+  vue.popScopeId();
+
+  var render$a = /*#__PURE__*/_withId$8(function (_ctx, _cache, $props, $setup, $data, $options) {
+    var _component_count_to = vue.resolveComponent("count-to");
+
+    return vue.openBlock(), vue.createBlock("div", _hoisted_1$7, [vue.createVNode("div", _hoisted_2$6, [_hoisted_3$5, vue.createVNode("div", _hoisted_4$3, [_hoisted_5$3, _hoisted_6$3, vue.createVNode("div", _hoisted_7$3, [vue.createVNode(_component_count_to, {
+      startVal: $setup.startMale,
+      endVal: $setup.endMale,
+      duration: 1000
+    }, null, 8
+    /* PROPS */
+    , ["startVal", "endVal"]), _hoisted_8$3])])]), vue.createVNode("div", _hoisted_9$3, [_hoisted_10$3, vue.createVNode("div", _hoisted_11$3, [_hoisted_12$1, _hoisted_13$1, vue.createVNode("div", _hoisted_14, [vue.createVNode(_component_count_to, {
+      startVal: $setup.startFemale,
+      endVal: $setup.endFemale,
+      duration: 1000
+    }, null, 8
+    /* PROPS */
+    , ["startVal", "endVal"]), _hoisted_15])])])]);
+  });
+
+  var css_248z$9 = ".total-gender[data-v-0be980ca] {\n  display: flex;\n  align-items: center;\n  justify-content: space-around;\n  width: 100%;\n  height: 100%;\n  background: #2b2c2e;\n  box-sizing: border-box;\n}\n.total-gender[data-v-0be980ca] .total-gender-wrapper {\n  display: flex;\n}\n.total-gender[data-v-0be980ca] .total-gender-wrapper .total-gender-left img {\n  width: 75px;\n  height: 75px;\n}\n.total-gender[data-v-0be980ca] .total-gender-wrapper .total-gender-right {\n  margin-left: 40px;\n}\n.total-gender[data-v-0be980ca] .total-gender-wrapper .total-gender-right .title {\n  font-size: 32px;\n}\n.total-gender[data-v-0be980ca] .total-gender-wrapper .total-gender-right .sub-title {\n  font-size: 16px;\n  margin-top: 10px;\n}\n.total-gender[data-v-0be980ca] .total-gender-wrapper .total-gender-right .age {\n  font-size: 49px;\n  font-family: DIN;\n  font-weight: bold;\n  margin-top: 10px;\n}\n.total-gender[data-v-0be980ca] .total-gender-wrapper .total-gender-right .age .age-unit {\n  font-size: 20px;\n}";
+  styleInject(css_248z$9);
+
+  script$a.render = render$a;
+  script$a.__scopeId = "data-v-0be980ca";
+  script$a.__file = "src/components/TotalGender/TotalGender.vue";
+
+  function TotalGender (Vue) {
+    Vue.component(script$a.name, script$a);
+  }
+
+  var colors = ['rgb(209,248,139)', 'rgb(115,201,245)', 'rgb(124,136,146)'];
+  var script$b = {
+    name: 'TotalRider',
+    props: {
+      data: Object
+    },
+    setup: function setup(props) {
+      var chart;
+      var task;
+      var currentChart = 0;
+
+      var update = function update() {
+        function createOption() {
+          var _props$data = props.data,
+              axisX = _props$data.axisX,
+              orderData = _props$data.orderData,
+              rateData = _props$data.rateData;
+          var axisData = axisX;
+          var legendData = [];
+          var data1 = [];
+          var data2 = [];
+
+          if (currentChart === 0) {
+            legendData = [orderData.legend1, orderData.legend2];
+            data1 = orderData.data1;
+            data2 = orderData.data2;
+          } else {
+            legendData = [rateData.legend1, rateData.legend2];
+            data1 = rateData.data1;
+            data2 = rateData.data2;
+          }
+
+          return {
+            color: colors,
+            tooltip: {
+              trigger: 'none',
+              axisPointer: {
+                type: 'cross'
+              }
+            },
+            legend: {
+              top: 20,
+              right: 40,
+              icon: 'rect',
+              textStyle: {
+                fontSize: 16,
+                color: colors[2]
+              },
+              data: legendData
+            },
+            grid: {
+              top: 60,
+              bottom: 30,
+              left: 80,
+              right: 40
+            },
+            xAxis: [{
+              type: 'category',
+              axisTick: {
+                show: false
+              },
+              axisLine: {
+                onZero: false,
+                lineStyle: {
+                  color: colors[2]
+                }
+              },
+              axisLabel: {
+                fontSize: 16
+              },
+              data: axisData
+            }, {
+              type: 'category',
+              axisTick: {
+                show: false
+              },
+              axisLine: {
+                show: false
+              }
+            }],
+            yAxis: [{
+              type: 'value',
+              axisTick: {
+                show: false
+              },
+              axisLine: {
+                onZero: false,
+                lineStyle: {
+                  color: colors[2]
+                }
+              },
+              axisLabel: {
+                fontSize: 16
+              },
+              splitLine: {
+                lineStyle: {
+                  type: 'dotted'
+                }
+              }
+            }],
+            series: [{
+              name: legendData[0],
+              type: 'line',
+              xAxisIndex: 1,
+              smooth: true,
+              lineStyle: {
+                width: 2
+              },
+              symbol: 'none',
+              // data: [5, 100, 70, 120, 80, 15, 200, 300, 195, 150, 80, 103]
+              data: data1
+            }, {
+              name: legendData[1],
+              type: 'line',
+              smooth: true,
+              lineStyle: {
+                width: 2
+              },
+              symbol: 'none',
+              // data: [10, 50, 80, 4, 90, 50, 105, 160, 111, 54, 108, 50]
+              data: data2
+            }]
+          };
+        }
+
+        if (!chart) {
+          chart = Echarts__default['default'].init(document.getElementById('average-age-chart2'));
+        }
+
+        chart.setOption(createOption());
+
+        if (currentChart === 0) {
+          currentChart = 1;
+        } else {
+          currentChart = 0;
+        }
+      };
+
+      var stop = vue.watch(function () {
+        return props.data;
+      }, function () {
+        update();
+        task = setInterval(function () {
+          update();
+        }, 5000);
+        stop();
+      });
+      vue.onMounted(function () {
+        update();
+      });
+      vue.onUnmounted(function () {
+        return task && clearInterval(task);
+      });
+    }
+  };
+
+  var _withId$9 = /*#__PURE__*/vue.withScopeId("data-v-1920104f");
+
+  vue.pushScopeId("data-v-1920104f");
+
+  var _hoisted_1$8 = {
+    "class": "line-chart"
+  };
+
+  var _hoisted_2$7 = /*#__PURE__*/vue.createVNode("div", {
+    "class": "title-wrapper"
+  }, [/*#__PURE__*/vue.createVNode("div", {
+    "class": "title"
+  }, "慕课外卖骑手概况"), /*#__PURE__*/vue.createVNode("div", {
+    "class": "sub-title"
+  }, "Rider Growth rate")], -1
+  /* HOISTED */
+  );
+
+  var _hoisted_3$6 = /*#__PURE__*/vue.createVNode("div", {
+    id: "average-age-chart2"
+  }, null, -1
+  /* HOISTED */
+  );
+
+  vue.popScopeId();
+
+  var render$b = /*#__PURE__*/_withId$9(function (_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createBlock("div", _hoisted_1$8, [_hoisted_2$7, _hoisted_3$6]);
+  });
+
+  var css_248z$a = ".line-chart[data-v-1920104f] {\n  width: 100%;\n  height: 100%;\n  background: #2b2c2e;\n}\n.line-chart[data-v-1920104f] .title-wrapper {\n  padding: 20px 40px 0;\n  box-sizing: border-box;\n}\n.line-chart[data-v-1920104f] .title-wrapper .title {\n  font-size: 32px;\n}\n.line-chart[data-v-1920104f] .title-wrapper .sub-title {\n  font-size: 16px;\n  margin-top: 10px;\n}\n.line-chart[data-v-1920104f] #average-age-chart2 {\n  width: 100%;\n  height: 250px;\n}";
+  styleInject(css_248z$a);
+
+  script$b.render = render$b;
+  script$b.__scopeId = "data-v-1920104f";
+  script$b.__file = "src/components/TotalRider/TotalRider.vue";
+
+  function TotalRider (Vue) {
+    Vue.component(script$b.name, script$b);
+  }
+
   function index (Vue) {
     Vue.use(Loading);
     Vue.use(flybox);
@@ -45304,6 +45654,8 @@
     Vue.use(AverageAge);
     Vue.use(Echarts);
     Vue.use(TotalDevice);
+    Vue.use(TotalGender);
+    Vue.use(TotalRider);
   }
 
   return index;
