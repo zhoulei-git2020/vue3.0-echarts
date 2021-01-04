@@ -54,7 +54,6 @@
       data: Object
     },
     setup(props) {
-      console.log(props);
       const refData = ref([])
       const num = ref(0)
       const startNum = ref(0)
@@ -77,7 +76,6 @@
             color,//颜色
             selectedMode:'multiple', //可以一次点击多个区域
             selectedOffset:15,         //点击之后扇形图偏移的距离
-            tooltip:{}
           }]
         }
       }

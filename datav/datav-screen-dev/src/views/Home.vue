@@ -50,7 +50,9 @@
                 :data= "riderData"
               />
             </div>
-            <div class="left6">888</div>
+            <div class="left6">
+              
+            </div>
         </div>
 
         <!-- 右侧 -->

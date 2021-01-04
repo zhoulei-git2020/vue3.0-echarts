@@ -1,16 +1,20 @@
 <template>
   <div class="line-chart">
     <div class="title-wrapper">
-      <div class="title">慕课外卖骑手概况</div>
-      <div class="sub-title">Rider Growth rate</div>
+      <div class="title">数据流量使用概况概况</div>
+      <div class="sub-title">Data traffic usage</div>
     </div>
-    <div id="average-age-chart2" />
+    <div id="total-rider-chart">
+      <VueEcharts
+        :options="options"
+     />
+    </div>  
   </div>
 </template>
 
 <script>
-  import Echarts from 'echarts'
-  import { watch, onMounted, onUnmounted } from 'vue'
+
+  import { watch, onMounted, onUnmounted ,ref} from 'vue'
 
   const colors = ['rgb(209,248,139)', 'rgb(115,201,245)', 'rgb(124,136,146)']
 
@@ -20,9 +24,11 @@
       data: Object
     },
     setup(props) {
-      let chart
       let task
       let currentChart = 0
+      const options = ref({})
+   
+
 
       const update = () => {
         function createOption() {
@@ -31,6 +37,7 @@
           let legendData = []
           let data1 = []
           let data2 = []
+          
           if (currentChart === 0) {
             legendData = [orderData.legend1, orderData.legend2]
             data1 = orderData.data1
@@ -76,7 +83,7 @@
               axisLabel: {
                 fontSize: 16
               },
-              data: axisData
+              data: axisData.value
             }, {
               type: 'category',
               axisTick: { show: false },
@@ -121,14 +128,11 @@
               symbol: 'none',
               // data: [10, 50, 80, 4, 90, 50, 105, 160, 111, 54, 108, 50]
               data: data2
-            }]
+            }]     
           }
         }
 
-        if (!chart) {
-          chart = Echarts.init(document.getElementById('average-age-chart2'))
-        }
-        chart.setOption(createOption())
+        options.value = createOption()
         if (currentChart === 0) {
           currentChart = 1
         } else {
@@ -146,6 +150,10 @@
         update()
       })
       onUnmounted(() => task && clearInterval(task))
+
+      return{
+        options
+      }
     }
   }
 </script>
@@ -170,7 +178,7 @@
       }
     }
 
-    #average-age-chart2 {
+    #total-rider-chart {
       width: 100%;
       height: 250px;
     }

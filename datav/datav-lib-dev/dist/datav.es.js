@@ -45099,7 +45099,6 @@ var script$9 = {
     data: Object
   },
   setup: function setup(props) {
-    console.log(props);
     var refData = ref([]);
     var num = ref(0);
     var startNum = ref(0);
@@ -45131,9 +45130,8 @@ var script$9 = {
           //颜色
           selectedMode: 'multiple',
           //可以一次点击多个区域
-          selectedOffset: 15,
-          //点击之后扇形图偏移的距离
-          tooltip: {}
+          selectedOffset: 15 //点击之后扇形图偏移的距离
+
         }]
       };
     };
@@ -45446,9 +45444,9 @@ var script$b = {
     data: Object
   },
   setup: function setup(props) {
-    var chart;
     var task;
     var currentChart = 0;
+    var options = ref({});
 
     var update = function update() {
       function createOption() {
@@ -45509,7 +45507,7 @@ var script$b = {
             axisLabel: {
               fontSize: 16
             },
-            data: axisData
+            data: axisData.value
           }, {
             type: 'category',
             axisTick: {
@@ -45564,11 +45562,7 @@ var script$b = {
         };
       }
 
-      if (!chart) {
-        chart = Echarts$1.init(document.getElementById('average-age-chart2'));
-      }
-
-      chart.setOption(createOption());
+      options.value = createOption();
 
       if (currentChart === 0) {
         currentChart = 1;
@@ -45592,6 +45586,9 @@ var script$b = {
     onUnmounted(function () {
       return task && clearInterval(task);
     });
+    return {
+      options: options
+    };
   }
 };
 
@@ -45607,25 +45604,29 @@ var _hoisted_2$7 = /*#__PURE__*/createVNode("div", {
   "class": "title-wrapper"
 }, [/*#__PURE__*/createVNode("div", {
   "class": "title"
-}, "慕课外卖骑手概况"), /*#__PURE__*/createVNode("div", {
+}, "数据流量使用概况概况"), /*#__PURE__*/createVNode("div", {
   "class": "sub-title"
-}, "Rider Growth rate")], -1
+}, "Data traffic usage")], -1
 /* HOISTED */
 );
 
-var _hoisted_3$6 = /*#__PURE__*/createVNode("div", {
-  id: "average-age-chart2"
-}, null, -1
-/* HOISTED */
-);
+var _hoisted_3$6 = {
+  id: "total-rider-chart"
+};
 
 popScopeId();
 
 var render$b = /*#__PURE__*/_withId$9(function (_ctx, _cache, $props, $setup, $data, $options) {
-  return openBlock(), createBlock("div", _hoisted_1$8, [_hoisted_2$7, _hoisted_3$6]);
+  var _component_VueEcharts = resolveComponent("VueEcharts");
+
+  return openBlock(), createBlock("div", _hoisted_1$8, [_hoisted_2$7, createVNode("div", _hoisted_3$6, [createVNode(_component_VueEcharts, {
+    options: $setup.options
+  }, null, 8
+  /* PROPS */
+  , ["options"])])]);
 });
 
-var css_248z$a = ".line-chart[data-v-1920104f] {\n  width: 100%;\n  height: 100%;\n  background: #2b2c2e;\n}\n.line-chart[data-v-1920104f] .title-wrapper {\n  padding: 20px 40px 0;\n  box-sizing: border-box;\n}\n.line-chart[data-v-1920104f] .title-wrapper .title {\n  font-size: 32px;\n}\n.line-chart[data-v-1920104f] .title-wrapper .sub-title {\n  font-size: 16px;\n  margin-top: 10px;\n}\n.line-chart[data-v-1920104f] #average-age-chart2 {\n  width: 100%;\n  height: 250px;\n}";
+var css_248z$a = ".line-chart[data-v-1920104f] {\n  width: 100%;\n  height: 100%;\n  background: #2b2c2e;\n}\n.line-chart[data-v-1920104f] .title-wrapper {\n  padding: 20px 40px 0;\n  box-sizing: border-box;\n}\n.line-chart[data-v-1920104f] .title-wrapper .title {\n  font-size: 32px;\n}\n.line-chart[data-v-1920104f] .title-wrapper .sub-title {\n  font-size: 16px;\n  margin-top: 10px;\n}\n.line-chart[data-v-1920104f] #total-rider-chart {\n  width: 100%;\n  height: 250px;\n}";
 styleInject(css_248z$a);
 
 script$b.render = render$b;
