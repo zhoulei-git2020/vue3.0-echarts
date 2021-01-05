@@ -34,7 +34,7 @@ const riderMockData = {"axisX":["1月","2月","3月","4月","5月","6月","7月"
                                    "data2":["179","263","282","297","330","344","222","299","190","455","566","233"]
                                   }
                       }
-
+//左侧柱状图
 const hotCategoryMockData = {"data1":
                                 {
                                  "axisX":["粉面粥店","简餐便当","汉堡披萨","香锅冒菜","小吃炸串","地方菜系","轻食简餐"],
@@ -48,6 +48,21 @@ const hotCategoryMockData = {"data1":
                                  "data2":[15,96,97,74,37,69,81]
                                 }
                              }
+
+//右侧头部组件
+const headerMockData = {
+                        "headerData":
+                            {"value":
+                                [
+                                    {"title":"今日销售额","subTitle":"Today's Sales Amount","startVal":40041113,"endVal":40105335,"img":"https://www.youbaobao.xyz/datav-res/money.png"},
+                                    {"title":"今日订单量","subTitle":"Today's Total Orders","startVal":2566778,"endVal":2570025,"img":"https://www.youbaobao.xyz/datav-res/order.png"},
+                                    {"title":"今日交易用户数","subTitle":"Today's Payed Users","startVal":271744,"endVal":272200,"img":"https://www.youbaobao.xyz/datav-res/member.png"},
+                                    {"title":"今日新增用户数","subTitle":"Today's New Users","startVal":1286552,"endVal":1289057,"img":"https://www.youbaobao.xyz/datav-res/follow.png"}
+                                ]
+                            },
+                                        
+                             "project":
+                                {"value":[{"title":"转化率","value":"13.16%","img":"https://www.youbaobao.xyz/datav-res/success.png"},{"title":"退单率","value":"5.73%","img":"https://www.youbaobao.xyz/datav-res/failed.png"}]}}
 
 //随机数方法
 function random(val){
@@ -66,6 +81,8 @@ export default function(){
     const deviceData = ref(deviceMockData)
     const genderData = ref(genderMockData)
     const riderData = ref(riderMockData)
+    const hotCategoryData = ref(hotCategoryMockData)
+    const headerData = ref(headerMockData)
 
     onMounted(()=>{
       task =  setInterval(()=>{
@@ -113,8 +130,15 @@ export default function(){
             item = item + random(100)
             return item
         })
-        console.log(_riderData);
         riderData.value = _riderData
+
+        const _hotCategoryData = {...hotCategoryData.value}
+        _hotCategoryData.data1.data1 = _hotCategoryData.data1.data1.map(item=>{
+            item = item + random(100)
+            return item
+        })
+        hotCategoryData.value = _hotCategoryData
+
         },3000)
 
     })
@@ -132,7 +156,9 @@ export default function(){
         averageAge,
         deviceData,
         genderData,
-        riderData
+        riderData,
+        hotCategoryData,
+        headerData
     }
 }
 

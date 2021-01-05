@@ -45637,6 +45637,400 @@ function TotalRider (Vue) {
   Vue.component(script$b.name, script$b);
 }
 
+function dateFilter(v) {
+  var m = fillZero(v.getMonth() + 1);
+  var d = fillZero(v.getDate());
+  return "".concat(v.getFullYear(), "-").concat(m, "-").concat(d);
+}
+
+function timeFilter(v) {
+  var h = fillZero(v.getHours());
+  var m = fillZero(v.getMinutes());
+  var s = fillZero(v.getSeconds());
+  return "".concat(h, ":").concat(m, ":").concat(s);
+}
+
+function fillZero(v) {
+  v = v < 10 ? '0' + v : v;
+  return v;
+}
+
+function clock() {
+  var now = new Date();
+  var date = ref(dateFilter(now));
+  var time = ref(timeFilter(now));
+  var task;
+
+  var start = function start() {
+    task = setInterval(function () {
+      var now = new Date();
+      date.value = dateFilter(now);
+      time.value = timeFilter(now);
+    }, 1000);
+  };
+
+  onMounted(start);
+  onUnmounted(function () {
+    task && clearInterval(task);
+  });
+  return {
+    date: date,
+    time: time
+  };
+}
+
+var script$c = {
+  name: 'HotCategory',
+  props: {
+    data: Object
+  },
+  setup: function setup(props) {
+    var _useClock = clock(),
+        time = _useClock.time,
+        date = _useClock.date;
+
+    var currentChart = 0;
+    var options = ref({});
+
+    var update = function update() {
+      function createOption() {
+        var sourceData = [];
+        var _props$data = props.data,
+            data1 = _props$data.data1,
+            data2 = _props$data.data2;
+
+        if (currentChart === 0) {
+          data1.axisX.forEach(function (axis, index) {
+            sourceData.push([axis, data1.data1[index], data1.data2[index]]);
+          });
+        } else {
+          data2.axisX.forEach(function (axis, index) {
+            sourceData.push([axis, data2.data1[index], data2.data2[index]]);
+          });
+        }
+
+        var source = [['指标', '国内', '海外']].concat(sourceData);
+        return {
+          tooltip: {
+            trigger: 'axis',
+            axisPointer: {
+              type: 'shadow'
+            }
+          },
+          color: ['rgb(209,248,138)', 'rgba(65,65,65,.5)'],
+          grid: {
+            left: 20,
+            right: 0,
+            bottom: 30,
+            top: 20
+          },
+          dataset: {
+            source: source
+          },
+          yAxis: {
+            type: 'value',
+            splitLine: {
+              lineStyle: {
+                type: 'dotted'
+              }
+            },
+            axisLine: {
+              onZero: false,
+              lineStyle: {
+                color: 'rgb(124,136,146)'
+              }
+            },
+            axisLabel: {
+              color: 'rgb(98,105,113)',
+              fontSize: 16
+            },
+            axisTick: {
+              show: false
+            }
+          },
+          xAxis: {
+            type: 'category',
+            splitLine: {
+              show: false
+            },
+            axisTick: {
+              show: false
+            },
+            axisLabel: {
+              color: 'rgb(98,105,113)',
+              fontSize: 16
+            },
+            axisLine: {
+              onZero: false,
+              lineStyle: {
+                color: 'rgb(124,136,146)'
+              }
+            }
+          },
+          series: [{
+            type: 'bar',
+            stack: 'total',
+            barWidth: 40
+          }, {
+            type: 'bar',
+            stack: 'total'
+          }]
+        };
+      }
+
+      options.value = createOption();
+      currentChart === 0 ? currentChart = 1 : currentChart = 0;
+    };
+
+    watch(function () {
+      return props.data;
+    }, function () {
+      update();
+    });
+    onMounted(function () {
+      update();
+    });
+    return {
+      time: time,
+      date: date,
+      options: options
+    };
+  }
+};
+
+var _withId$a = /*#__PURE__*/withScopeId("data-v-48a8b9b2");
+
+pushScopeId("data-v-48a8b9b2");
+
+var _hoisted_1$9 = {
+  "class": "hot-category"
+};
+var _hoisted_2$8 = {
+  "class": "hot-category-wrapper"
+};
+
+var _hoisted_3$7 = /*#__PURE__*/createVNode("div", {
+  "class": "hot-category-left"
+}, [/*#__PURE__*/createVNode("div", {
+  "class": "title"
+}, "当前热卖品类"), /*#__PURE__*/createVNode("div", {
+  "class": "sub-title"
+}, "Hot Categories")], -1
+/* HOISTED */
+);
+
+var _hoisted_4$4 = {
+  "class": "hot-category-right"
+};
+var _hoisted_5$4 = {
+  "class": "sub-title"
+};
+var _hoisted_6$4 = {
+  id: "hot-category-chart"
+};
+
+popScopeId();
+
+var render$c = /*#__PURE__*/_withId$a(function (_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_VueEcharts = resolveComponent("VueEcharts");
+
+  return openBlock(), createBlock("div", _hoisted_1$9, [createVNode("div", _hoisted_2$8, [_hoisted_3$7, createVNode("div", _hoisted_4$4, [createVNode("div", _hoisted_5$4, "最后更新时间：" + toDisplayString($setup.date) + " " + toDisplayString($setup.time), 1
+  /* TEXT */
+  )])]), createVNode("div", _hoisted_6$4, [createVNode(_component_VueEcharts, {
+    options: $setup.options
+  }, null, 8
+  /* PROPS */
+  , ["options"])])]);
+});
+
+var css_248z$b = ".hot-category[data-v-48a8b9b2] {\n  width: 100%;\n  height: 100%;\n  background: #2b2c2e;\n  padding: 20px 40px;\n  box-sizing: border-box;\n}\n.hot-category[data-v-48a8b9b2] .hot-category-wrapper {\n  display: flex;\n}\n.hot-category[data-v-48a8b9b2] .hot-category-wrapper .hot-category-right {\n  flex: 1;\n  text-align: right;\n}\n.hot-category[data-v-48a8b9b2] .hot-category-wrapper .title {\n  font-size: 32px;\n}\n.hot-category[data-v-48a8b9b2] .hot-category-wrapper .sub-title {\n  font-size: 16px;\n  margin-top: 10px;\n}\n.hot-category[data-v-48a8b9b2] #hot-category-chart {\n  height: 220px;\n}";
+styleInject(css_248z$b);
+
+script$c.render = render$c;
+script$c.__scopeId = "data-v-48a8b9b2";
+script$c.__file = "src/components/HotCategory/HotCategory.vue";
+
+function HotCategory (Vue) {
+  Vue.component(script$c.name, script$c);
+}
+
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
+    arr2[i] = arr[i];
+  }
+
+  return arr2;
+}
+
+var arrayLikeToArray = _arrayLikeToArray;
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) return arrayLikeToArray(arr);
+}
+
+var arrayWithoutHoles = _arrayWithoutHoles;
+
+function _iterableToArray(iter) {
+  if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
+}
+
+var iterableToArray = _iterableToArray;
+
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray(o, minLen);
+}
+
+var unsupportedIterableToArray = _unsupportedIterableToArray;
+
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+var nonIterableSpread = _nonIterableSpread;
+
+function _toConsumableArray(arr) {
+  return arrayWithoutHoles(arr) || iterableToArray(arr) || unsupportedIterableToArray(arr) || nonIterableSpread();
+}
+
+var toConsumableArray = _toConsumableArray;
+
+var script$d = {
+  name: 'CenterHeader',
+  props: {
+    data: Object
+  },
+  setup: function setup(props) {
+    var project = ref([]);
+    var headerData = ref([]);
+
+    var update = function update() {
+      project.value = toConsumableArray(props.data.project.value);
+      headerData.value = toConsumableArray(props.data.headerData.value);
+    };
+
+    onMounted(function () {
+      update();
+    });
+    watch(function () {
+      return props.data;
+    }, function () {
+      update();
+    });
+    return {
+      project: project,
+      headerData: headerData
+    };
+  }
+};
+
+var _withId$b = /*#__PURE__*/withScopeId("data-v-a66e2ce2");
+
+pushScopeId("data-v-a66e2ce2");
+
+var _hoisted_1$a = {
+  "class": "center-header"
+};
+var _hoisted_2$9 = {
+  "class": "center-header-wrapper"
+};
+var _hoisted_3$8 = {
+  "class": "center-header-left"
+};
+var _hoisted_4$5 = {
+  "class": "bg"
+};
+var _hoisted_5$5 = {
+  "class": "center-header-right"
+};
+var _hoisted_6$5 = {
+  "class": "title"
+};
+var _hoisted_7$4 = {
+  "class": "sub-title"
+};
+var _hoisted_8$4 = {
+  "class": "total"
+};
+var _hoisted_9$4 = {
+  "class": "project-wrapper"
+};
+var _hoisted_10$4 = {
+  "class": "project-img"
+};
+var _hoisted_11$4 = {
+  "class": "project-text"
+};
+var _hoisted_12$2 = {
+  "class": "project-value"
+};
+
+popScopeId();
+
+var render$d = /*#__PURE__*/_withId$b(function (_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_count_to = resolveComponent("count-to");
+
+  return openBlock(), createBlock("div", _hoisted_1$a, [createVNode("div", _hoisted_2$9, [(openBlock(true), createBlock(Fragment, null, renderList($setup.headerData, function (item, index) {
+    return openBlock(), createBlock("div", {
+      "class": "center-header-item",
+      key: index
+    }, [createVNode("div", _hoisted_3$8, [createVNode("div", _hoisted_4$5, [createVNode("div", {
+      "class": "img",
+      style: {
+        backgroundImage: "url('".concat(item.img, "')")
+      }
+    }, null, 4
+    /* STYLE */
+    )])]), createVNode("div", _hoisted_5$5, [createVNode("div", _hoisted_6$5, toDisplayString(item.title), 1
+    /* TEXT */
+    ), createVNode("div", _hoisted_7$4, toDisplayString(item.subTitle), 1
+    /* TEXT */
+    ), createVNode("div", _hoisted_8$4, [createVNode(_component_count_to, {
+      "start-val": item.startVal,
+      "end-val": item.endVal,
+      duration: 1000,
+      separator: ",",
+      autoplay: ""
+    }, null, 8
+    /* PROPS */
+    , ["start-val", "end-val"])])])]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))]), createVNode("div", _hoisted_9$4, [(openBlock(true), createBlock(Fragment, null, renderList($setup.project, function (item, index) {
+    return openBlock(), createBlock("div", {
+      "class": "project",
+      key: index
+    }, [createVNode("div", _hoisted_10$4, [createVNode("img", {
+      src: item.img
+    }, null, 8
+    /* PROPS */
+    , ["src"])]), createVNode("div", _hoisted_11$4, toDisplayString(item.title), 1
+    /* TEXT */
+    ), createVNode("div", _hoisted_12$2, toDisplayString(item.value), 1
+    /* TEXT */
+    )]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))])]);
+});
+
+var css_248z$c = ".center-header[data-v-a66e2ce2] {\n  display: flex;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n  background: #424446;\n  padding: 0 40px;\n  box-sizing: border-box;\n}\n.center-header[data-v-a66e2ce2] .center-header-wrapper {\n  display: flex;\n}\n.center-header[data-v-a66e2ce2] .center-header-wrapper .center-header-item {\n  flex: 1;\n  display: flex;\n}\n.center-header[data-v-a66e2ce2] .center-header-wrapper .center-header-item .center-header-left .bg {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 185px;\n  height: 185px;\n  background-repeat: no-repeat;\n  background-size: 100% 100%;\n  background-color: #83a748;\n  border-radius: 50%;\n}\n.center-header[data-v-a66e2ce2] .center-header-wrapper .center-header-item .center-header-left .bg .img {\n  width: 60%;\n  height: 60%;\n  border-radius: 50%;\n  background-repeat: no-repeat;\n  background-size: 100% 100%;\n}\n.center-header[data-v-a66e2ce2] .center-header-wrapper .center-header-item .center-header-right {\n  flex: 1;\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  margin-left: 40px;\n  width: 410px;\n}\n.center-header[data-v-a66e2ce2] .center-header-wrapper .center-header-item .center-header-right .title {\n  font-size: 32px;\n}\n.center-header[data-v-a66e2ce2] .center-header-wrapper .center-header-item .center-header-right .sub-title {\n  font-size: 16px;\n  letter-spacing: 1px;\n  margin-top: 10px;\n}\n.center-header[data-v-a66e2ce2] .center-header-wrapper .center-header-item .center-header-right .total {\n  font-family: DIN;\n  font-size: 56px;\n  font-weight: bolder;\n  letter-spacing: 2px;\n  margin-top: 10px;\n}\n.center-header[data-v-a66e2ce2] .project-wrapper {\n  flex: 1;\n  display: flex;\n  justify-content: space-around;\n  align-items: center;\n}\n.center-header[data-v-a66e2ce2] .project-wrapper .project {\n  display: flex;\n  flex-direction: column;\n  align-items: center;\n}\n.center-header[data-v-a66e2ce2] .project-wrapper .project .project-img {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 90px;\n  height: 90px;\n}\n.center-header[data-v-a66e2ce2] .project-wrapper .project img {\n  width: 100%;\n  height: 100%;\n}\n.center-header[data-v-a66e2ce2] .project-wrapper .project .project-text {\n  font-size: 18px;\n  margin-top: 10px;\n}\n.center-header[data-v-a66e2ce2] .project-wrapper .project .project-value {\n  font-size: 28px;\n  font-weight: 700;\n  margin-top: 5px;\n}";
+styleInject(css_248z$c);
+
+script$d.render = render$d;
+script$d.__scopeId = "data-v-a66e2ce2";
+script$d.__file = "src/components/CenterHeader/CenterHeader.vue";
+
+function CenterHeader (Vue) {
+  Vue.component(script$d.name, script$d);
+}
+
 function index (Vue) {
   Vue.use(Loading);
   Vue.use(flybox);
@@ -45650,6 +46044,8 @@ function index (Vue) {
   Vue.use(TotalDevice);
   Vue.use(TotalGender);
   Vue.use(TotalRider);
+  Vue.use(HotCategory);
+  Vue.use(CenterHeader);
 }
 
 export default index;

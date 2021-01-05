@@ -10,6 +10,8 @@ import Echarts from './components/VueEcharts/index';
 import TotalDevice from './components/TotalDevice/index'
 import TotalGender from './components/TotalGender/index'
 import TotalRider from './components/TotalRider/index';
+import HotCategory from './components/HotCategory/index';
+import CenterHeader from './components/CenterHeader/index';
 export default function(Vue){
     Vue.use(Loading)
     Vue.use(flybox)
@@ -23,5 +25,7 @@ export default function(Vue){
     Vue.use(TotalDevice)
     Vue.use(TotalGender)
     Vue.use(TotalRider)
+    Vue.use(HotCategory)
+    Vue.use(CenterHeader)
     
 }

@@ -51,13 +51,19 @@
               />
             </div>
             <div class="left6">
-              
+              <HotCategory
+                :data = "hotCategoryData"
+              />
             </div>
         </div>
 
         <!-- 右侧 -->
         <div class="right">
-            <div class="right-top1">999</div>
+            <div class="right-top1">
+              <CenterHeader
+                :data = "headerData"
+              />
+            </div>
             <div class="right-top2">000</div>
             <div class="right-bottom">
                <div class="right-bottom-left">
@@ -188,11 +194,11 @@ export default {
         flex: 1;
         display: flex;
         flex-direction: column;
-        background: cyan;
+       
         .right-top1{
           width: 100%;
           height: 206px;
-          background: chartreuse;
+          
         }
         .right-top2{
           width: 100%;
