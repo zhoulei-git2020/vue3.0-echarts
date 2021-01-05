@@ -45909,8 +45909,9 @@ var script$d = {
   setup: function setup(props) {
     var project = ref([]);
     var headerData = ref([]);
+    var startPercent = ref(0);
 
-    var update = function update() {
+    var update = function update(newdata) {
       project.value = toConsumableArray(props.data.project.value);
       headerData.value = toConsumableArray(props.data.headerData.value);
     };
@@ -45920,12 +45921,18 @@ var script$d = {
     });
     watch(function () {
       return props.data;
-    }, function () {
+    }, function (newdata) {
       update();
+    });
+    watch(function () {
+      return props.data.project.value.value;
+    }, function (nextValue, prevValue) {
+      startPercent.value = prevValue;
     });
     return {
       project: project,
-      headerData: headerData
+      headerData: headerData,
+      startPercent: startPercent
     };
   }
 };
@@ -46012,9 +46019,17 @@ var render$d = /*#__PURE__*/_withId$b(function (_ctx, _cache, $props, $setup, $d
     /* PROPS */
     , ["src"])]), createVNode("div", _hoisted_11$4, toDisplayString(item.title), 1
     /* TEXT */
-    ), createVNode("div", _hoisted_12$2, toDisplayString(item.value), 1
-    /* TEXT */
-    )]);
+    ), createVNode("div", _hoisted_12$2, [createVNode(_component_count_to, {
+      "start-val": $setup.startPercent,
+      "end-val": item.value,
+      duration: 1000,
+      separator: ",",
+      autoplay: "",
+      suffix: "%",
+      decimals: 1
+    }, null, 8
+    /* PROPS */
+    , ["start-val", "end-val"])])]);
   }), 128
   /* KEYED_FRAGMENT */
   ))])]);

@@ -45916,8 +45916,9 @@
     setup: function setup(props) {
       var project = vue.ref([]);
       var headerData = vue.ref([]);
+      var startPercent = vue.ref(0);
 
-      var update = function update() {
+      var update = function update(newdata) {
         project.value = toConsumableArray(props.data.project.value);
         headerData.value = toConsumableArray(props.data.headerData.value);
       };
@@ -45927,12 +45928,18 @@
       });
       vue.watch(function () {
         return props.data;
-      }, function () {
+      }, function (newdata) {
         update();
+      });
+      vue.watch(function () {
+        return props.data.project.value.value;
+      }, function (nextValue, prevValue) {
+        startPercent.value = prevValue;
       });
       return {
         project: project,
-        headerData: headerData
+        headerData: headerData,
+        startPercent: startPercent
       };
     }
   };
@@ -46019,9 +46026,17 @@
       /* PROPS */
       , ["src"])]), vue.createVNode("div", _hoisted_11$4, vue.toDisplayString(item.title), 1
       /* TEXT */
-      ), vue.createVNode("div", _hoisted_12$2, vue.toDisplayString(item.value), 1
-      /* TEXT */
-      )]);
+      ), vue.createVNode("div", _hoisted_12$2, [vue.createVNode(_component_count_to, {
+        "start-val": $setup.startPercent,
+        "end-val": item.value,
+        duration: 1000,
+        separator: ",",
+        autoplay: "",
+        suffix: "%",
+        decimals: 1
+      }, null, 8
+      /* PROPS */
+      , ["start-val", "end-val"])])]);
     }), 128
     /* KEYED_FRAGMENT */
     ))])]);

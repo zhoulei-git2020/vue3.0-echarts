@@ -35,7 +35,17 @@
           <img :src="item.img">
         </div>
         <div class="project-text">{{item.title}}</div>
-        <div class="project-value">{{item.value}}</div>
+        <div class="project-value">
+          <count-to
+              :start-val="startPercent"
+              :end-val="item.value"
+              :duration="1000"
+              separator=","
+              autoplay
+              suffix='%'
+              :decimals="1"
+            />
+        </div>
       </div>
     </div>
   </div>
@@ -52,19 +62,32 @@
     setup(props) {
       const project = ref([])
       const headerData = ref([])
-      const update = () => {
+
+      const startPercent = ref(0) 
+      
+
+      const update = (newdata) => {
         project.value = [...props.data.project.value]
         headerData.value = [...props.data.headerData.value]
       }
       onMounted(() => {
         update()
       })
-      watch(() => props.data, () => {
-        update()
+      watch(() => props.data, (newdata) => {
+        update(newdata)
       })
+
+      watch(() => props.data.project.value.value, (nextValue,prevValue) => {
+        startPercent.value = prevValue
+      })
+
+
+
       return {
         project,
-        headerData
+        headerData,
+        startPercent,
+        
       }
     }
   }

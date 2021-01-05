@@ -58,11 +58,17 @@ const headerMockData = {
                                     {"title":"今日订单量","subTitle":"Today's Total Orders","startVal":2566778,"endVal":2570025,"img":"https://www.youbaobao.xyz/datav-res/order.png"},
                                     {"title":"今日交易用户数","subTitle":"Today's Payed Users","startVal":271744,"endVal":272200,"img":"https://www.youbaobao.xyz/datav-res/member.png"},
                                     {"title":"今日新增用户数","subTitle":"Today's New Users","startVal":1286552,"endVal":1289057,"img":"https://www.youbaobao.xyz/datav-res/follow.png"}
-                                ]
-                            },
-                                        
+                                ],
+                            
+                            },           
                              "project":
-                                {"value":[{"title":"转化率","value":"13.16%","img":"https://www.youbaobao.xyz/datav-res/success.png"},{"title":"退单率","value":"5.73%","img":"https://www.youbaobao.xyz/datav-res/failed.png"}]}}
+                                {"value":
+                                    [
+                                        {"title":"转化率","value":13.16,"img":"https://www.youbaobao.xyz/datav-res/success.png"},
+                                        {"title":"退单率","value":5.73,"img":"https://www.youbaobao.xyz/datav-res/failed.png"}
+                                    ]
+                                }
+                            }
 
 //随机数方法
 function random(val){
@@ -138,6 +144,20 @@ export default function(){
             return item
         })
         hotCategoryData.value = _hotCategoryData
+
+        const _headerData = {...headerData.value}
+        _headerData.headerData.value = _headerData.headerData.value.map(item =>{
+            item.endVal = item.endVal + random(100)
+            return item
+        })
+        _headerData.project.value = _headerData.project.value.map(item =>{
+            item.value = item.value + random(10)/10
+            return item
+        })
+
+        headerData.value = _headerData
+   
+
 
         },3000)
 

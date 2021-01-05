@@ -194,6 +194,7 @@ export default {
         flex: 1;
         display: flex;
         flex-direction: column;
+        margin-left: 10px;
        
         .right-top1{
           width: 100%;
