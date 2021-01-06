@@ -46179,6 +46179,77 @@
     Vue.component(script$e.name, script$e);
   }
 
+  var script$f = {
+    name: 'BaseScrollList',
+    props: {
+      //标题数据,格式:['a','b','c']
+      header: Array,
+      //标题文字样式,格式:[{},{},{}]
+      headerStyle: Array,
+      //标题背景颜色
+      headerBackground: {
+        type: String,
+        "default": 'rgb(90,90,90)'
+      },
+      //标题高度
+      headerHeight: {
+        type: [String, Number],
+        "default": '50'
+      }
+    },
+    setup: function setup(ctx) {}
+  };
+
+  var _withId$d = /*#__PURE__*/vue.withScopeId("data-v-69eed30f");
+
+  vue.pushScopeId("data-v-69eed30f");
+
+  var _hoisted_1$c = {
+    "class": "base-scroll-list"
+  };
+
+  var _hoisted_2$b = /*#__PURE__*/vue.createVNode("div", {
+    "class": "base-scroll-list-rows"
+  }, null, -1
+  /* HOISTED */
+  );
+
+  vue.popScopeId();
+
+  var render$f = /*#__PURE__*/_withId$d(function (_ctx, _cache, $props, $setup, $data, $options) {
+    return vue.openBlock(), vue.createBlock("div", _hoisted_1$c, [vue.createCommentVNode(" 标题容器 "), vue.createVNode("div", {
+      "class": "base-scroll-list-header",
+      style: {
+        backgroundColor: $props.headerBackground,
+        height: "".concat($props.headerHeight, "px")
+      }
+    }, [vue.createCommentVNode(" 标题每一列 "), (vue.openBlock(true), vue.createBlock(vue.Fragment, null, vue.renderList($props.header, function (headerItem, i) {
+      return vue.openBlock(), vue.createBlock("div", {
+        "class": "header-item base-scroll-list-text",
+        key: headerItem + i,
+        style: $props.headerStyle[i],
+        innerHTML: headerItem
+      }, null, 12
+      /* STYLE, PROPS */
+      , ["innerHTML"]);
+    }), 128
+    /* KEYED_FRAGMENT */
+    ))], 4
+    /* STYLE */
+    ), vue.createCommentVNode(" 内容展示容器 "), _hoisted_2$b]);
+  });
+
+  var css_248z$e = "@charset \"UTF-8\";\n.base-scroll-list[data-v-69eed30f] {\n  /*默认文本样式*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-text {\n  padding: 0 10px;\n  white-space: nowrap;\n  /*文本不换行*/\n  overflow: hidden;\n  /*多出部分隐藏*/\n  text-overflow: ellipsis;\n  /*文本超出部分用省略号代替*/\n  box-sizing: border-box;\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-header {\n  display: flex;\n  /*水平布局*/\n  font-size: 15px;\n  /*字体大小*/\n  align-items: center;\n  /*垂直居中*/\n}";
+  styleInject(css_248z$e);
+
+  script$f.render = render$f;
+  script$f.__scopeId = "data-v-69eed30f";
+  script$f.__file = "src/components/BaseScrollList/BaseScrollList.vue";
+
+  function BaseScrollList (Vue) {
+    Vue.component(script$f.name, script$f);
+  }
+
   function index (Vue) {
     Vue.use(Loading);
     Vue.use(flybox);
@@ -46195,6 +46266,7 @@
     Vue.use(HotCategory);
     Vue.use(CenterHeader);
     Vue.use(TransformCategory);
+    Vue.use(BaseScrollList);
   }
 
   return index;
