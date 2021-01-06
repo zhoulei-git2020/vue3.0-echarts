@@ -64,11 +64,21 @@
                 :data = "headerData"
               />
             </div>
-            <div class="right-top2">000</div>
+            <div class="right-top2">
+              <TransformCategory
+                :data="['ALL','使命召唤','梦幻西游','英雄联盟','魔兽世界',]"
+                :color="['rgb(178,209,126)','rgb(116,116,49)']"
+              />
+            </div>
             <div class="right-bottom">
                <div class="right-bottom-left">
                   <div class="right-bottom-left1">111</div>
-                  <div class="right-bottom-left2">222</div>
+                  <div class="right-bottom-left2">
+                     <TransformCategory
+                      :data="['ALL','王者荣耀','崩坏三','炉石传说','元神',]"
+                      :color="['rgb(178,209,126)','rgb(116,116,49)']"
+                     />    
+                  </div>
                   <div class="right-bottom-left3">333</div>
                   <div class="right-bottom-left4">444</div>
                </div>
@@ -202,9 +212,9 @@ export default {
           
         }
         .right-top2{
+          margin: 10px 0;
           width: 100%;
           height: 48px;
-          background: coral;
         }
          .right-bottom{
             flex: 1;
@@ -222,7 +232,7 @@ export default {
               }
               .right-bottom-left2{
                 height: 80px;
-                background: hotpink;
+                
               }
               .right-bottom-left3{
                 height: 350px;

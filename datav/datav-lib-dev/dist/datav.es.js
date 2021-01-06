@@ -46046,6 +46046,132 @@ function CenterHeader (Vue) {
   Vue.component(script$d.name, script$d);
 }
 
+var script$e = {
+  name: 'TransformCategory',
+  props: {
+    data: Array,
+    color: {
+      type: Array,
+      "default": function _default() {
+        return ['rgb(140, 160, 173)', 'rgb(80, 80, 80)'];
+      }
+    }
+  },
+  setup: function setup(props) {
+    var selected = ref(0); //当前被选中的元素的编号默认从第0号元素开始切换
+
+    var hover = ref(-1); //创建hover元素
+
+    var task; //点击事件
+
+    var onClick = function onClick(index) {
+      //将鼠标点击区域的索引传入，将selected的值修改成鼠标点击的索引值
+      selected.value = index;
+    };
+
+    var onMouseIn = function onMouseIn(index) {
+      hover.value = index;
+    };
+
+    var onMouseOut = function onMouseOut() {
+      hover.value = -1;
+    };
+
+    var update = function update() {
+      task && clearInterval(task); //线判断task是否存在，存在则清除定时器
+
+      task = setInterval(function () {
+        //首先判断selected的值是否大于传入数组的元素个数
+        if (selected.value + 1 > props.data.length - 1) {
+          //将selected的值置为0
+          selected.value = 0;
+        } else {
+          selected.value += 1;
+        }
+      }, 2000);
+    };
+
+    onMounted(update);
+    onUnmounted(function () {
+      return task && clearInterval(task);
+    });
+    return {
+      selected: selected,
+      onClick: onClick,
+      onMouseIn: onMouseIn,
+      hover: hover,
+      onMouseOut: onMouseOut
+    };
+  }
+};
+
+var _withId$c = /*#__PURE__*/withScopeId("data-v-0ce021a5");
+
+pushScopeId("data-v-0ce021a5");
+
+var _hoisted_1$b = {
+  "class": "country-category"
+};
+var _hoisted_2$a = {
+  key: 2
+};
+
+popScopeId();
+
+var render$e = /*#__PURE__*/_withId$c(function (_ctx, _cache, $props, $setup, $data, $options) {
+  return openBlock(), createBlock("div", _hoisted_1$b, [(openBlock(true), createBlock(Fragment, null, renderList($props.data, function (item, index) {
+    return openBlock(), createBlock("div", {
+      "class": "category",
+      key: item,
+      onClick: function onClick($event) {
+        return $setup.onClick(index);
+      },
+      onMouseenter: function onMouseenter($event) {
+        return $setup.onMouseIn(index);
+      },
+      onMouseleave: function onMouseleave($event) {
+        return $setup.onMouseOut(index);
+      },
+      onMousemove: function onMousemove($event) {
+        return $setup.onMouseIn(index);
+      }
+    }, [index === $setup.selected ? (openBlock(), createBlock("div", {
+      key: 0,
+      "class": "selected",
+      style: {
+        background: $props.color[0]
+      }
+    }, toDisplayString(item), 5
+    /* TEXT, STYLE */
+    )) : index === $setup.hover ? (openBlock(), createBlock("div", {
+      key: 1,
+      "class": "hovered",
+      style: {
+        background: $props.color[1]
+      }
+    }, toDisplayString(item), 5
+    /* TEXT, STYLE */
+    )) : (openBlock(), createBlock("div", _hoisted_2$a, toDisplayString(item), 1
+    /* TEXT */
+    ))], 40
+    /* PROPS, HYDRATE_EVENTS */
+    , ["onClick", "onMouseenter", "onMouseleave", "onMousemove"]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))]);
+});
+
+var css_248z$d = ".country-category[data-v-0ce021a5] {\n  display: flex;\n  width: 100%;\n  height: 100%;\n}\n.country-category[data-v-0ce021a5] .category {\n  flex: 1;\n  background: #353941;\n  font-size: 24px;\n  color: #90a0ae;\n}\n.country-category[data-v-0ce021a5] .category .hovered {\n  background: #505050;\n}\n.country-category[data-v-0ce021a5] .category .selected {\n  background: #8ca0ad;\n  color: #fff;\n}\n.country-category[data-v-0ce021a5] .category div {\n  display: flex;\n  align-items: center;\n  justify-content: center;\n  width: 100%;\n  height: 100%;\n}";
+styleInject(css_248z$d);
+
+script$e.render = render$e;
+script$e.__scopeId = "data-v-0ce021a5";
+script$e.__file = "src/components/TransformCategory/TransformCategory.vue";
+
+function TransformCategory (Vue) {
+  Vue.component(script$e.name, script$e);
+}
+
 function index (Vue) {
   Vue.use(Loading);
   Vue.use(flybox);
@@ -46061,6 +46187,7 @@ function index (Vue) {
   Vue.use(TotalRider);
   Vue.use(HotCategory);
   Vue.use(CenterHeader);
+  Vue.use(TransformCategory);
 }
 
 export default index;
