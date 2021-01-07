@@ -1,5 +1,5 @@
 <template>
-    <div class="base-scroll-list">
+    <div class="base-scroll-list" :id="id">
         <!-- 标题容器 -->
         <div class="base-scroll-list-header" 
         :style="{
@@ -10,7 +10,7 @@
             <!-- 标题每一列 -->
             <div 
                 class="header-item base-scroll-list-text" 
-                v-for="(headerItem,i) in header"
+                v-for="(headerItem,i) in headerData"
                 :key="headerItem +i"
                 :style="headerStyle[i]"
                  v-html="headerItem"
@@ -24,6 +24,10 @@
 </template>
 
 <script>
+import {onMounted,ref} from 'vue'
+import {v4 as uuidv4} from 'uuid'
+import useScreen from '../hooks/useScreen'
+import  cloneDeep  from "loadsh/cloneDeep";
 export default {
     name:'BaseScrollList',
     props:{
@@ -40,13 +44,56 @@ export default {
         headerHeight:{
           type:[String,Number],
           default:'50'
+        },
+        //标题是否展示序号
+        headerIndex:{
+            type:Boolean,
+            default:false
+        },
+        headerIndexContent:{
+            type:String,
+            default:"#"
+        },
+
+        headerIndexStyle:{
+            type:Object,
+            default:{}
         }
+        
+
+ 
     },
-    setup(ctx){
+    setup(props){
+        const id = `base-scroll-list${uuidv4()}`
+        const {width,height} = useScreen(id)
+        const headerData = ref([])
+        const headerStyle = ref([])
+        //判断header元素大小是否为空
+        const handleHeader = ()=>{
+            const _headerData = cloneDeep(props.header)
+            const _headerStyle = cloneDeep(props.headerStyle)
+            console.log(_headerData);
+            if(_headerData.length === 0){
+               return
+           }
+           if (props.headerIndex){
+            _headerData.unshift(props.headerIndexContent)
+            _headerStyle.unshift(props.headerIndexStyle)
+           }
+           headerData.value = _headerData
+           headerStyle.value = _headerStyle
+        }
 
+        onMounted(()=>{
+           handleHeader()
+           
+        })
 
-      
-      
+        return{
+            id,
+            headerData,
+            headerStyle
+        } 
     }
 
    
@@ -57,6 +104,10 @@ export default {
 
 <style lang="scss" scoped>
     .base-scroll-list{
+       /*宽高设为100% 交给父给容器确定*/
+        width: 100%;
+        height: 100%;
+
         /*默认文本样式*/
         .base-scroll-list-text{
             padding: 0 10px;
