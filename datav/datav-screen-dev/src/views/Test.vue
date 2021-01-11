@@ -1,27 +1,29 @@
 <template>
     <div  style="width:500px;height:400px;">
         <BaseScrollList
-          :header="header"
-          :headerStyle="headerStyle"
-          :headerIndex = "true"
-
+          :config="config"
         />
-    </div>
+    </div> 
 </template>
 
 <script>
 import {ref} from 'vue'
 export default {
     setup(){
-      const header = ref([])
-      const headerStyle = ref([])
-      const headerIndex = ref(0)
-      header.value = ['姓名','性别','年龄','身高',]
-      headerStyle.value = [{color:'red'}]
+      const config = ref({})
+      const headerData = ['姓名','性别','年龄','身高',]
+      const headerStyle  = [{color:'red'}]
+      config.value = {
+      headerData,
+      headerStyle,
+      headerBackground:'rgb(80,80,80)',
+      headerHeight:'40',
+      headerIndex:true,
+      headerIndexContent:'$',
+      headerIndexStyle:{color:'yellow'}
+      }
       return{
-        header,
-        headerStyle,
-        headerIndex
+        config
       }
     }
 }

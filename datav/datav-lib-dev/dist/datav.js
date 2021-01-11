@@ -48685,73 +48685,390 @@
 
   var cloneDeep_1 = cloneDeep;
 
+  /**
+   * This method returns the first argument it receives.
+   *
+   * @static
+   * @since 0.1.0
+   * @memberOf _
+   * @category Util
+   * @param {*} value Any value.
+   * @returns {*} Returns `value`.
+   * @example
+   *
+   * var object = { 'a': 1 };
+   *
+   * console.log(_.identity(object) === object);
+   * // => true
+   */
+  function identity$1(value) {
+    return value;
+  }
+
+  var identity_1$1 = identity$1;
+
+  /**
+   * A faster alternative to `Function#apply`, this function invokes `func`
+   * with the `this` binding of `thisArg` and the arguments of `args`.
+   *
+   * @private
+   * @param {Function} func The function to invoke.
+   * @param {*} thisArg The `this` binding of `func`.
+   * @param {Array} args The arguments to invoke `func` with.
+   * @returns {*} Returns the result of `func`.
+   */
+  function apply(func, thisArg, args) {
+    switch (args.length) {
+      case 0: return func.call(thisArg);
+      case 1: return func.call(thisArg, args[0]);
+      case 2: return func.call(thisArg, args[0], args[1]);
+      case 3: return func.call(thisArg, args[0], args[1], args[2]);
+    }
+    return func.apply(thisArg, args);
+  }
+
+  var _apply = apply;
+
+  /* Built-in method references for those with the same name as other `lodash` methods. */
+  var nativeMax = Math.max;
+
+  /**
+   * A specialized version of `baseRest` which transforms the rest array.
+   *
+   * @private
+   * @param {Function} func The function to apply a rest parameter to.
+   * @param {number} [start=func.length-1] The start position of the rest parameter.
+   * @param {Function} transform The rest array transform.
+   * @returns {Function} Returns the new function.
+   */
+  function overRest(func, start, transform) {
+    start = nativeMax(start === undefined ? (func.length - 1) : start, 0);
+    return function() {
+      var args = arguments,
+          index = -1,
+          length = nativeMax(args.length - start, 0),
+          array = Array(length);
+
+      while (++index < length) {
+        array[index] = args[start + index];
+      }
+      index = -1;
+      var otherArgs = Array(start + 1);
+      while (++index < start) {
+        otherArgs[index] = args[index];
+      }
+      otherArgs[start] = transform(array);
+      return _apply(func, this, otherArgs);
+    };
+  }
+
+  var _overRest = overRest;
+
+  /**
+   * Creates a function that returns `value`.
+   *
+   * @static
+   * @memberOf _
+   * @since 2.4.0
+   * @category Util
+   * @param {*} value The value to return from the new function.
+   * @returns {Function} Returns the new constant function.
+   * @example
+   *
+   * var objects = _.times(2, _.constant({ 'a': 1 }));
+   *
+   * console.log(objects);
+   * // => [{ 'a': 1 }, { 'a': 1 }]
+   *
+   * console.log(objects[0] === objects[1]);
+   * // => true
+   */
+  function constant$1(value) {
+    return function() {
+      return value;
+    };
+  }
+
+  var constant_1 = constant$1;
+
+  /**
+   * The base implementation of `setToString` without support for hot loop shorting.
+   *
+   * @private
+   * @param {Function} func The function to modify.
+   * @param {Function} string The `toString` result.
+   * @returns {Function} Returns `func`.
+   */
+  var baseSetToString = !_defineProperty ? identity_1$1 : function(func, string) {
+    return _defineProperty(func, 'toString', {
+      'configurable': true,
+      'enumerable': false,
+      'value': constant_1(string),
+      'writable': true
+    });
+  };
+
+  var _baseSetToString = baseSetToString;
+
+  /** Used to detect hot functions by number of calls within a span of milliseconds. */
+  var HOT_COUNT = 800,
+      HOT_SPAN = 16;
+
+  /* Built-in method references for those with the same name as other `lodash` methods. */
+  var nativeNow = Date.now;
+
+  /**
+   * Creates a function that'll short out and invoke `identity` instead
+   * of `func` when it's called `HOT_COUNT` or more times in `HOT_SPAN`
+   * milliseconds.
+   *
+   * @private
+   * @param {Function} func The function to restrict.
+   * @returns {Function} Returns the new shortable function.
+   */
+  function shortOut(func) {
+    var count = 0,
+        lastCalled = 0;
+
+    return function() {
+      var stamp = nativeNow(),
+          remaining = HOT_SPAN - (stamp - lastCalled);
+
+      lastCalled = stamp;
+      if (remaining > 0) {
+        if (++count >= HOT_COUNT) {
+          return arguments[0];
+        }
+      } else {
+        count = 0;
+      }
+      return func.apply(undefined, arguments);
+    };
+  }
+
+  var _shortOut = shortOut;
+
+  /**
+   * Sets the `toString` method of `func` to return `string`.
+   *
+   * @private
+   * @param {Function} func The function to modify.
+   * @param {Function} string The `toString` result.
+   * @returns {Function} Returns `func`.
+   */
+  var setToString = _shortOut(_baseSetToString);
+
+  var _setToString = setToString;
+
+  /**
+   * The base implementation of `_.rest` which doesn't validate or coerce arguments.
+   *
+   * @private
+   * @param {Function} func The function to apply a rest parameter to.
+   * @param {number} [start=func.length-1] The start position of the rest parameter.
+   * @returns {Function} Returns the new function.
+   */
+  function baseRest(func, start) {
+    return _setToString(_overRest(func, start, identity_1$1), func + '');
+  }
+
+  var _baseRest = baseRest;
+
+  /**
+   * Checks if the given arguments are from an iteratee call.
+   *
+   * @private
+   * @param {*} value The potential iteratee value argument.
+   * @param {*} index The potential iteratee index or key argument.
+   * @param {*} object The potential iteratee object argument.
+   * @returns {boolean} Returns `true` if the arguments are from an iteratee call,
+   *  else `false`.
+   */
+  function isIterateeCall(value, index, object) {
+    if (!isObject_1$1(object)) {
+      return false;
+    }
+    var type = typeof index;
+    if (type == 'number'
+          ? (isArrayLike_1$1(object) && _isIndex(index, object.length))
+          : (type == 'string' && index in object)
+        ) {
+      return eq_1(object[index], value);
+    }
+    return false;
+  }
+
+  var _isIterateeCall = isIterateeCall;
+
+  /**
+   * Creates a function like `_.assign`.
+   *
+   * @private
+   * @param {Function} assigner The function to assign values.
+   * @returns {Function} Returns the new assigner function.
+   */
+  function createAssigner(assigner) {
+    return _baseRest(function(object, sources) {
+      var index = -1,
+          length = sources.length,
+          customizer = length > 1 ? sources[length - 1] : undefined,
+          guard = length > 2 ? sources[2] : undefined;
+
+      customizer = (assigner.length > 3 && typeof customizer == 'function')
+        ? (length--, customizer)
+        : undefined;
+
+      if (guard && _isIterateeCall(sources[0], sources[1], guard)) {
+        customizer = length < 3 ? undefined : customizer;
+        length = 1;
+      }
+      object = Object(object);
+      while (++index < length) {
+        var source = sources[index];
+        if (source) {
+          assigner(object, source, index, customizer);
+        }
+      }
+      return object;
+    });
+  }
+
+  var _createAssigner = createAssigner;
+
+  /** Used for built-in method references. */
+  var objectProto$d = Object.prototype;
+
+  /** Used to check objects for own properties. */
+  var hasOwnProperty$a = objectProto$d.hasOwnProperty;
+
+  /**
+   * Assigns own enumerable string keyed properties of source objects to the
+   * destination object. Source objects are applied from left to right.
+   * Subsequent sources overwrite property assignments of previous sources.
+   *
+   * **Note:** This method mutates `object` and is loosely based on
+   * [`Object.assign`](https://mdn.io/Object/assign).
+   *
+   * @static
+   * @memberOf _
+   * @since 0.10.0
+   * @category Object
+   * @param {Object} object The destination object.
+   * @param {...Object} [sources] The source objects.
+   * @returns {Object} Returns `object`.
+   * @see _.assignIn
+   * @example
+   *
+   * function Foo() {
+   *   this.a = 1;
+   * }
+   *
+   * function Bar() {
+   *   this.c = 3;
+   * }
+   *
+   * Foo.prototype.b = 2;
+   * Bar.prototype.d = 4;
+   *
+   * _.assign({ 'a': 0 }, new Foo, new Bar);
+   * // => { 'a': 1, 'c': 3 }
+   */
+  var assign = _createAssigner(function(object, source) {
+    if (_isPrototype(source) || isArrayLike_1$1(source)) {
+      _copyObject(source, keys_1(source), object);
+      return;
+    }
+    for (var key in source) {
+      if (hasOwnProperty$a.call(source, key)) {
+        _assignValue(object, key, source[key]);
+      }
+    }
+  });
+
+  var assign_1 = assign;
+
   var script$f = {
     name: 'BaseScrollList',
     props: {
-      //标题数据,格式:['a','b','c']
-      header: Array,
-      //标题文字样式,格式:[{},{},{}]
-      headerStyle: Array,
-      //标题背景颜色
-      headerBackground: {
-        type: String,
-        "default": 'rgb(90,90,90)'
-      },
-      //标题高度
-      headerHeight: {
-        type: [String, Number],
-        "default": '50'
-      },
-      //标题是否展示序号
-      headerIndex: {
-        type: Boolean,
-        "default": false
-      },
-      headerIndexContent: {
-        type: String,
-        "default": "#"
-      },
-      headerIndexStyle: {
+      config: {
         type: Object,
-        "default": {}
+        "default": function _default() {
+          return {};
+        }
       }
     },
     setup: function setup(props) {
       var id = "base-scroll-list".concat(v4());
 
-      var _useScreen = useScreen(id);
+      var _useScreen = useScreen(id),
+          width = _useScreen.width;
 
       var headerData = vue.ref([]);
-      var headerStyle = vue.ref([]); //判断header元素大小是否为空
+      var headerStyle = vue.ref([]); //合并后的对象
 
-      var handleHeader = function handleHeader() {
-        var _headerData = cloneDeep_1(props.header);
+      var actualConfig = vue.ref([]); //默认值对象
 
-        var _headerStyle = cloneDeep_1(props.headerStyle);
+      var defaultConfig = {
+        //标题数据,格式:['a','b','c']
+        headerData: [],
+        //标题文字样式,格式:[{},{},{}]
+        headerStyle: [],
+        //标题背景颜色
+        headerBackground: 'rgb(90,90,90)',
+        //标题高度
+        headerHeight: 35,
+        //标题是否展示序号
+        headerIndex: false,
+        //显示序号需要展示的内容
+        headerIndexContent: '#',
+        //显示序号需要展示的内容样式
+        headerIndexStyle: {
+          width: '50px'
+        }
+      }; //用于存放每一列的宽度
 
-        console.log(_headerData);
+      var columnWidth = vue.ref([]);
+
+      var handleHeader = function handleHeader(config) {
+        var _headerData = cloneDeep_1(config.headerData);
+
+        var _headerStyle = cloneDeep_1(config.headerStyle); //判断header元素大小是否为空
+
 
         if (_headerData.length === 0) {
           return;
         }
 
-        if (props.headerIndex) {
-          _headerData.unshift(props.headerIndexContent);
+        if (config.headerIndex) {
+          _headerData.unshift(config.headerIndexContent);
 
-          _headerStyle.unshift(props.headerIndexStyle);
-        }
+          _headerStyle.unshift(config.headerIndexStyle);
+        } //动态计算header中每一列的宽度 
 
+
+        var avgWidth = width.value / _headerData.length; //动态定义一个数组，数组的长度和_headerData.length相同
+
+        var _columnWidth = new Array(_headerData.length).fill(avgWidth);
+
+        columnWidth.value = _columnWidth;
+        console.log(columnWidth.value);
         headerData.value = _headerData;
         headerStyle.value = _headerStyle;
       };
 
       vue.onMounted(function () {
-        handleHeader();
+        //将传入的值和默认值进行合并
+        var _actualConfig = assign_1(defaultConfig, props.config);
+
+        handleHeader(_actualConfig);
+        actualConfig.value = _actualConfig;
       });
       return {
         id: id,
         headerData: headerData,
-        headerStyle: headerStyle
+        headerStyle: headerStyle,
+        actualConfig: actualConfig,
+        columnWidth: columnWidth
       };
     }
   };
@@ -48775,14 +49092,14 @@
     }, [vue.createCommentVNode(" 标题容器 "), vue.createVNode("div", {
       "class": "base-scroll-list-header",
       style: {
-        backgroundColor: $props.headerBackground,
-        height: "".concat($props.headerHeight, "px")
+        backgroundColor: $setup.actualConfig.headerBackground,
+        height: "".concat($setup.actualConfig.headerHeight, "px")
       }
     }, [vue.createCommentVNode(" 标题每一列 "), (vue.openBlock(true), vue.createBlock(vue.Fragment, null, vue.renderList($setup.headerData, function (headerItem, i) {
       return vue.openBlock(), vue.createBlock("div", {
         "class": "header-item base-scroll-list-text",
         key: headerItem + i,
-        style: $props.headerStyle[i],
+        style: $setup.headerStyle[i],
         innerHTML: headerItem
       }, null, 12
       /* STYLE, PROPS */

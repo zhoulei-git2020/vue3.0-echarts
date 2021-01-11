@@ -3,8 +3,8 @@
         <!-- 标题容器 -->
         <div class="base-scroll-list-header" 
         :style="{
-            backgroundColor:headerBackground,
-            height:`${headerHeight}px`
+            backgroundColor:actualConfig.headerBackground,
+            height:`${actualConfig.headerHeight}px`
          }"
         >
             <!-- 标题每一列 -->
@@ -27,77 +27,92 @@
 import {onMounted,ref} from 'vue'
 import {v4 as uuidv4} from 'uuid'
 import useScreen from '../hooks/useScreen'
-import  cloneDeep  from "loadsh/cloneDeep";
+import  cloneDeep  from "loadsh/cloneDeep"
+import assign from 'loadsh/assign'
 export default {
     name:'BaseScrollList',
     props:{
-        //标题数据,格式:['a','b','c']
-        header:Array,
-        //标题文字样式,格式:[{},{},{}]
-        headerStyle:Array,
-        //标题背景颜色
-        headerBackground:{
-          type:String,
-          default:'rgb(90,90,90)'
-        },
-        //标题高度
-        headerHeight:{
-          type:[String,Number],
-          default:'50'
-        },
-        //标题是否展示序号
-        headerIndex:{
-            type:Boolean,
-            default:false
-        },
-        headerIndexContent:{
-            type:String,
-            default:"#"
-        },
-
-        headerIndexStyle:{
-            type:Object,
-            default:{}
-        }
-        
-
- 
+        config:{
+        type:Object,
+        default:()=>({})
+      }
     },
     setup(props){
         const id = `base-scroll-list${uuidv4()}`
         const {width,height} = useScreen(id)
         const headerData = ref([])
         const headerStyle = ref([])
-        //判断header元素大小是否为空
-        const handleHeader = ()=>{
-            const _headerData = cloneDeep(props.header)
-            const _headerStyle = cloneDeep(props.headerStyle)
-            console.log(_headerData);
+       
+       //合并后的对象
+       const actualConfig = ref([])
+
+        //默认值对象
+        const defaultConfig = {
+            //标题数据,格式:['a','b','c']
+            headerData:[],
+            //标题文字样式,格式:[{},{},{}]
+            headerStyle:[],
+            //标题背景颜色
+            headerBackground:'rgb(90,90,90)',
+            //标题高度
+            headerHeight:35,
+            //标题是否展示序号
+            headerIndex:false,
+            //显示序号需要展示的内容
+            headerIndexContent:'#',
+            //显示序号需要展示的内容样式
+            headerIndexStyle:{
+                width:'50px'
+            }
+        }
+        
+        //用于存放每一列的宽度
+        const columnWidth = ref([])
+
+        const handleHeader = (config)=>{
+            const _headerData = cloneDeep(config.headerData)
+            const _headerStyle = cloneDeep(config.headerStyle)
+           //判断header元素大小是否为空
             if(_headerData.length === 0){
                return
            }
-           if (props.headerIndex){
-            _headerData.unshift(props.headerIndexContent)
-            _headerStyle.unshift(props.headerIndexStyle)
+           if (config.headerIndex){
+            _headerData.unshift(config.headerIndexContent)
+            _headerStyle.unshift(config.headerIndexStyle)
            }
+
+           //动态计算header中每一列的宽度 
+           const avgWidth = width.value/_headerData.length  
+           //动态定义一个数组，数组的长度和_headerData.length相同
+           const _columnWidth = new Array(_headerData.length).fill(avgWidth)
+           columnWidth.value = _columnWidth
+           console.log(columnWidth.value)
+
            headerData.value = _headerData
            headerStyle.value = _headerStyle
         }
 
         onMounted(()=>{
-           handleHeader()
+            //将传入的值和默认值进行合并
+           const _actualConfig = assign(defaultConfig,props.config)
+          
            
+           handleHeader(_actualConfig)
+           actualConfig.value = _actualConfig
         })
 
         return{
             id,
             headerData,
-            headerStyle
+            headerStyle,
+            actualConfig,
+            columnWidth,
+            
+            
+
+
         } 
     }
-
-   
-
 }
 </script>
 
