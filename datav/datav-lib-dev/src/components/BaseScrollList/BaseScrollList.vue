@@ -12,7 +12,10 @@
                 class="header-item base-scroll-list-text" 
                 v-for="(headerItem,i) in headerData"
                 :key="headerItem +i"
-                :style="headerStyle[i]"
+                :style="{
+                    width: `${columnWidth[i]}px`,
+                    ...headerStyle[i]                 
+                    }"
                  v-html="headerItem"
             >   
             </div>
@@ -62,7 +65,9 @@ export default {
             headerIndexContent:'#',
             //显示序号需要展示的内容样式
             headerIndexStyle:{
-                width:'50px'
+                width:'50px',
+                color:'yellow'
+                
             }
         }
         
@@ -82,12 +87,28 @@ export default {
            }
 
            //动态计算header中每一列的宽度 
-           const avgWidth = width.value/_headerData.length  
+            
+            let usedWidth = 0 //获取定义过的宽度
+            let usedColumnNum = 0 //获取定义过的宽度列数的个数
+
+            //遍历_headerStyle的每个元素把定义过的宽度综合和列数个数记录下来
+            _headerStyle.forEach(style => {
+                if(style.width){
+                    usedWidth += +style.width.replace('px','')
+                    usedColumnNum ++
+                }
+            });
+            //(总宽度-定义过的宽度综合) / (列数总个数-定义过的列数) = 剩余的宽度除以剩余的列数
+           const avgWidth = (width.value -usedWidth) /(_headerData.length - usedColumnNum)  
            //动态定义一个数组，数组的长度和_headerData.length相同
            const _columnWidth = new Array(_headerData.length).fill(avgWidth)
-           columnWidth.value = _columnWidth
-           console.log(columnWidth.value)
+           
 
+
+           
+          
+           columnWidth.value = _columnWidth
+            console.log(columnWidth.value)
            headerData.value = _headerData
            headerStyle.value = _headerStyle
         }
@@ -99,6 +120,7 @@ export default {
            
            handleHeader(_actualConfig)
            actualConfig.value = _actualConfig
+           console.log(actualConfig.value);
         })
 
         return{

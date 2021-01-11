@@ -49023,7 +49023,8 @@
         headerIndexContent: '#',
         //显示序号需要展示的内容样式
         headerIndexStyle: {
-          width: '50px'
+          width: '50px',
+          color: 'yellow'
         }
       }; //用于存放每一列的宽度
 
@@ -49046,7 +49047,20 @@
         } //动态计算header中每一列的宽度 
 
 
-        var avgWidth = width.value / _headerData.length; //动态定义一个数组，数组的长度和_headerData.length相同
+        var usedWidth = 0; //获取定义过的宽度
+
+        var usedColumnNum = 0; //获取定义过的宽度列数的个数
+        //遍历_headerStyle的每个元素把定义过的宽度综合和列数个数记录下来
+
+        _headerStyle.forEach(function (style) {
+          if (style.width) {
+            usedWidth += +style.width.replace('px', '');
+            usedColumnNum++;
+          }
+        }); //(总宽度-定义过的宽度综合) / (列数总个数-定义过的列数) = 剩余的宽度除以剩余的列数
+
+
+        var avgWidth = (width.value - usedWidth) / (_headerData.length - usedColumnNum); //动态定义一个数组，数组的长度和_headerData.length相同
 
         var _columnWidth = new Array(_headerData.length).fill(avgWidth);
 
@@ -49062,6 +49076,7 @@
 
         handleHeader(_actualConfig);
         actualConfig.value = _actualConfig;
+        console.log(actualConfig.value);
       });
       return {
         id: id,
@@ -49072,6 +49087,27 @@
       };
     }
   };
+
+  function _defineProperty$1(obj, key, value) {
+    if (key in obj) {
+      Object.defineProperty(obj, key, {
+        value: value,
+        enumerable: true,
+        configurable: true,
+        writable: true
+      });
+    } else {
+      obj[key] = value;
+    }
+
+    return obj;
+  }
+
+  var defineProperty$1 = _defineProperty$1;
+
+  function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
+
+  function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
   var _withId$d = /*#__PURE__*/vue.withScopeId("data-v-69eed30f");
 
@@ -49099,7 +49135,9 @@
       return vue.openBlock(), vue.createBlock("div", {
         "class": "header-item base-scroll-list-text",
         key: headerItem + i,
-        style: $setup.headerStyle[i],
+        style: _objectSpread({
+          width: "".concat($setup.columnWidth[i], "px")
+        }, $setup.headerStyle[i]),
         innerHTML: headerItem
       }, null, 12
       /* STYLE, PROPS */

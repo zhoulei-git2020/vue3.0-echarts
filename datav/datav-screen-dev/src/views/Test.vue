@@ -12,7 +12,7 @@ export default {
     setup(){
       const config = ref({})
       const headerData = ['姓名','性别','年龄','身高',]
-      const headerStyle  = [{color:'red'}]
+      const headerStyle  = [{color:'red',width:'150px'}]
       config.value = {
       headerData,
       headerStyle,
@@ -20,7 +20,7 @@ export default {
       headerHeight:'40',
       headerIndex:true,
       headerIndexContent:'$',
-      headerIndexStyle:{color:'yellow'}
+      //headerIndexStyle:{width:'80px',color:'red'}
       }
       return{
         config
