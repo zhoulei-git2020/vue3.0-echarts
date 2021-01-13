@@ -48987,6 +48987,27 @@
 
   var assign_1 = assign;
 
+  var defaultConfig = {
+    //标题数据,格式:['a','b','c']
+    headerData: [],
+    //标题文字样式,格式:[{},{},{}]
+    headerStyle: [],
+    //标题背景颜色
+    headerBackground: 'rgb(90,90,90)',
+    //标题高度
+    headerHeight: 35,
+    //标题是否展示序号
+    headerIndex: false,
+    //显示序号需要展示的内容
+    headerIndexContent: '#',
+    //显示序号需要展示的内容样式
+    headerIndexStyle: {
+      width: '50px',
+      color: 'yellow'
+    },
+    //数据项，二维数组
+    data: []
+  };
   var script$f = {
     name: 'BaseScrollList',
     props: {
@@ -49006,29 +49027,11 @@
       var headerData = vue.ref([]);
       var headerStyle = vue.ref([]); //合并后的对象
 
-      var actualConfig = vue.ref([]); //默认值对象
+      var actualConfig = vue.ref([]); //用于存放每一列的宽度
 
-      var defaultConfig = {
-        //标题数据,格式:['a','b','c']
-        headerData: [],
-        //标题文字样式,格式:[{},{},{}]
-        headerStyle: [],
-        //标题背景颜色
-        headerBackground: 'rgb(90,90,90)',
-        //标题高度
-        headerHeight: 35,
-        //标题是否展示序号
-        headerIndex: false,
-        //显示序号需要展示的内容
-        headerIndexContent: '#',
-        //显示序号需要展示的内容样式
-        headerIndexStyle: {
-          width: '50px',
-          color: 'yellow'
-        }
-      }; //用于存放每一列的宽度
+      var columnWidth = vue.ref([]); //每一行的渲染数据
 
-      var columnWidth = vue.ref([]);
+      var rowsData = vue.ref([]);
 
       var handleHeader = function handleHeader(config) {
         var _headerData = cloneDeep_1(config.headerData);
@@ -49065,9 +49068,15 @@
         var _columnWidth = new Array(_headerData.length).fill(avgWidth);
 
         columnWidth.value = _columnWidth;
-        console.log(columnWidth.value);
         headerData.value = _headerData;
         headerStyle.value = _headerStyle;
+      }; //动态高度计算
+
+
+      var handleRows = function handleRows(config) {
+        //赋值rowsData
+        rowsData.value = config.data || [];
+        console.log(rowsData.value);
       };
 
       vue.onMounted(function () {
@@ -49075,15 +49084,16 @@
         var _actualConfig = assign_1(defaultConfig, props.config);
 
         handleHeader(_actualConfig);
+        handleRows(_actualConfig);
         actualConfig.value = _actualConfig;
-        console.log(actualConfig.value);
       });
       return {
         id: id,
         headerData: headerData,
         headerStyle: headerStyle,
         actualConfig: actualConfig,
-        columnWidth: columnWidth
+        columnWidth: columnWidth,
+        rowsData: rowsData
       };
     }
   };
@@ -49111,16 +49121,6 @@
 
   var _withId$d = /*#__PURE__*/vue.withScopeId("data-v-69eed30f");
 
-  vue.pushScopeId("data-v-69eed30f");
-
-  var _hoisted_1$c = /*#__PURE__*/vue.createVNode("div", {
-    "class": "base-scroll-list-rows"
-  }, null, -1
-  /* HOISTED */
-  );
-
-  vue.popScopeId();
-
   var render$f = /*#__PURE__*/_withId$d(function (_ctx, _cache, $props, $setup, $data, $options) {
     return vue.openBlock(), vue.createBlock("div", {
       "class": "base-scroll-list",
@@ -49146,12 +49146,32 @@
     /* KEYED_FRAGMENT */
     ))], 4
     /* STYLE */
-    ), vue.createCommentVNode(" 内容展示容器 "), _hoisted_1$c], 8
+    ), vue.createCommentVNode(" 内容展示容器 "), (vue.openBlock(true), vue.createBlock(vue.Fragment, null, vue.renderList($setup.rowsData, function (rowData, rowIndex) {
+      return vue.openBlock(), vue.createBlock("div", {
+        "class": "base-scroll-list-rows",
+        key: rowIndex
+      }, [vue.createCommentVNode(" 每一列的内容 "), (vue.openBlock(true), vue.createBlock(vue.Fragment, null, vue.renderList(rowData, function (colData, colIndex) {
+        return vue.openBlock(), vue.createBlock("div", {
+          "class": "base-scroll-list-columns",
+          key: colData + colIndex,
+          style: {
+            width: "".concat($setup.columnWidth[colIndex], "px")
+          },
+          innerHTML: colData
+        }, null, 12
+        /* STYLE, PROPS */
+        , ["innerHTML"]);
+      }), 128
+      /* KEYED_FRAGMENT */
+      ))]);
+    }), 128
+    /* KEYED_FRAGMENT */
+    ))], 8
     /* PROPS */
     , ["id"]);
   });
 
-  var css_248z$e = "@charset \"UTF-8\";\n.base-scroll-list[data-v-69eed30f] {\n  /*宽高设为100% 交给父给容器确定*/\n  width: 100%;\n  height: 100%;\n  /*默认文本样式*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-text {\n  padding: 0 10px;\n  white-space: nowrap;\n  /*文本不换行*/\n  overflow: hidden;\n  /*多出部分隐藏*/\n  text-overflow: ellipsis;\n  /*文本超出部分用省略号代替*/\n  box-sizing: border-box;\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-header {\n  display: flex;\n  /*水平布局*/\n  font-size: 15px;\n  /*字体大小*/\n  align-items: center;\n  /*垂直居中*/\n}";
+  var css_248z$e = "@charset \"UTF-8\";\n.base-scroll-list[data-v-69eed30f] {\n  /*宽高设为100% 交给父给容器确定*/\n  width: 100%;\n  height: 100%;\n  /*默认文本样式*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-text {\n  padding: 0 10px;\n  white-space: nowrap;\n  /*文本不换行*/\n  overflow: hidden;\n  /*多出部分隐藏*/\n  text-overflow: ellipsis;\n  /*文本超出部分用省略号代替*/\n  box-sizing: border-box;\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-header {\n  display: flex;\n  /*水平布局*/\n  font-size: 15px;\n  /*字体大小*/\n  align-items: center;\n  /*垂直居中*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-rows {\n  display: flex;\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-rows .base-scroll-list-columns {\n  font-size: 28px;\n}";
   styleInject(css_248z$e);
 
   script$f.render = render$f;

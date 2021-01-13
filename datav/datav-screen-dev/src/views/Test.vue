@@ -13,12 +13,19 @@ export default {
       const config = ref({})
       const headerData = ['姓名','性别','年龄','身高',]
       const headerStyle  = [{color:'red',width:'150px'}]
+      const data = []
+       for(let i = 0; i < 5; i++){
+         data.push(['温度'+ (i+1), Math.floor(Math.random() *10 +20),Math.floor(Math.random() * 10000 + 10000)])
+       }
+
+
       config.value = {
+      data,
       headerData,
       headerStyle,
       headerBackground:'rgb(80,80,80)',
       headerHeight:'40',
-      headerIndex:true,
+      headerIndex:false,
       headerIndexContent:'$',
       //headerIndexStyle:{width:'80px',color:'red'}
       }

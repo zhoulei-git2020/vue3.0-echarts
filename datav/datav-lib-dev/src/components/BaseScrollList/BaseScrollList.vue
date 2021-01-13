@@ -22,7 +22,24 @@
         </div>
 
         <!-- 内容展示容器 -->
-        <div class="base-scroll-list-rows"></div>
+        <div 
+            class="base-scroll-list-rows"
+            v-for="(rowData , rowIndex) in rowsData"
+            :key="rowIndex"
+        >
+        <!-- 每一列的内容 -->
+            <div
+                class="base-scroll-list-columns"
+                v-for="(colData,colIndex) in rowData"
+                :key="colData+colIndex"
+                :style="{
+                    width: `${columnWidth[colIndex]}px`,             
+                }"
+                v-html="colData"
+            >
+                
+            </div>
+        </div>
     </div>
 </template>
 
@@ -32,24 +49,8 @@ import {v4 as uuidv4} from 'uuid'
 import useScreen from '../hooks/useScreen'
 import  cloneDeep  from "loadsh/cloneDeep"
 import assign from 'loadsh/assign'
-export default {
-    name:'BaseScrollList',
-    props:{
-        config:{
-        type:Object,
-        default:()=>({})
-      }
-    },
-    setup(props){
-        const id = `base-scroll-list${uuidv4()}`
-        const {width,height} = useScreen(id)
-        const headerData = ref([])
-        const headerStyle = ref([])
-       
-       //合并后的对象
-       const actualConfig = ref([])
 
-        //默认值对象
+            //默认值对象
         const defaultConfig = {
             //标题数据,格式:['a','b','c']
             headerData:[],
@@ -66,15 +67,35 @@ export default {
             //显示序号需要展示的内容样式
             headerIndexStyle:{
                 width:'50px',
-                color:'yellow'
-                
-            }
+                color:'yellow'  
+            },
+            //数据项，二维数组
+            data:[]
         }
-        
-        //用于存放每一列的宽度
-        const columnWidth = ref([])
 
-        const handleHeader = (config)=>{
+
+    export default {
+    name:'BaseScrollList',
+    props:{
+        config:{
+        type:Object,
+        default:()=>({})
+      }
+    },
+    setup(props){
+        const id = `base-scroll-list${uuidv4()}`
+        const {width,height} = useScreen(id)
+        const headerData = ref([])
+        const headerStyle = ref([])
+       //合并后的对象
+       const actualConfig = ref([])
+       //用于存放每一列的宽度
+       const columnWidth = ref([])
+
+       //每一行的渲染数据
+       const rowsData = ref([])
+
+       const handleHeader = (config)=>{
             const _headerData = cloneDeep(config.headerData)
             const _headerStyle = cloneDeep(config.headerStyle)
            //判断header元素大小是否为空
@@ -108,19 +129,24 @@ export default {
            
           
            columnWidth.value = _columnWidth
-            console.log(columnWidth.value)
            headerData.value = _headerData
            headerStyle.value = _headerStyle
         }
 
+        //动态高度计算
+       const handleRows = (config) =>{
+           //赋值rowsData
+           rowsData.value = config.data || []
+           console.log(rowsData.value);
+        } 
+
         onMounted(()=>{
             //将传入的值和默认值进行合并
            const _actualConfig = assign(defaultConfig,props.config)
-          
-           
            handleHeader(_actualConfig)
+           handleRows(_actualConfig)
            actualConfig.value = _actualConfig
-           console.log(actualConfig.value);
+           
         })
 
         return{
@@ -129,10 +155,8 @@ export default {
             headerStyle,
             actualConfig,
             columnWidth,
+            rowsData
             
-            
-
-
         } 
     }
 }
@@ -159,8 +183,15 @@ export default {
             font-size: 15px; /*字体大小*/
             align-items: center;/*垂直居中*/
             .header-item{
-
             }
         }
+        .base-scroll-list-rows{
+            display: flex;
+            .base-scroll-list-columns{
+                
+                font-size: 28px;
+            }
+        }
+
     }
 </style>
