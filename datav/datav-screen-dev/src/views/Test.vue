@@ -25,9 +25,10 @@ export default {
       headerStyle,
       headerBackground:'rgb(80,80,80)',
       headerHeight:'40',
-      headerIndex:false,
+      headerIndex:true,
       headerIndexContent:'$',
       //headerIndexStyle:{width:'80px',color:'red'}
+      rowNum:20
       }
       return{
         config

@@ -26,6 +26,9 @@
             class="base-scroll-list-rows"
             v-for="(rowData , rowIndex) in rowsData"
             :key="rowIndex"
+            :style="{
+                height:`${rowHeight[rowIndex]}px`
+            }"
         >
         <!-- 每一列的内容 -->
             <div
@@ -70,7 +73,8 @@ import assign from 'loadsh/assign'
                 color:'yellow'  
             },
             //数据项，二维数组
-            data:[]
+            data:[],
+            rowNum:10
         }
 
 
@@ -95,9 +99,16 @@ import assign from 'loadsh/assign'
        //每一行的渲染数据
        const rowsData = ref([])
 
+       //每行的高度
+       const rowHeight = ref([])
+
+        //数据的行数
+       const rowNum = ref(defaultConfig.rowNum)
+
        const handleHeader = (config)=>{
             const _headerData = cloneDeep(config.headerData)
             const _headerStyle = cloneDeep(config.headerStyle)
+            const _rowsData = cloneDeep(config.data)
            //判断header元素大小是否为空
             if(_headerData.length === 0){
                return
@@ -105,6 +116,9 @@ import assign from 'loadsh/assign'
            if (config.headerIndex){
             _headerData.unshift(config.headerIndexContent)
             _headerStyle.unshift(config.headerIndexStyle)
+            _rowsData.forEach((rows,index) =>{
+                rows.unshift(index+1)
+            })
            }
 
            //动态计算header中每一列的宽度 
@@ -124,6 +138,12 @@ import assign from 'loadsh/assign'
            //动态定义一个数组，数组的长度和_headerData.length相同
            const _columnWidth = new Array(_headerData.length).fill(avgWidth)
            
+            _headerStyle.forEach((style,index) => {
+                if(style.width){
+                    const headerWidth = +style.width.replace('px','')
+                    _columnWidth[index] = headerWidth
+                }
+            });
 
 
            
@@ -131,18 +151,30 @@ import assign from 'loadsh/assign'
            columnWidth.value = _columnWidth
            headerData.value = _headerData
            headerStyle.value = _headerStyle
+           rowsData.value = _rowsData
         }
 
-        //动态高度计算
+        //动态计算行数据高度
        const handleRows = (config) =>{
-           //赋值rowsData
-           rowsData.value = config.data || []
-           console.log(rowsData.value);
+
+           const {headerHeight} = config
+           rowNum.value = config.rowNum
+           const unusedHeight = height.value - headerHeight
+           //如果rowNum的值大于实际数据长度则以实际数据长度为准
+            if(rowNum.value > rowsData.value.length){
+                 rowNum.value = rowsData.value.length
+            }
+               const avgHeight = unusedHeight/rowNum.value
+            
+           rowHeight.value = new Array(rowNum.value).fill(avgHeight)
+
         } 
 
         onMounted(()=>{
             //将传入的值和默认值进行合并
            const _actualConfig = assign(defaultConfig,props.config)
+           //赋值rowsData
+           rowsData.value = _actualConfig.data || []
            handleHeader(_actualConfig)
            handleRows(_actualConfig)
            actualConfig.value = _actualConfig
@@ -155,7 +187,8 @@ import assign from 'loadsh/assign'
             headerStyle,
             actualConfig,
             columnWidth,
-            rowsData
+            rowsData,
+            rowHeight
             
         } 
     }
@@ -187,6 +220,7 @@ import assign from 'loadsh/assign'
         }
         .base-scroll-list-rows{
             display: flex;
+            align-items: center;
             .base-scroll-list-columns{
                 
                 font-size: 28px;

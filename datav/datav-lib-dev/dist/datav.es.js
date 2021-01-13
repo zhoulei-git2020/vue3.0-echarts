@@ -48999,7 +48999,8 @@ var defaultConfig = {
     color: 'yellow'
   },
   //数据项，二维数组
-  data: []
+  data: [],
+  rowNum: 10
 };
 var script$f = {
   name: 'BaseScrollList',
@@ -49015,7 +49016,8 @@ var script$f = {
     var id = "base-scroll-list".concat(v4());
 
     var _useScreen = useScreen(id),
-        width = _useScreen.width;
+        width = _useScreen.width,
+        height = _useScreen.height;
 
     var headerData = ref([]);
     var headerStyle = ref([]); //合并后的对象
@@ -49024,12 +49026,18 @@ var script$f = {
 
     var columnWidth = ref([]); //每一行的渲染数据
 
-    var rowsData = ref([]);
+    var rowsData = ref([]); //每行的高度
+
+    var rowHeight = ref([]); //数据的行数
+
+    var rowNum = ref(defaultConfig.rowNum);
 
     var handleHeader = function handleHeader(config) {
       var _headerData = cloneDeep_1(config.headerData);
 
-      var _headerStyle = cloneDeep_1(config.headerStyle); //判断header元素大小是否为空
+      var _headerStyle = cloneDeep_1(config.headerStyle);
+
+      var _rowsData = cloneDeep_1(config.data); //判断header元素大小是否为空
 
 
       if (_headerData.length === 0) {
@@ -49040,6 +49048,10 @@ var script$f = {
         _headerData.unshift(config.headerIndexContent);
 
         _headerStyle.unshift(config.headerIndexStyle);
+
+        _rowsData.forEach(function (rows, index) {
+          rows.unshift(index + 1);
+        });
       } //动态计算header中每一列的宽度 
 
 
@@ -49060,22 +49072,39 @@ var script$f = {
 
       var _columnWidth = new Array(_headerData.length).fill(avgWidth);
 
+      _headerStyle.forEach(function (style, index) {
+        if (style.width) {
+          var headerWidth = +style.width.replace('px', '');
+          _columnWidth[index] = headerWidth;
+        }
+      });
+
       columnWidth.value = _columnWidth;
       headerData.value = _headerData;
       headerStyle.value = _headerStyle;
-    }; //动态高度计算
+      rowsData.value = _rowsData;
+    }; //动态计算行数据高度
 
 
     var handleRows = function handleRows(config) {
-      //赋值rowsData
-      rowsData.value = config.data || [];
-      console.log(rowsData.value);
+      var headerHeight = config.headerHeight;
+      rowNum.value = config.rowNum;
+      var unusedHeight = height.value - headerHeight; //如果rowNum的值大于实际数据长度则以实际数据长度为准
+
+      if (rowNum.value > rowsData.value.length) {
+        rowNum.value = rowsData.value.length;
+      }
+
+      var avgHeight = unusedHeight / rowNum.value;
+      rowHeight.value = new Array(rowNum.value).fill(avgHeight);
     };
 
     onMounted(function () {
       //将传入的值和默认值进行合并
-      var _actualConfig = assign_1(defaultConfig, props.config);
+      var _actualConfig = assign_1(defaultConfig, props.config); //赋值rowsData
 
+
+      rowsData.value = _actualConfig.data || [];
       handleHeader(_actualConfig);
       handleRows(_actualConfig);
       actualConfig.value = _actualConfig;
@@ -49086,7 +49115,8 @@ var script$f = {
       headerStyle: headerStyle,
       actualConfig: actualConfig,
       columnWidth: columnWidth,
-      rowsData: rowsData
+      rowsData: rowsData,
+      rowHeight: rowHeight
     };
   }
 };
@@ -49142,7 +49172,10 @@ var render$f = /*#__PURE__*/_withId$d(function (_ctx, _cache, $props, $setup, $d
   ), createCommentVNode(" 内容展示容器 "), (openBlock(true), createBlock(Fragment, null, renderList($setup.rowsData, function (rowData, rowIndex) {
     return openBlock(), createBlock("div", {
       "class": "base-scroll-list-rows",
-      key: rowIndex
+      key: rowIndex,
+      style: {
+        height: "".concat($setup.rowHeight[rowIndex], "px")
+      }
     }, [createCommentVNode(" 每一列的内容 "), (openBlock(true), createBlock(Fragment, null, renderList(rowData, function (colData, colIndex) {
       return openBlock(), createBlock("div", {
         "class": "base-scroll-list-columns",
@@ -49156,7 +49189,9 @@ var render$f = /*#__PURE__*/_withId$d(function (_ctx, _cache, $props, $setup, $d
       , ["innerHTML"]);
     }), 128
     /* KEYED_FRAGMENT */
-    ))]);
+    ))], 4
+    /* STYLE */
+    );
   }), 128
   /* KEYED_FRAGMENT */
   ))], 8
@@ -49164,7 +49199,7 @@ var render$f = /*#__PURE__*/_withId$d(function (_ctx, _cache, $props, $setup, $d
   , ["id"]);
 });
 
-var css_248z$e = "@charset \"UTF-8\";\n.base-scroll-list[data-v-69eed30f] {\n  /*宽高设为100% 交给父给容器确定*/\n  width: 100%;\n  height: 100%;\n  /*默认文本样式*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-text {\n  padding: 0 10px;\n  white-space: nowrap;\n  /*文本不换行*/\n  overflow: hidden;\n  /*多出部分隐藏*/\n  text-overflow: ellipsis;\n  /*文本超出部分用省略号代替*/\n  box-sizing: border-box;\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-header {\n  display: flex;\n  /*水平布局*/\n  font-size: 15px;\n  /*字体大小*/\n  align-items: center;\n  /*垂直居中*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-rows {\n  display: flex;\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-rows .base-scroll-list-columns {\n  font-size: 28px;\n}";
+var css_248z$e = "@charset \"UTF-8\";\n.base-scroll-list[data-v-69eed30f] {\n  /*宽高设为100% 交给父给容器确定*/\n  width: 100%;\n  height: 100%;\n  /*默认文本样式*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-text {\n  padding: 0 10px;\n  white-space: nowrap;\n  /*文本不换行*/\n  overflow: hidden;\n  /*多出部分隐藏*/\n  text-overflow: ellipsis;\n  /*文本超出部分用省略号代替*/\n  box-sizing: border-box;\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-header {\n  display: flex;\n  /*水平布局*/\n  font-size: 15px;\n  /*字体大小*/\n  align-items: center;\n  /*垂直居中*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-rows {\n  display: flex;\n  align-items: center;\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-rows .base-scroll-list-columns {\n  font-size: 28px;\n}";
 styleInject(css_248z$e);
 
 script$f.render = render$f;
