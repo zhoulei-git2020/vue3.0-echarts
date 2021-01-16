@@ -11,8 +11,10 @@ import {ref} from 'vue'
 export default {
     setup(){
       const config = ref({})
-      const headerData = ['姓名','性别','年龄','身高',]
-      const headerStyle  = [{color:'red',width:'150px'}]
+      const headerData = ['姓名','性别','年龄','身高',] //标题栏内容
+      const headerStyle  = [{color:'red',width:'150px'}] //标题栏样式
+      const rowStyle  = [{},{color:'red'}] //列内容样式
+      const rowBg = [] //
       const data = []
        for(let i = 0; i < 5; i++){
          data.push(['温度'+ (i+1), Math.floor(Math.random() *10 +20),Math.floor(Math.random() * 10000 + 10000)])
@@ -21,6 +23,7 @@ export default {
 
       config.value = {
       data,
+      rowStyle,
       headerData,
       headerStyle,
       headerBackground:'rgb(80,80,80)',

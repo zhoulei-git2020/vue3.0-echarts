@@ -49000,14 +49000,20 @@
     headerIndex: false,
     //显示序号需要展示的内容
     headerIndexContent: '#',
-    //显示序号需要展示的内容样式
+    //显示序号列标题样式
     headerIndexStyle: {
       width: '50px',
       color: 'yellow'
     },
     //数据项，二维数组
     data: [],
-    rowNum: 10
+    rowNum: 10,
+    //行样式
+    rowStyle: [],
+    //序号列内容样式
+    rowIndexStyle: {
+      width: '50px'
+    }
   };
   var script$f = {
     name: 'BaseScrollList',
@@ -49037,14 +49043,18 @@
 
       var rowHeight = vue.ref([]); //数据的行数
 
-      var rowNum = vue.ref(defaultConfig.rowNum);
+      var rowNum = vue.ref(defaultConfig.rowNum); //行样式
+
+      var rowStyle = vue.ref([]);
 
       var handleHeader = function handleHeader(config) {
         var _headerData = cloneDeep_1(config.headerData);
 
         var _headerStyle = cloneDeep_1(config.headerStyle);
 
-        var _rowsData = cloneDeep_1(config.data); //判断header元素大小是否为空
+        var _rowsData = cloneDeep_1(config.data);
+
+        var _rowStyle = cloneDeep_1(config.rowStyle); //判断header元素大小是否为空
 
 
         if (_headerData.length === 0) {
@@ -49055,6 +49065,8 @@
           _headerData.unshift(config.headerIndexContent);
 
           _headerStyle.unshift(config.headerIndexStyle);
+
+          _rowStyle.unshift(config.rowIndexStyle);
 
           _rowsData.forEach(function (rows, index) {
             rows.unshift(index + 1);
@@ -49090,6 +49102,7 @@
         headerData.value = _headerData;
         headerStyle.value = _headerStyle;
         rowsData.value = _rowsData;
+        rowStyle.value = _rowStyle;
       }; //动态计算行数据高度
 
 
@@ -49123,7 +49136,8 @@
         actualConfig: actualConfig,
         columnWidth: columnWidth,
         rowsData: rowsData,
-        rowHeight: rowHeight
+        rowHeight: rowHeight,
+        rowStyle: rowStyle
       };
     }
   };
@@ -49176,20 +49190,21 @@
     /* KEYED_FRAGMENT */
     ))], 4
     /* STYLE */
-    ), vue.createCommentVNode(" 内容展示容器 "), (vue.openBlock(true), vue.createBlock(vue.Fragment, null, vue.renderList($setup.rowsData, function (rowData, rowIndex) {
+    ), vue.createCommentVNode(" 内容展示容器 "), vue.createCommentVNode(" 行内容 "), (vue.openBlock(true), vue.createBlock(vue.Fragment, null, vue.renderList($setup.rowsData, function (rowData, rowIndex) {
       return vue.openBlock(), vue.createBlock("div", {
         "class": "base-scroll-list-rows",
         key: rowIndex,
         style: {
-          height: "".concat($setup.rowHeight[rowIndex], "px")
+          height: "".concat($setup.rowHeight[rowIndex], "px"),
+          backgroundColor: rowIndex % 2 === 0 ? 'red' : 'yellow'
         }
-      }, [vue.createCommentVNode(" 每一列的内容 "), (vue.openBlock(true), vue.createBlock(vue.Fragment, null, vue.renderList(rowData, function (colData, colIndex) {
+      }, [vue.createCommentVNode(" 列内容 "), (vue.openBlock(true), vue.createBlock(vue.Fragment, null, vue.renderList(rowData, function (colData, colIndex) {
         return vue.openBlock(), vue.createBlock("div", {
           "class": "base-scroll-list-columns",
           key: colData + colIndex,
-          style: {
+          style: _objectSpread({
             width: "".concat($setup.columnWidth[colIndex], "px")
-          },
+          }, $setup.rowStyle[colIndex]),
           innerHTML: colData
         }, null, 12
         /* STYLE, PROPS */

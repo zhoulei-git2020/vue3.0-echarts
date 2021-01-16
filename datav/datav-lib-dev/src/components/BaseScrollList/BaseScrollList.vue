@@ -22,21 +22,25 @@
         </div>
 
         <!-- 内容展示容器 -->
+
+        <!-- 行内容 -->
         <div 
             class="base-scroll-list-rows"
             v-for="(rowData , rowIndex) in rowsData"
             :key="rowIndex"
             :style="{
-                height:`${rowHeight[rowIndex]}px`
+                height:`${rowHeight[rowIndex]}px`,
+                backgroundColor:rowIndex % 2 === 0 ? 'red' : 'yellow'
             }"
         >
-        <!-- 每一列的内容 -->
+        <!-- 列内容 -->
             <div
                 class="base-scroll-list-columns"
                 v-for="(colData,colIndex) in rowData"
                 :key="colData+colIndex"
                 :style="{
-                    width: `${columnWidth[colIndex]}px`,             
+                    width: `${columnWidth[colIndex]}px`,  
+                    ...rowStyle[colIndex]           
                 }"
                 v-html="colData"
             >
@@ -67,14 +71,20 @@ import assign from 'loadsh/assign'
             headerIndex:false,
             //显示序号需要展示的内容
             headerIndexContent:'#',
-            //显示序号需要展示的内容样式
+            //显示序号列标题样式
             headerIndexStyle:{
                 width:'50px',
                 color:'yellow'  
             },
             //数据项，二维数组
             data:[],
-            rowNum:10
+            rowNum:10,
+            //行样式
+            rowStyle:[],
+            //序号列内容样式
+            rowIndexStyle:{
+               width:'50px', 
+            },
         }
 
 
@@ -105,10 +115,14 @@ import assign from 'loadsh/assign'
         //数据的行数
        const rowNum = ref(defaultConfig.rowNum)
 
+       //行样式
+      const rowStyle = ref([])
+
        const handleHeader = (config)=>{
             const _headerData = cloneDeep(config.headerData)
             const _headerStyle = cloneDeep(config.headerStyle)
             const _rowsData = cloneDeep(config.data)
+            const _rowStyle = cloneDeep(config.rowStyle)
            //判断header元素大小是否为空
             if(_headerData.length === 0){
                return
@@ -116,6 +130,7 @@ import assign from 'loadsh/assign'
            if (config.headerIndex){
             _headerData.unshift(config.headerIndexContent)
             _headerStyle.unshift(config.headerIndexStyle)
+            _rowStyle.unshift(config.rowIndexStyle)
             _rowsData.forEach((rows,index) =>{
                 rows.unshift(index+1)
             })
@@ -152,6 +167,7 @@ import assign from 'loadsh/assign'
            headerData.value = _headerData
            headerStyle.value = _headerStyle
            rowsData.value = _rowsData
+           rowStyle.value = _rowStyle
         }
 
         //动态计算行数据高度
@@ -188,7 +204,8 @@ import assign from 'loadsh/assign'
             actualConfig,
             columnWidth,
             rowsData,
-            rowHeight
+            rowHeight,
+            rowStyle
             
         } 
     }
