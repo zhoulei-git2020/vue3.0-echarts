@@ -49006,7 +49006,19 @@ var defaultConfig = {
   //序号列内容样式
   rowIndexStyle: {
     width: '50px'
-  }
+  },
+  //行背景颜色
+  rowBg: [],
+  //居中方式
+  aligns: [],
+  //批量更改标题的文字大小
+  headerFontSize: 28,
+  //批量修改每页内容的文字大小
+  rowFontSize: 25,
+  //标题文字颜色
+  headerColor: '',
+  //内容文字颜色
+  rowColor: ''
 };
 var script$f = {
   name: 'BaseScrollList',
@@ -49038,7 +49050,11 @@ var script$f = {
 
     var rowNum = ref(defaultConfig.rowNum); //行样式
 
-    var rowStyle = ref([]);
+    var rowStyle = ref([]); //行背景颜色
+
+    var rowBg = ref([]); //居中方式
+
+    var aligns = ref([]);
 
     var handleHeader = function handleHeader(config) {
       var _headerData = cloneDeep_1(config.headerData);
@@ -49047,7 +49063,9 @@ var script$f = {
 
       var _rowsData = cloneDeep_1(config.data);
 
-      var _rowStyle = cloneDeep_1(config.rowStyle); //判断header元素大小是否为空
+      var _rowStyle = cloneDeep_1(config.rowStyle);
+
+      var _aligns = cloneDeep_1(config.aligns); //判断header元素大小是否为空
 
 
       if (_headerData.length === 0) {
@@ -49064,6 +49082,9 @@ var script$f = {
         _rowsData.forEach(function (rows, index) {
           rows.unshift(index + 1);
         });
+
+        _aligns.unshift('center'); //默认序号列居中
+
       } //动态计算header中每一列的宽度 
 
 
@@ -49096,6 +49117,7 @@ var script$f = {
       headerStyle.value = _headerStyle;
       rowsData.value = _rowsData;
       rowStyle.value = _rowStyle;
+      aligns.value = _aligns;
     }; //动态计算行数据高度
 
 
@@ -49110,6 +49132,10 @@ var script$f = {
 
       var avgHeight = unusedHeight / rowNum.value;
       rowHeight.value = new Array(rowNum.value).fill(avgHeight);
+
+      if (config.rowBg) {
+        rowBg.value = config.rowBg;
+      }
     };
 
     onMounted(function () {
@@ -49130,7 +49156,9 @@ var script$f = {
       columnWidth: columnWidth,
       rowsData: rowsData,
       rowHeight: rowHeight,
-      rowStyle: rowStyle
+      rowStyle: rowStyle,
+      rowBg: rowBg,
+      aligns: aligns
     };
   }
 };
@@ -49166,7 +49194,9 @@ var render$f = /*#__PURE__*/_withId$d(function (_ctx, _cache, $props, $setup, $d
     "class": "base-scroll-list-header",
     style: {
       backgroundColor: $setup.actualConfig.headerBackground,
-      height: "".concat($setup.actualConfig.headerHeight, "px")
+      height: "".concat($setup.actualConfig.headerHeight, "px"),
+      fontSize: "".concat($setup.actualConfig.headerFontSize, "px"),
+      color: "".concat($setup.actualConfig.headerColor)
     }
   }, [createCommentVNode(" 标题每一列 "), (openBlock(true), createBlock(Fragment, null, renderList($setup.headerData, function (headerItem, i) {
     return openBlock(), createBlock("div", {
@@ -49175,10 +49205,11 @@ var render$f = /*#__PURE__*/_withId$d(function (_ctx, _cache, $props, $setup, $d
       style: _objectSpread({
         width: "".concat($setup.columnWidth[i], "px")
       }, $setup.headerStyle[i]),
-      innerHTML: headerItem
+      innerHTML: headerItem,
+      align: $setup.aligns[i]
     }, null, 12
     /* STYLE, PROPS */
-    , ["innerHTML"]);
+    , ["innerHTML", "align"]);
   }), 128
   /* KEYED_FRAGMENT */
   ))], 4
@@ -49189,7 +49220,9 @@ var render$f = /*#__PURE__*/_withId$d(function (_ctx, _cache, $props, $setup, $d
       key: rowIndex,
       style: {
         height: "".concat($setup.rowHeight[rowIndex], "px"),
-        backgroundColor: rowIndex % 2 === 0 ? 'red' : 'yellow'
+        backgroundColor: rowIndex % 2 === 0 ? $setup.rowBg[1] : $setup.rowBg[0],
+        fontSize: "".concat($setup.actualConfig.rowFontSize, "px"),
+        color: "".concat($setup.actualConfig.rowColor)
       }
     }, [createCommentVNode(" 列内容 "), (openBlock(true), createBlock(Fragment, null, renderList(rowData, function (colData, colIndex) {
       return openBlock(), createBlock("div", {
@@ -49198,10 +49231,11 @@ var render$f = /*#__PURE__*/_withId$d(function (_ctx, _cache, $props, $setup, $d
         style: _objectSpread({
           width: "".concat($setup.columnWidth[colIndex], "px")
         }, $setup.rowStyle[colIndex]),
-        innerHTML: colData
+        innerHTML: colData,
+        align: $setup.aligns[colIndex]
       }, null, 12
       /* STYLE, PROPS */
-      , ["innerHTML"]);
+      , ["innerHTML", "align"]);
     }), 128
     /* KEYED_FRAGMENT */
     ))], 4
@@ -49214,7 +49248,7 @@ var render$f = /*#__PURE__*/_withId$d(function (_ctx, _cache, $props, $setup, $d
   , ["id"]);
 });
 
-var css_248z$e = "@charset \"UTF-8\";\n.base-scroll-list[data-v-69eed30f] {\n  /*宽高设为100% 交给父给容器确定*/\n  width: 100%;\n  height: 100%;\n  /*默认文本样式*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-text {\n  padding: 0 10px;\n  white-space: nowrap;\n  /*文本不换行*/\n  overflow: hidden;\n  /*多出部分隐藏*/\n  text-overflow: ellipsis;\n  /*文本超出部分用省略号代替*/\n  box-sizing: border-box;\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-header {\n  display: flex;\n  /*水平布局*/\n  font-size: 15px;\n  /*字体大小*/\n  align-items: center;\n  /*垂直居中*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-rows {\n  display: flex;\n  align-items: center;\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-rows .base-scroll-list-columns {\n  font-size: 28px;\n}";
+var css_248z$e = "@charset \"UTF-8\";\n.base-scroll-list[data-v-69eed30f] {\n  /*宽高设为100% 交给父给容器确定*/\n  width: 100%;\n  height: 100%;\n  /*默认文本样式*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-text {\n  padding: 0 10px;\n  white-space: nowrap;\n  /*文本不换行*/\n  overflow: hidden;\n  /*多出部分隐藏*/\n  text-overflow: ellipsis;\n  /*文本超出部分用省略号代替*/\n  box-sizing: border-box;\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-header {\n  display: flex;\n  /*水平布局*/\n  font-size: 15px;\n  /*字体大小*/\n  align-items: center;\n  /*垂直居中*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-rows {\n  display: flex;\n  align-items: center;\n}";
 styleInject(css_248z$e);
 
 script$f.render = render$f;

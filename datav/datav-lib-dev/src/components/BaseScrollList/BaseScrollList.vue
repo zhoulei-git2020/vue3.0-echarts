@@ -4,7 +4,9 @@
         <div class="base-scroll-list-header" 
         :style="{
             backgroundColor:actualConfig.headerBackground,
-            height:`${actualConfig.headerHeight}px`
+            height:`${actualConfig.headerHeight}px`,
+            fontSize:`${actualConfig.headerFontSize}px` ,
+            color:`${actualConfig.headerColor}` 
          }"
         >
             <!-- 标题每一列 -->
@@ -14,9 +16,12 @@
                 :key="headerItem +i"
                 :style="{
                     width: `${columnWidth[i]}px`,
-                    ...headerStyle[i]                 
+                    ...headerStyle[i] 
+                                
                     }"
                  v-html="headerItem"
+                 :align="aligns[i]"
+                 
             >   
             </div>
         </div>
@@ -30,7 +35,9 @@
             :key="rowIndex"
             :style="{
                 height:`${rowHeight[rowIndex]}px`,
-                backgroundColor:rowIndex % 2 === 0 ? 'red' : 'yellow'
+                backgroundColor:rowIndex % 2 === 0 ? rowBg[1] :rowBg[0],
+                fontSize:`${actualConfig.rowFontSize}px`,
+                color:`${actualConfig.rowColor}`  
             }"
         >
         <!-- 列内容 -->
@@ -43,6 +50,7 @@
                     ...rowStyle[colIndex]           
                 }"
                 v-html="colData"
+                :align="aligns[colIndex]"
             >
                 
             </div>
@@ -85,6 +93,23 @@ import assign from 'loadsh/assign'
             rowIndexStyle:{
                width:'50px', 
             },
+            //行背景颜色
+            rowBg:[],
+
+            //居中方式
+            aligns:[],
+
+            //批量更改标题的文字大小
+            headerFontSize:28,
+
+            //批量修改每页内容的文字大小
+            rowFontSize:25,
+
+            //标题文字颜色
+            headerColor:'',
+
+            //内容文字颜色
+            rowColor:''
         }
 
 
@@ -118,11 +143,20 @@ import assign from 'loadsh/assign'
        //行样式
       const rowStyle = ref([])
 
+      //行背景颜色
+      const rowBg = ref([])
+
+      //居中方式
+      const aligns = ref([])
+
+
+
        const handleHeader = (config)=>{
             const _headerData = cloneDeep(config.headerData)
             const _headerStyle = cloneDeep(config.headerStyle)
             const _rowsData = cloneDeep(config.data)
             const _rowStyle = cloneDeep(config.rowStyle)
+            const _aligns = cloneDeep(config.aligns)
            //判断header元素大小是否为空
             if(_headerData.length === 0){
                return
@@ -134,6 +168,7 @@ import assign from 'loadsh/assign'
             _rowsData.forEach((rows,index) =>{
                 rows.unshift(index+1)
             })
+            _aligns.unshift('center') //默认序号列居中
            }
 
            //动态计算header中每一列的宽度 
@@ -168,6 +203,7 @@ import assign from 'loadsh/assign'
            headerStyle.value = _headerStyle
            rowsData.value = _rowsData
            rowStyle.value = _rowStyle
+           aligns.value = _aligns
         }
 
         //动态计算行数据高度
@@ -183,6 +219,10 @@ import assign from 'loadsh/assign'
                const avgHeight = unusedHeight/rowNum.value
             
            rowHeight.value = new Array(rowNum.value).fill(avgHeight)
+
+           if(config.rowBg){
+               rowBg.value = config.rowBg
+           }
 
         } 
 
@@ -205,8 +245,10 @@ import assign from 'loadsh/assign'
             columnWidth,
             rowsData,
             rowHeight,
-            rowStyle
-            
+            rowStyle,
+            rowBg,
+            aligns,
+         
         } 
     }
 }
@@ -240,7 +282,7 @@ import assign from 'loadsh/assign'
             align-items: center;
             .base-scroll-list-columns{
                 
-                font-size: 28px;
+               
             }
         }
 
