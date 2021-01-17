@@ -83,7 +83,11 @@
                   <div class="right-bottom-left4">444</div>
                </div>
                <div class="right-bottom-right">
-                 <div class="right-bottom-right1">444</div>
+                 <div class="right-bottom-right1">
+                   <SalesList
+                    :data="salesListData"
+                   />
+                 </div>
                  <div class="right-bottom-right2">555</div>
                </div>
              </div>
@@ -249,10 +253,12 @@ export default {
                 flex-direction: column;
                 margin-left: 10px;
                 justify-content: space-between;/*内部元素中间元素有间隙顶头和最下方元素无间隙*/
+                margin-right: 20px;
               .right-bottom-right1{
                 width: 100%;
                 height: 999px;
-                background: mediumpurple;
+                
+               
               }
               .right-bottom-right2{
                 margin-top: 20PX;

@@ -49064,7 +49064,9 @@ var script$f = {
 
     var aligns = ref([]); //行高
 
-    var avgHeight;
+    var avgHeight; //动画是否播放
+
+    var isAnimationStart = ref(true);
 
     var handleHeader = function handleHeader(config) {
       var _headerData = cloneDeep_1(config.headerData);
@@ -49125,12 +49127,25 @@ var script$f = {
       columnWidth.value = _columnWidth;
       headerData.value = _headerData;
       headerStyle.value = _headerStyle;
-      rowsData.value = _rowsData.map(function (item, index) {
-        return {
-          data: item,
-          rowIndex: index
-        };
-      });
+      var rowNum = config.rowNum;
+
+      if (_rowsData.length >= rowNum && _rowsData.length < rowNum * 2) {
+        var newRowData = [].concat(toConsumableArray(_rowsData), toConsumableArray(_rowsData));
+        rowsData.value = newRowData.map(function (item, index) {
+          return {
+            data: item,
+            rowIndex: index
+          };
+        });
+      } else {
+        rowsData.value = _rowsData.map(function (item, index) {
+          return {
+            data: item,
+            rowIndex: index
+          };
+        });
+      }
+
       rowStyle.value = _rowStyle;
       aligns.value = _aligns;
     }; //动态计算行数据高度
@@ -49158,27 +49173,34 @@ var script$f = {
       var _ref = asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
         var _rowHeight$value;
 
-        var config, data, rowNum, moveNum, duration, totalLength, index, _rowsData, rows, waitTime, isLast;
+        var config, rowNum, moveNum, duration, totalLength, index, _rowsData, rows, waitTime, isLast;
 
         return regenerator.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
-                config = actualConfig.value; //拿到定制的数据
-
-                data = config.data, rowNum = config.rowNum, moveNum = config.moveNum, duration = config.duration; //取出data和rowNum
-
-                totalLength = data.length; //判断data的长度
-
-                if (!(totalLength < rowNum)) {
-                  _context.next = 5;
+                if (isAnimationStart) {
+                  _context.next = 2;
                   break;
                 }
 
                 return _context.abrupt("return");
 
-              case 5:
-                //判断数据的行数是否小于每页展示的行数如果是则退出无需动画展示
+              case 2:
+                config = actualConfig.value; //拿到定制的数据
+
+                rowNum = config.rowNum, moveNum = config.moveNum, duration = config.duration; //取出data和rowNum
+
+                totalLength = rowsData.value.length; //判断data的长度
+
+                if (!(totalLength < rowNum)) {
+                  _context.next = 7;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 7:
                 index = currentIndex.value; //拿到当前动画指针
 
                 _rowsData = cloneDeep_1(rowsData.value); //深拷贝每页数据
@@ -49190,12 +49212,21 @@ var script$f = {
 
                 rowHeight.value = new Array(totalLength).fill(avgHeight);
                 waitTime = 500;
-                _context.next = 14;
+
+                if (isAnimationStart) {
+                  _context.next = 16;
+                  break;
+                }
+
+                return _context.abrupt("return");
+
+              case 16:
+                _context.next = 18;
                 return new Promise(function (resolve) {
                   return setTimeout(resolve, waitTime);
                 });
 
-              case 14:
+              case 18:
                 //将moveNum的行高度设为0
                 (_rowHeight$value = rowHeight.value).splice.apply(_rowHeight$value, [0, moveNum].concat(toConsumableArray(new Array(moveNum).fill(0))));
 
@@ -49205,19 +49236,26 @@ var script$f = {
 
                 if (isLast >= 0) {
                   currentIndex.value = isLast;
-                } //线程sleep
-                //延时操作
+                }
 
+                if (isAnimationStart) {
+                  _context.next = 24;
+                  break;
+                }
 
-                _context.next = 20;
+                return _context.abrupt("return");
+
+              case 24:
+                _context.next = 26;
                 return new Promise(function (resolve) {
                   return setTimeout(resolve, duration - waitTime);
                 });
 
-              case 20:
-                startAnimation();
+              case 26:
+                _context.next = 28;
+                return startAnimation();
 
-              case 21:
+              case 28:
               case "end":
                 return _context.stop();
             }
@@ -49228,10 +49266,16 @@ var script$f = {
       return function startAnimation() {
         return _ref.apply(this, arguments);
       };
-    }();
+    }(); //停止动画
 
-    onMounted(function () {
-      //将传入的值和默认值进行合并
+
+    var stopAnimation = function stopAnimation() {
+      isAnimationStart.value = false;
+    };
+
+    var update = function update() {
+      stopAnimation(); //将传入的值和默认值进行合并
+
       var _actualConfig = assign_1(defaultConfig, props.config); //赋值rowsData
 
 
@@ -49240,7 +49284,14 @@ var script$f = {
       handleRows(_actualConfig);
       actualConfig.value = _actualConfig; //展示动画效果
 
+      isAnimationStart.value = true;
       startAnimation();
+    };
+
+    watch(function () {
+      return props.config;
+    }, function () {
+      update();
     });
     return {
       id: id,
@@ -49328,7 +49379,7 @@ var render$f = /*#__PURE__*/_withId$d(function (_ctx, _cache, $props, $setup, $d
       }
     }, [createCommentVNode(" 列内容 "), (openBlock(true), createBlock(Fragment, null, renderList(rowData.data, function (colData, colIndex) {
       return openBlock(), createBlock("div", {
-        "class": "base-scroll-list-columns",
+        "class": "base-scroll-list-columns base-scroll-list-text",
         key: colData + colIndex,
         style: _objectSpread({
           width: "".concat($setup.columnWidth[colIndex], "px")
@@ -49359,8 +49410,109 @@ script$f.render = render$f;
 script$f.__scopeId = "data-v-69eed30f";
 script$f.__file = "src/components/BaseScrollList/BaseScrollList.vue";
 
-function BaseScrollList (Vue) {
+var script$g = {
+  name: 'SalesList',
+  props: {
+    data: Array
+  },
+  setup: function setup(props) {
+    var config = ref({});
+
+    var update = function update() {
+      console.log(props.data);
+      var headerData = ['城市订单量', '店铺数', '接单骑手人数', '新店铺数量', '人均订单量']; //标题栏内容
+
+      var headerStyle = [{
+        color: 'red',
+        width: '150px'
+      }]; //标题栏样式
+
+      var rowStyle = [{}, {
+        color: 'red'
+      }]; //列内容样式
+
+      var rowBg = ['rgb(240,240,240)', 'rgb(255,255,255)']; //行背景颜色
+
+      var aligns = ['center', 'center', 'center', 'center']; //居中方式
+
+      var headerFontSize = 20; //批量更改标题的文字大小
+
+      var rowFontSize = 24; //批量修改每页内容的文字大小
+
+      var headerColor = '#fff'; //批量更改标题的文字颜色
+
+      var rowColor = 'green'; //批量更改每页内容的文字颜色
+
+      var data = [];
+
+      for (var i = 0; i < 10; i++) {
+        data.push(['温度' + (i + 1), Math.floor(Math.random() * 10 + 20), Math.floor(Math.random() * 10000 + 10000), Math.floor(Math.random() * 100 + 80)]);
+      }
+
+      config.value = {
+        data: data,
+        rowStyle: rowStyle,
+        headerData: headerData,
+        headerStyle: headerStyle,
+        headerBackground: 'rgb(80,80,80)',
+        headerHeight: '40',
+        headerIndex: true,
+        headerIndexContent: '$',
+        //headerIndexStyle:{width:'80px',color:'red'}
+        rowNum: 10,
+        rowBg: rowBg,
+        aligns: aligns,
+        headerFontSize: headerFontSize,
+        rowFontSize: rowFontSize,
+        headerColor: headerColor,
+        rowColor: rowColor
+      };
+    };
+
+    onMounted(function () {
+      update();
+    });
+    watch(function () {
+      return props.data;
+    }, function () {
+      update();
+    });
+    return {
+      config: config
+    };
+  }
+};
+
+var _withId$e = /*#__PURE__*/withScopeId("data-v-15f22672");
+
+pushScopeId("data-v-15f22672");
+
+var _hoisted_1$c = {
+  "class": "SalesList"
+};
+
+popScopeId();
+
+var render$g = /*#__PURE__*/_withId$e(function (_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_BaseScrollList = resolveComponent("BaseScrollList");
+
+  return openBlock(), createBlock("div", _hoisted_1$c, [createVNode(_component_BaseScrollList, {
+    config: $setup.config
+  }, null, 8
+  /* PROPS */
+  , ["config"])]);
+});
+
+var css_248z$f = ".SalesList[data-v-15f22672] {\n  width: 100%;\n  height: 100%;\n}";
+styleInject(css_248z$f);
+
+script$g.render = render$g;
+script$g.__scopeId = "data-v-15f22672";
+script$g.__file = "src/components/BaseScrollList/SalesList.vue";
+
+function SalesList (Vue) {
   Vue.component(script$f.name, script$f);
+  Vue.component(script$g.name, script$g);
 }
 
 function index (Vue) {
@@ -49379,7 +49531,8 @@ function index (Vue) {
   Vue.use(HotCategory);
   Vue.use(CenterHeader);
   Vue.use(TransformCategory);
-  Vue.use(BaseScrollList);
+  Vue.use(SalesList);
+  Vue.use(SalesList);
 }
 
 export default index;

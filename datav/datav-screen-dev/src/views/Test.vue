@@ -37,7 +37,7 @@ export default {
       headerIndex:true,
       headerIndexContent:'$',
       //headerIndexStyle:{width:'80px',color:'red'}
-      rowNum:5,
+      rowNum:10,
       rowBg,
       aligns,
       headerFontSize,

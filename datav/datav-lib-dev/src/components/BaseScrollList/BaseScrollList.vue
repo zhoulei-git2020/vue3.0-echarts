@@ -48,7 +48,7 @@
             >
             <!-- 列内容 -->
                 <div
-                    class="base-scroll-list-columns"
+                    class="base-scroll-list-columns base-scroll-list-text"
                     v-for="(colData,colIndex) in rowData.data"
                     :key="colData+colIndex"
                     :style="{
@@ -67,7 +67,7 @@
 </template>
 
 <script>
-import {onMounted,ref} from 'vue'
+import {onMounted,ref,watch} from 'vue'
 import {v4 as uuidv4} from 'uuid'
 import useScreen from '../hooks/useScreen'
 import  cloneDeep  from "loadsh/cloneDeep"
@@ -172,6 +172,9 @@ import assign from 'loadsh/assign'
       //行高
       let avgHeight 
 
+      //动画是否播放
+      const isAnimationStart = ref(true)
+
 
        const handleHeader = (config)=>{
             const _headerData = cloneDeep(config.headerData)
@@ -223,10 +226,22 @@ import assign from 'loadsh/assign'
            columnWidth.value = _columnWidth
            headerData.value = _headerData
            headerStyle.value = _headerStyle
-           rowsData.value = _rowsData.map((item,index)=>({
+        
+            const {rowNum} = config
+            if(_rowsData.length >= rowNum && _rowsData.length<rowNum * 2){  
+                const newRowData = [..._rowsData,..._rowsData]
+                 rowsData.value = newRowData.map((item,index)=>({
                data:item,
                rowIndex:index
-           }))
+             }))
+            }else{
+                rowsData.value = _rowsData.map((item,index)=>({
+               data:item,
+               rowIndex:index
+             }))
+            }
+
+           
            
           
            rowStyle.value = _rowStyle
@@ -255,10 +270,13 @@ import assign from 'loadsh/assign'
         
         //过度折叠动画
        const startAnimation = async ()=>{
+        if(!isAnimationStart)return
         const config = actualConfig.value               //拿到定制的数据
-        const {data,rowNum,moveNum,duration} = config                    //取出data和rowNum
-        const totalLength = data.length                 //判断data的长度
-        if(totalLength<rowNum) return                   //判断数据的行数是否小于每页展示的行数如果是则退出无需动画展示
+        const {rowNum,moveNum,duration} = config        //取出data和rowNum
+        const totalLength = rowsData.value.length       //判断data的长度
+        if(totalLength<rowNum){                         //判断数据的行数是否小于每页展示的行数如果是则退出无需动画展示
+            return
+        }                  
         const index = currentIndex.value                //拿到当前动画指针
         const _rowsData = cloneDeep(rowsData.value)     //深拷贝每页数据
         //将数据头尾连接  
@@ -269,36 +287,46 @@ import assign from 'loadsh/assign'
         rowHeight.value = new Array(totalLength).fill(avgHeight)
 
         const waitTime = 500
+        if(!isAnimationStart)return
         await new Promise(resolve =>setTimeout(resolve,waitTime))
         //将moveNum的行高度设为0
         rowHeight.value.splice(0,moveNum,...new Array(moveNum).fill(0))
-
         currentIndex.value += moveNum 
         //是否到达最后一组数据
         const isLast = currentIndex.value - totalLength
         if(isLast >=0){
            currentIndex.value  = isLast
         }
-        
+        if(!isAnimationStart)return
         //线程sleep
         //延时操作
         await new Promise(resolve=>setTimeout(resolve,duration-waitTime))
-        startAnimation() 
+        await startAnimation() 
        } 
 
+        //停止动画
+        const stopAnimation=()=>{
+            isAnimationStart.value = false
+        }
 
-        onMounted(()=>{
-            //将传入的值和默认值进行合并
+
+        const update = ()=>{
+            stopAnimation()
+             //将传入的值和默认值进行合并
            const _actualConfig = assign(defaultConfig,props.config)
            //赋值rowsData
            rowsData.value = _actualConfig.data || []
            handleHeader(_actualConfig)
            handleRows(_actualConfig)
            actualConfig.value = _actualConfig
-            //展示动画效果
+           //展示动画效果
+           isAnimationStart.value = true
            startAnimation()
-           
-        })
+        }
+
+       watch(()=>props.config,()=>{
+           update()
+       })
 
         return{
             id,
