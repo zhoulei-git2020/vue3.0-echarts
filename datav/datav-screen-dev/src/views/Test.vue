@@ -22,7 +22,7 @@ export default {
       const rowColor = 'green'//批量更改每页内容的文字颜色
 
       const data = []
-       for(let i = 0; i < 5; i++){
+       for(let i = 0; i < 10; i++){
          data.push(['温度'+ (i+1), Math.floor(Math.random() *10 +20),Math.floor(Math.random() * 10000 + 10000),Math.floor(Math.random() * 100 + 80)])
        }
 
@@ -37,7 +37,7 @@ export default {
       headerIndex:true,
       headerIndexContent:'$',
       //headerIndexStyle:{width:'80px',color:'red'}
-      rowNum:20,
+      rowNum:5,
       rowBg,
       aligns,
       headerFontSize,

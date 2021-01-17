@@ -49025,7 +49025,11 @@
     //标题文字颜色
     headerColor: '',
     //内容文字颜色
-    rowColor: ''
+    rowColor: '',
+    //移动的位置
+    moveNum: 1,
+    //动画播放延时时间
+    duration: 2000
   };
   var script$f = {
     name: 'BaseScrollList',
@@ -49049,11 +49053,15 @@
 
       var actualConfig = vue.ref([]); //用于存放每一列的宽度
 
-      var columnWidth = vue.ref([]); //每一行的渲染数据
+      var columnWidth = vue.ref([]); //每页的数据
 
-      var rowsData = vue.ref([]); //每行的高度
+      var rowsData = vue.ref([]); //真正需要渲染的数据
 
-      var rowHeight = vue.ref([]); //数据的行数
+      var currentRowsData = vue.ref([]); //渲染动画指针指向当前展示的动画元素
+
+      var currentIndex = vue.ref(0); //每行的高度
+
+      var rowHeight = vue.ref([]); //展示数据的行数
 
       var rowNum = vue.ref(defaultConfig.rowNum); //行样式
 
@@ -49061,7 +49069,9 @@
 
       var rowBg = vue.ref([]); //居中方式
 
-      var aligns = vue.ref([]);
+      var aligns = vue.ref([]); //行高
+
+      var avgHeight;
 
       var handleHeader = function handleHeader(config) {
         var _headerData = cloneDeep_1(config.headerData);
@@ -49122,7 +49132,12 @@
         columnWidth.value = _columnWidth;
         headerData.value = _headerData;
         headerStyle.value = _headerStyle;
-        rowsData.value = _rowsData;
+        rowsData.value = _rowsData.map(function (item, index) {
+          return {
+            data: item,
+            rowIndex: index
+          };
+        });
         rowStyle.value = _rowStyle;
         aligns.value = _aligns;
       }; //动态计算行数据高度
@@ -49137,13 +49152,90 @@
           rowNum.value = rowsData.value.length;
         }
 
-        var avgHeight = unusedHeight / rowNum.value;
+        avgHeight = unusedHeight / rowNum.value;
         rowHeight.value = new Array(rowNum.value).fill(avgHeight);
 
         if (config.rowBg) {
           rowBg.value = config.rowBg;
         }
-      };
+      }; //过度折叠动画
+
+
+      var startAnimation = /*#__PURE__*/function () {
+        var _ref = asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
+          var _rowHeight$value;
+
+          var config, data, rowNum, moveNum, duration, totalLength, index, _rowsData, rows, waitTime, isLast;
+
+          return regenerator.wrap(function _callee$(_context) {
+            while (1) {
+              switch (_context.prev = _context.next) {
+                case 0:
+                  config = actualConfig.value; //拿到定制的数据
+
+                  data = config.data, rowNum = config.rowNum, moveNum = config.moveNum, duration = config.duration; //取出data和rowNum
+
+                  totalLength = data.length; //判断data的长度
+
+                  if (!(totalLength < rowNum)) {
+                    _context.next = 5;
+                    break;
+                  }
+
+                  return _context.abrupt("return");
+
+                case 5:
+                  //判断数据的行数是否小于每页展示的行数如果是则退出无需动画展示
+                  index = currentIndex.value; //拿到当前动画指针
+
+                  _rowsData = cloneDeep_1(rowsData.value); //深拷贝每页数据
+                  //将数据头尾连接  
+
+                  rows = _rowsData.slice(index);
+                  rows.push.apply(rows, toConsumableArray(_rowsData.slice(0, index)));
+                  currentRowsData.value = rows; //先将所有行的高度还原
+
+                  rowHeight.value = new Array(totalLength).fill(avgHeight);
+                  waitTime = 500;
+                  _context.next = 14;
+                  return new Promise(function (resolve) {
+                    return setTimeout(resolve, waitTime);
+                  });
+
+                case 14:
+                  //将moveNum的行高度设为0
+                  (_rowHeight$value = rowHeight.value).splice.apply(_rowHeight$value, [0, moveNum].concat(toConsumableArray(new Array(moveNum).fill(0))));
+
+                  currentIndex.value += moveNum; //是否到达最后一组数据
+
+                  isLast = currentIndex.value - totalLength;
+
+                  if (isLast >= 0) {
+                    currentIndex.value = isLast;
+                  } //线程sleep
+                  //延时操作
+
+
+                  _context.next = 20;
+                  return new Promise(function (resolve) {
+                    return setTimeout(resolve, duration - waitTime);
+                  });
+
+                case 20:
+                  startAnimation();
+
+                case 21:
+                case "end":
+                  return _context.stop();
+              }
+            }
+          }, _callee);
+        }));
+
+        return function startAnimation() {
+          return _ref.apply(this, arguments);
+        };
+      }();
 
       vue.onMounted(function () {
         //将传入的值和默认值进行合并
@@ -49153,7 +49245,9 @@
         rowsData.value = _actualConfig.data || [];
         handleHeader(_actualConfig);
         handleRows(_actualConfig);
-        actualConfig.value = _actualConfig;
+        actualConfig.value = _actualConfig; //展示动画效果
+
+        startAnimation();
       });
       return {
         id: id,
@@ -49165,7 +49259,9 @@
         rowHeight: rowHeight,
         rowStyle: rowStyle,
         rowBg: rowBg,
-        aligns: aligns
+        aligns: aligns,
+        currentRowsData: currentRowsData,
+        height: height
       };
     }
   };
@@ -49221,17 +49317,23 @@
     /* KEYED_FRAGMENT */
     ))], 4
     /* STYLE */
-    ), vue.createCommentVNode(" 内容展示容器 "), vue.createCommentVNode(" 行内容 "), (vue.openBlock(true), vue.createBlock(vue.Fragment, null, vue.renderList($setup.rowsData, function (rowData, rowIndex) {
+    ), vue.createCommentVNode(" 内容展示容器 "), vue.createVNode("div", {
+      "class": "base-scroll-list-rows-wrapper",
+      style: {
+        height: "".concat($setup.height - $setup.actualConfig.headerHeight, "px")
+      }
+    }, [vue.createCommentVNode(" 行内容 "), (vue.openBlock(true), vue.createBlock(vue.Fragment, null, vue.renderList($setup.currentRowsData, function (rowData, index) {
       return vue.openBlock(), vue.createBlock("div", {
         "class": "base-scroll-list-rows",
-        key: rowIndex,
+        key: rowData.rowIndex,
         style: {
-          height: "".concat($setup.rowHeight[rowIndex], "px"),
-          backgroundColor: rowIndex % 2 === 0 ? $setup.rowBg[1] : $setup.rowBg[0],
+          height: "".concat($setup.rowHeight[index], "px"),
+          lineHeight: "".concat($setup.rowHeight[index], "px"),
+          backgroundColor: rowData.rowIndex % 2 === 0 ? $setup.rowBg[1] : $setup.rowBg[0],
           fontSize: "".concat($setup.actualConfig.rowFontSize, "px"),
           color: "".concat($setup.actualConfig.rowColor)
         }
-      }, [vue.createCommentVNode(" 列内容 "), (vue.openBlock(true), vue.createBlock(vue.Fragment, null, vue.renderList(rowData, function (colData, colIndex) {
+      }, [vue.createCommentVNode(" 列内容 "), (vue.openBlock(true), vue.createBlock(vue.Fragment, null, vue.renderList(rowData.data, function (colData, colIndex) {
         return vue.openBlock(), vue.createBlock("div", {
           "class": "base-scroll-list-columns",
           key: colData + colIndex,
@@ -49250,12 +49352,14 @@
       );
     }), 128
     /* KEYED_FRAGMENT */
-    ))], 8
+    ))], 4
+    /* STYLE */
+    )], 8
     /* PROPS */
     , ["id"]);
   });
 
-  var css_248z$e = "@charset \"UTF-8\";\n.base-scroll-list[data-v-69eed30f] {\n  /*宽高设为100% 交给父给容器确定*/\n  width: 100%;\n  height: 100%;\n  /*默认文本样式*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-text {\n  padding: 0 10px;\n  white-space: nowrap;\n  /*文本不换行*/\n  overflow: hidden;\n  /*多出部分隐藏*/\n  text-overflow: ellipsis;\n  /*文本超出部分用省略号代替*/\n  box-sizing: border-box;\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-header {\n  display: flex;\n  /*水平布局*/\n  font-size: 15px;\n  /*字体大小*/\n  align-items: center;\n  /*垂直居中*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-rows {\n  display: flex;\n  align-items: center;\n}";
+  var css_248z$e = "@charset \"UTF-8\";\n.base-scroll-list[data-v-69eed30f] {\n  /*宽高设为100% 交给父给容器确定*/\n  width: 100%;\n  height: 100%;\n  /*默认文本样式*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-text {\n  padding: 0 10px;\n  white-space: nowrap;\n  /*文本不换行*/\n  overflow: hidden;\n  /*多出部分隐藏*/\n  text-overflow: ellipsis;\n  /*文本超出部分用省略号代替*/\n  box-sizing: border-box;\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-header {\n  display: flex;\n  /*水平布局*/\n  font-size: 15px;\n  /*字体大小*/\n  align-items: center;\n  /*垂直居中*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-rows-wrapper {\n  overflow: hidden;\n  /*超出部分隐藏*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-rows-wrapper .base-scroll-list-rows {\n  display: flex;\n  align-items: center;\n  transition: all 0.3s linear;\n}";
   styleInject(css_248z$e);
 
   script$f.render = render$f;

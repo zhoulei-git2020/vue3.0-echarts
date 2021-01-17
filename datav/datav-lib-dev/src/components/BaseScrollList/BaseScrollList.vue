@@ -26,34 +26,42 @@
             </div>
         </div>
 
-        <!-- 内容展示容器 -->
-
-        <!-- 行内容 -->
-        <div 
-            class="base-scroll-list-rows"
-            v-for="(rowData , rowIndex) in rowsData"
-            :key="rowIndex"
+         <!-- 内容展示容器 -->
+        <div
+            class="base-scroll-list-rows-wrapper"
             :style="{
-                height:`${rowHeight[rowIndex]}px`,
-                backgroundColor:rowIndex % 2 === 0 ? rowBg[1] :rowBg[0],
-                fontSize:`${actualConfig.rowFontSize}px`,
-                color:`${actualConfig.rowColor}`  
+              height:`${height - actualConfig.headerHeight}px` 
             }"
         >
-        <!-- 列内容 -->
-            <div
-                class="base-scroll-list-columns"
-                v-for="(colData,colIndex) in rowData"
-                :key="colData+colIndex"
+                <!-- 行内容 -->
+            <div 
+                class="base-scroll-list-rows"
+                v-for="(rowData , index) in currentRowsData"
+                :key="rowData.rowIndex"
                 :style="{
-                    width: `${columnWidth[colIndex]}px`,  
-                    ...rowStyle[colIndex]           
+                    height:`${rowHeight[index]}px`,
+                    lineHeight:`${rowHeight[index]}px`,
+                    backgroundColor:rowData.rowIndex % 2 === 0 ? rowBg[1] :rowBg[0],
+                    fontSize:`${actualConfig.rowFontSize}px`,
+                    color:`${actualConfig.rowColor}`  
                 }"
-                v-html="colData"
-                :align="aligns[colIndex]"
             >
-                
+            <!-- 列内容 -->
+                <div
+                    class="base-scroll-list-columns"
+                    v-for="(colData,colIndex) in rowData.data"
+                    :key="colData+colIndex"
+                    :style="{
+                        width: `${columnWidth[colIndex]}px`,  
+                        ...rowStyle[colIndex]           
+                    }"
+                    v-html="colData"
+                    :align="aligns[colIndex]"
+                >
+                    
+                </div>
             </div>
+
         </div>
     </div>
 </template>
@@ -109,7 +117,13 @@ import assign from 'loadsh/assign'
             headerColor:'',
 
             //内容文字颜色
-            rowColor:''
+            rowColor:'',
+
+            //移动的位置
+            moveNum:1,
+
+            //动画播放延时时间
+            duration:2000
         }
 
 
@@ -131,13 +145,19 @@ import assign from 'loadsh/assign'
        //用于存放每一列的宽度
        const columnWidth = ref([])
 
-       //每一行的渲染数据
+       //每页的数据
        const rowsData = ref([])
+
+       //真正需要渲染的数据
+       const currentRowsData = ref([])
+
+       //渲染动画指针指向当前展示的动画元素
+       const currentIndex = ref(0)
 
        //每行的高度
        const rowHeight = ref([])
 
-        //数据的行数
+        //展示数据的行数
        const rowNum = ref(defaultConfig.rowNum)
 
        //行样式
@@ -149,6 +169,8 @@ import assign from 'loadsh/assign'
       //居中方式
       const aligns = ref([])
 
+      //行高
+      let avgHeight 
 
 
        const handleHeader = (config)=>{
@@ -201,7 +223,12 @@ import assign from 'loadsh/assign'
            columnWidth.value = _columnWidth
            headerData.value = _headerData
            headerStyle.value = _headerStyle
-           rowsData.value = _rowsData
+           rowsData.value = _rowsData.map((item,index)=>({
+               data:item,
+               rowIndex:index
+           }))
+           
+          
            rowStyle.value = _rowStyle
            aligns.value = _aligns
         }
@@ -216,7 +243,7 @@ import assign from 'loadsh/assign'
             if(rowNum.value > rowsData.value.length){
                  rowNum.value = rowsData.value.length
             }
-               const avgHeight = unusedHeight/rowNum.value
+                avgHeight = unusedHeight/rowNum.value
             
            rowHeight.value = new Array(rowNum.value).fill(avgHeight)
 
@@ -225,6 +252,40 @@ import assign from 'loadsh/assign'
            }
 
         } 
+        
+        //过度折叠动画
+       const startAnimation = async ()=>{
+        const config = actualConfig.value               //拿到定制的数据
+        const {data,rowNum,moveNum,duration} = config                    //取出data和rowNum
+        const totalLength = data.length                 //判断data的长度
+        if(totalLength<rowNum) return                   //判断数据的行数是否小于每页展示的行数如果是则退出无需动画展示
+        const index = currentIndex.value                //拿到当前动画指针
+        const _rowsData = cloneDeep(rowsData.value)     //深拷贝每页数据
+        //将数据头尾连接  
+        const rows = _rowsData.slice(index)
+        rows.push(..._rowsData.slice(0,index))
+        currentRowsData.value = rows
+        //先将所有行的高度还原
+        rowHeight.value = new Array(totalLength).fill(avgHeight)
+
+        const waitTime = 500
+        await new Promise(resolve =>setTimeout(resolve,waitTime))
+        //将moveNum的行高度设为0
+        rowHeight.value.splice(0,moveNum,...new Array(moveNum).fill(0))
+
+        currentIndex.value += moveNum 
+        //是否到达最后一组数据
+        const isLast = currentIndex.value - totalLength
+        if(isLast >=0){
+           currentIndex.value  = isLast
+        }
+        
+        //线程sleep
+        //延时操作
+        await new Promise(resolve=>setTimeout(resolve,duration-waitTime))
+        startAnimation() 
+       } 
+
 
         onMounted(()=>{
             //将传入的值和默认值进行合并
@@ -234,6 +295,8 @@ import assign from 'loadsh/assign'
            handleHeader(_actualConfig)
            handleRows(_actualConfig)
            actualConfig.value = _actualConfig
+            //展示动画效果
+           startAnimation()
            
         })
 
@@ -248,6 +311,8 @@ import assign from 'loadsh/assign'
             rowStyle,
             rowBg,
             aligns,
+            currentRowsData,
+            height
          
         } 
     }
@@ -277,14 +342,17 @@ import assign from 'loadsh/assign'
             .header-item{
             }
         }
-        .base-scroll-list-rows{
-            display: flex;
-            align-items: center;
-            .base-scroll-list-columns{
+        .base-scroll-list-rows-wrapper{
+            overflow: hidden; /*超出部分隐藏*/   
+            .base-scroll-list-rows{
+                display: flex;
+                align-items: center;
+                transition: all 0.3s linear;
+                .base-scroll-list-columns{
+                    
                 
-               
+                }
             }
         }
-
     }
 </style>
