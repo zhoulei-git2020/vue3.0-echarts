@@ -91,9 +91,10 @@ export default {
                    }
 
                    if(j % 2 ===0){
-                     data[i].push(`<div style="color:rgb(178,209,126)">${text}</div>`)
+                    data[i].push(`<div style="color:rgb(178,209,126)">${text}</div>`)
+                        
                    }else{
-                     data[i].push(`<div>${text}</div>`)
+                   data[i].push(`<div>${text}</div>`)
                    }
                    
                 }
@@ -113,7 +114,7 @@ export default {
           //headerStyle : [{color:'red',width:'150px'}] //表头文字样式
             headerHeight:55,//表头高度
             headerIndex:true,
-            rowNum:10,//一次展示多少条数据
+            rowNum:11,//一次展示多少条数据
             rowBg : ['rgb(40,40,40)','rgb(55,55,55)'], //内容背景颜色
             rowColor :'#fff',//批量更改每页内容的文字颜色
           //rowStyle : [{},{color:'red'}] //列内容样式

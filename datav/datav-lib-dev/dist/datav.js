@@ -49498,7 +49498,7 @@
           headerHeight: 55,
           //表头高度
           headerIndex: true,
-          rowNum: 10,
+          rowNum: 11,
           //一次展示多少条数据
           rowBg: ['rgb(40,40,40)', 'rgb(55,55,55)'],
           //内容背景颜色

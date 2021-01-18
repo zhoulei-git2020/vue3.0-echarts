@@ -217,21 +217,17 @@ import assign from 'loadsh/assign'
                     usedColumnNum ++
                 }
             });
-            //(总宽度-定义过的宽度综合) / (列数总个数-定义过的列数) = 剩余的宽度除以剩余的列数
+           //(总宽度-定义过的宽度综合) / (列数总个数-定义过的列数) = 剩余的宽度除以剩余的列数
            const avgWidth = (width.value -usedWidth) /(_headerData.length - usedColumnNum)  
            //动态定义一个数组，数组的长度和_headerData.length相同
            const _columnWidth = new Array(_headerData.length).fill(avgWidth)
            
-            _headerStyle.forEach((style,index) => {
+           _headerStyle.forEach((style,index) => {
                 if(style.width){
                     const headerWidth = +style.width.replace('px','')
                     _columnWidth[index] = headerWidth
                 }
             });
-
-
-           
-          
            columnWidth.value = _columnWidth
            headerData.value = _headerData
            headerStyle.value = _headerStyle
@@ -239,12 +235,13 @@ import assign from 'loadsh/assign'
             const {rowNum} = config
             if(_rowsData.length >= rowNum && _rowsData.length<rowNum * 2){  
                 const newRowData = [..._rowsData,..._rowsData]
-                 rowsData.value = newRowData.map((item,index)=>({
-               data:item,
-               rowIndex:index
+                rowsData.value = newRowData.map((item,index)=>({
+                    data:item,
+                    rowIndex:index
+                  
              }))
             }else{
-                rowsData.value = _rowsData.map((item,index)=>({
+               rowsData.value = _rowsData.map((item,index)=>({
                data:item,
                rowIndex:index
              }))
@@ -320,8 +317,8 @@ import assign from 'loadsh/assign'
 
 
         const update = ()=>{
-            stopAnimation()
-             //将传入的值和默认值进行合并
+           stopAnimation()
+           //将传入的值和默认值进行合并
            const _actualConfig = assign(defaultConfig,props.config)
            //赋值rowsData
            rowsData.value = _actualConfig.data || []
