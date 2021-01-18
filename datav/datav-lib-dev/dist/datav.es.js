@@ -48996,7 +48996,7 @@ var defaultConfig = {
   //显示序号列标题样式
   headerIndexStyle: {
     width: '50px',
-    color: 'yellow'
+    color: ''
   },
   //数据项，二维数组
   data: [],
@@ -49022,7 +49022,9 @@ var defaultConfig = {
   //移动的位置
   moveNum: 1,
   //动画播放延时时间
-  duration: 2000
+  duration: 2000,
+  //序号列的数据内容    
+  headerIndexData: []
 };
 var script$f = {
   name: 'BaseScrollList',
@@ -49092,7 +49094,12 @@ var script$f = {
         _rowStyle.unshift(config.rowIndexStyle);
 
         _rowsData.forEach(function (rows, index) {
-          rows.unshift(index + 1);
+          //处理序号列的数据
+          if (config.headerIndexData && config.headerIndexData.length > 0 && config.headerIndexData[index]) {
+            rows.unshift(config.headerIndexData[index]);
+          } else {
+            rows.unshift(index + 1);
+          }
         });
 
         _aligns.unshift('center'); //默认序号列居中
@@ -49403,7 +49410,7 @@ var render$f = /*#__PURE__*/_withId$d(function (_ctx, _cache, $props, $setup, $d
   , ["id"]);
 });
 
-var css_248z$e = "@charset \"UTF-8\";\n.base-scroll-list[data-v-69eed30f] {\n  /*宽高设为100% 交给父给容器确定*/\n  width: 100%;\n  height: 100%;\n  /*默认文本样式*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-text {\n  padding: 0 10px;\n  white-space: nowrap;\n  /*文本不换行*/\n  overflow: hidden;\n  /*多出部分隐藏*/\n  text-overflow: ellipsis;\n  /*文本超出部分用省略号代替*/\n  box-sizing: border-box;\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-header {\n  display: flex;\n  /*水平布局*/\n  font-size: 15px;\n  /*字体大小*/\n  align-items: center;\n  /*垂直居中*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-rows-wrapper {\n  overflow: hidden;\n  /*超出部分隐藏*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-rows-wrapper .base-scroll-list-rows {\n  display: flex;\n  align-items: center;\n  transition: all 0.3s linear;\n}";
+var css_248z$e = "@charset \"UTF-8\";\n.base-scroll-list[data-v-69eed30f] {\n  /*宽高设为100% 交给父给容器确定*/\n  width: 100%;\n  height: 100%;\n  /*默认文本样式*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-text {\n  /*padding: 0 10px;*/\n  white-space: nowrap;\n  /*文本不换行*/\n  overflow: hidden;\n  /*多出部分隐藏*/\n  text-overflow: ellipsis;\n  /*文本超出部分用省略号代替*/\n  box-sizing: border-box;\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-header {\n  display: flex;\n  /*水平布局*/\n  font-size: 15px;\n  /*字体大小*/\n  align-items: center;\n  /*垂直居中*/\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-rows-wrapper {\n  overflow: hidden;\n  /*超出部分隐藏*/\n  margin-top: 10px;\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-rows-wrapper .base-scroll-list-rows {\n  display: flex;\n  align-items: center;\n  transition: all 0.3s linear;\n}\n.base-scroll-list[data-v-69eed30f] .base-scroll-list-rows-wrapper .base-scroll-list-rows .base-scroll-list-columns {\n  height: 100%;\n}";
 styleInject(css_248z$e);
 
 script$f.render = render$f;
@@ -49419,53 +49426,83 @@ var script$g = {
     var config = ref({});
 
     var update = function update() {
-      console.log(props.data);
-      var headerData = ['城市订单量', '店铺数', '接单骑手人数', '新店铺数量', '人均订单量']; //标题栏内容
-
-      var headerStyle = [{
-        color: 'red',
-        width: '150px'
-      }]; //标题栏样式
-
-      var rowStyle = [{}, {
-        color: 'red'
-      }]; //列内容样式
-
-      var rowBg = ['rgb(240,240,240)', 'rgb(255,255,255)']; //行背景颜色
-
-      var aligns = ['center', 'center', 'center', 'center']; //居中方式
-
-      var headerFontSize = 20; //批量更改标题的文字大小
-
-      var rowFontSize = 24; //批量修改每页内容的文字大小
-
-      var headerColor = '#fff'; //批量更改标题的文字颜色
-
-      var rowColor = 'green'; //批量更改每页内容的文字颜色
-
       var data = [];
+      var aligns = [];
+      var headerIndexData = [];
 
-      for (var i = 0; i < 10; i++) {
-        data.push(['温度' + (i + 1), Math.floor(Math.random() * 10 + 20), Math.floor(Math.random() * 10000 + 10000), Math.floor(Math.random() * 100 + 80)]);
+      for (var i = 0; i < props.data.length; i++) {
+        data[i] = [];
+
+        if (i % 2 === 0) {
+          headerIndexData[i] = "<div\n                                          style=\"width:100%;\n                                          height:100%;\n                                          display:flex;\n                                          align-items:center;\n                                          background:rgb(40,40,40);\n                                          justify-content:center;\"\n                                          >\n                                            <div\n                                              style=\"width:15px;\n                                              height:15px;\n                                              background:rgb(72,122,72);\n                                              border-radius:50%;\n                                              border:1px solid #fff;\"\n                                            />\n                                        </div>";
+        } else {
+          headerIndexData[i] = "<div\n                                         style=\"width:100%;\n                                         height:100%;\n                                         display:flex;\n                                         align-items:center;\n                                         background:rgb(40,40,40);\n                                         justify-content:center;\"\n                                        >\n                                          <div \n                                            style=\"width:15px;\n                                            height:15px;\n                                            background:rgb(38,88,104);\n                                            border-radius:50%;\n                                            border:1px solid #fff;\"\n                                          />\n                                        </div>";
+        }
+
+        for (var j = 0; j < 5; j++) {
+          aligns.push('center');
+          var text = '';
+
+          switch (j) {
+            case 0:
+              text = props.data[i].order;
+              break;
+
+            case 1:
+              text = props.data[i].shop;
+              break;
+
+            case 2:
+              text = props.data[i].rider;
+              break;
+
+            case 3:
+              text = props.data[i].newShop;
+              break;
+
+            case 4:
+              text = props.data[i].avgOrder;
+              break;
+          }
+
+          if (j % 2 === 0) {
+            data[i].push("<div style=\"color:rgb(178,209,126)\">".concat(text, "</div>"));
+          } else {
+            data[i].push("<div>".concat(text, "</div>"));
+          }
+        }
       }
 
       config.value = {
         data: data,
-        rowStyle: rowStyle,
-        headerData: headerData,
-        headerStyle: headerStyle,
+        //rowStyle,
+        headerData: ['当前时间', '当前湿度', '当前亮度', '当前温度', '当前氧含量'],
+        //表头内容
+        headerFontSize: 20,
+        //表头字大小
         headerBackground: 'rgb(80,80,80)',
-        headerHeight: '40',
+        //表头背景色
+        headerIndexContent: '',
+        //表头序号列内容定制
+        headerColor: '#fff',
+        //表头序号列文本颜色
+        //headerIndexStyle:{width:'80px',color:'red'},//表头序号列文字样式定制
+        //headerStyle : [{color:'red',width:'150px'}] //表头文字样式
+        headerHeight: 55,
+        //表头高度
         headerIndex: true,
-        headerIndexContent: '$',
-        //headerIndexStyle:{width:'80px',color:'red'}
         rowNum: 10,
-        rowBg: rowBg,
+        //一次展示多少条数据
+        rowBg: ['rgb(40,40,40)', 'rgb(55,55,55)'],
+        //内容背景颜色
+        rowColor: '#fff',
+        //批量更改每页内容的文字颜色
+        //rowStyle : [{},{color:'red'}] //列内容样式
+        rowFontSize: 24,
+        //批量修改每页内容的文字大小
         aligns: aligns,
-        headerFontSize: headerFontSize,
-        rowFontSize: rowFontSize,
-        headerColor: headerColor,
-        rowColor: rowColor
+        //居中方式
+        headerIndexData: headerIndexData
       };
     };
 

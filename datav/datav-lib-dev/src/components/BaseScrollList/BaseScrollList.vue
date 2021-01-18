@@ -90,7 +90,7 @@ import assign from 'loadsh/assign'
             //显示序号列标题样式
             headerIndexStyle:{
                 width:'50px',
-                color:'yellow'  
+                color:''  
             },
             //数据项，二维数组
             data:[],
@@ -123,7 +123,10 @@ import assign from 'loadsh/assign'
             moveNum:1,
 
             //动画播放延时时间
-            duration:2000
+            duration:2000,
+
+            //序号列的数据内容    
+            headerIndexData : []
         }
 
 
@@ -191,7 +194,13 @@ import assign from 'loadsh/assign'
             _headerStyle.unshift(config.headerIndexStyle)
             _rowStyle.unshift(config.rowIndexStyle)
             _rowsData.forEach((rows,index) =>{
-                rows.unshift(index+1)
+                //处理序号列的数据
+                if(config.headerIndexData && config.headerIndexData.length > 0 && config.headerIndexData[index]){
+                    rows.unshift(config.headerIndexData[index])
+                }else{
+                    rows.unshift(index+1)
+                }
+                
             })
             _aligns.unshift('center') //默认序号列居中
            }
@@ -356,7 +365,7 @@ import assign from 'loadsh/assign'
 
         /*默认文本样式*/
         .base-scroll-list-text{
-            padding: 0 10px;
+            /*padding: 0 10px;*/
             white-space: nowrap; /*文本不换行*/
             overflow: hidden;/*多出部分隐藏*/
             text-overflow: ellipsis;/*文本超出部分用省略号代替*/
@@ -371,12 +380,15 @@ import assign from 'loadsh/assign'
             }
         }
         .base-scroll-list-rows-wrapper{
-            overflow: hidden; /*超出部分隐藏*/   
+            overflow: hidden; /*超出部分隐藏*/  
+              margin-top: 10px;
             .base-scroll-list-rows{
                 display: flex;
                 align-items: center;
                 transition: all 0.3s linear;
+               
                 .base-scroll-list-columns{
+                    height: 100%;
                     
                 
                 }
