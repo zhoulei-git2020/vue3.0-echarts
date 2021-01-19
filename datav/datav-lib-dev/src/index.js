@@ -15,6 +15,7 @@ import CenterHeader from './components/CenterHeader/index';
 import TransformCategory from './components/TransformCategory/index'
 import BaseScrollList from './components/BaseScrollList/index'
 import SalesList from './components/BaseScrollList/index'
+import TimeLine from './components/TimeLine/index'
 export default function(Vue){
     Vue.use(Loading)
     Vue.use(flybox)
@@ -33,6 +34,7 @@ export default function(Vue){
     Vue.use(TransformCategory)
     Vue.use(BaseScrollList)
     Vue.use(SalesList)
+    Vue.use(TimeLine)
 
     
 }

@@ -72,7 +72,9 @@
             </div>
             <div class="right-bottom">
                <div class="right-bottom-left">
-                  <div class="right-bottom-left1">111</div>
+                  <div class="right-bottom-left1">
+                    <TimeLine/>
+                  </div>
                   <div class="right-bottom-left2">
                      <TransformCategory
                       :data="['ALL','王者荣耀','崩坏三','炉石传说','元神',]"
