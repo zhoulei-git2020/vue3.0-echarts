@@ -45072,6 +45072,7 @@
       vue.watch(function () {
         return ctx.options;
       }, function () {
+        console.log(ctx.options);
         initChart();
       });
       return {
@@ -50141,6 +50142,68 @@
     Vue.component(script$h.name, script$h);
   }
 
+  var script$i = {
+    name: 'CustomMap',
+    setup: function setup() {
+      var options = vue.ref({});
+
+      var update = function update() {
+        fetch('http://www.youbaobao.xyz/datav-res/datav/jiangsuMapData.json').then(function (response) {
+          return response.json();
+        }).then(function (data) {
+          Echarts__default['default'].registerMap('js', data);
+          console.log(Echarts__default['default'].getMap('js'));
+          options.value = {
+            geo: [{
+              map: 'js',
+              //渲染地图的名称
+              zoom: 2
+            }]
+          };
+        });
+      };
+
+      vue.onMounted(update);
+      return {
+        options: options
+      };
+    }
+  };
+
+  var _withId$g = /*#__PURE__*/vue.withScopeId("data-v-5e44d4b2");
+
+  vue.pushScopeId("data-v-5e44d4b2");
+
+  var _hoisted_1$e = {
+    style: {
+      "width": "100%",
+      "height": "100%"
+    }
+  };
+
+  vue.popScopeId();
+
+  var render$i = /*#__PURE__*/_withId$g(function (_ctx, _cache, $props, $setup, $data, $options) {
+    var _component_VueEcharts = vue.resolveComponent("VueEcharts");
+
+    return vue.openBlock(), vue.createBlock("div", _hoisted_1$e, [vue.createVNode(_component_VueEcharts, {
+      options: $setup.options
+    }, null, 8
+    /* PROPS */
+    , ["options"])]);
+  });
+
+  var css_248z$h = "";
+  styleInject(css_248z$h);
+
+  script$i.render = render$i;
+  script$i.__scopeId = "data-v-5e44d4b2";
+  script$i.__file = "src/components/CustomMap/CustomMap.vue";
+
+  function CustomMap (Vue) {
+    Vue.component(script$i.name, script$i);
+  }
+
   function index (Vue) {
     Vue.use(Loading);
     Vue.use(flybox);
@@ -50160,6 +50223,7 @@
     Vue.use(SalesList);
     Vue.use(SalesList);
     Vue.use(TimeLine);
+    Vue.use(CustomMap);
   }
 
   return index;
