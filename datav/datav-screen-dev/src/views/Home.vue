@@ -73,7 +73,9 @@
             <div class="right-bottom">
                <div class="right-bottom-left">
                   <div class="right-bottom-left1">
-                    <TimeLine/>
+                    <!-- <TimeLine/> -->
+                    <CustomMap
+                    />
                   </div>
                   <div class="right-bottom-left2">
                      <TransformCategory

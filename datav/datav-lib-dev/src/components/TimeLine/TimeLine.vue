@@ -224,7 +224,7 @@ options.value = {
         tooltip: {},
         legend: {
             left: 'right',
-            data: ['第一产业', '第二产业', '第三产业'],
+            data: ['第一产业', '第二产业', '第三产业','金融'],
             selected: {
                 GDP: false, 金融: false, 房地产: false
             }
@@ -237,7 +237,7 @@ options.value = {
         xAxis: [
             {
                 type:'category',
-                axisLabel:{'interval':0},
+                axisLabel:{'interval':'auto'},
                 data:[
                     '北京','\n天津','河北','\n山西','内蒙古','\n辽宁','吉林','\n黑龙江',
                     '上海','\n江苏','浙江','\n安徽','福建','\n江西','山东','\n河南',
