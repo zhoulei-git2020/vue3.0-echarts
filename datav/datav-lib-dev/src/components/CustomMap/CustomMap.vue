@@ -7,14 +7,16 @@
 </template>
 
 <script>
-import {ref,onMounted} from 'vue'
+import {ref,onMounted,onUnmounted} from 'vue'
 import Echarts from 'echarts'
+import cloneDeep from 'loadsh/cloneDeep'
 
 export default {
     name:'CustomMap',
 
     setup(){
         const options = ref({})
+        let timer = null
         const update = () =>{
             fetch('http://www.youbaobao.xyz/datav-res/datav/jiangsuMapData.json')
             .then(response=>response.json())
@@ -96,7 +98,7 @@ export default {
                     //地图报警点绘制
                     {
                         type:'effectScatter',
-                        data:[{value:center[0].value}],
+                        data:[],
                         coordinateSystem:'geo',
                         symbolSize:16, //散点大小
                         itemStyle:{
@@ -109,9 +111,9 @@ export default {
                                 position:'top',//展示位置
                                 formatter:function(params){
                                     console.log(params);
-                                    return'测试'
+                                    return`{titel|${params.data.city}}\n{content|发生XXX事件}`
                                 },
-                                backgroungColor:'rgba(254,174,33,.8)',
+                                backgroundColor:'rgba(254,174,33,.8)',
                                 padding:[0,0],
                                 borderRadius:3,
                                 lineHeight:32,
@@ -119,8 +121,12 @@ export default {
                                 rich:{
                                   title:{
                                       padding:[0,10,10,10],
+                                      color:'',
+                                  },
+                                  content:{
+                                      padding:[10,10,0,10],
                                       color:'#fff'
-                                  }  
+                                  }
                                 }
                             },
                             //鼠标选中高亮展示形式
@@ -128,15 +134,112 @@ export default {
                                 show:true,
                             }
                         }
-                    }],
+                    },
+                    {
+                        type:'effectScatter',
+                        data:[],
+                        coordinateSystem:'geo',
+                        symbolSize:16, //散点大小
+                        itemStyle:{
+                            color:'#e93f42'
+                        },
+                        label:{
+                            //默认的展示形式
+                            normal:{
+                                show:true,//是否展示
+                                position:'top',//展示位置
+                                formatter:function(params){
+                                    console.log(params);
+                                    return`{titel|${params.data.city}}\n{content|发生XXX事件}`
+                                },
+                                backgroundColor:'rgba(233,63,66,.9)',
+                                padding:[0,0],
+                                borderRadius:3,
+                                lineHeight:32,
+                                color:'#ffffff',
+                                rich:{
+                                  title:{
+                                      padding:[0,10,10,10],
+                                      color:'#fff',
+                                  },
+                                  content:{
+                                      padding:[10,10,0,10],
+                                      color:'#fff'
+                                  }
+                                }
+                            },
+                            //鼠标选中高亮展示形式
+                            emphasis:{
+                                show:true,
+                            }
+                        }
+                    },
+                    {
+                        type:'effectScatter',
+                        data:[{value:center[0].value,city:center[0].key}],
+                        coordinateSystem:'geo',
+                        symbolSize:16, //散点大小
+                        itemStyle:{
+                            color:'#08baec'
+                        },
+                        label:{
+                            //默认的展示形式
+                            normal:{
+                                show:true,//是否展示
+                                position:'top',//展示位置
+                                formatter:function(params){
+                                    console.log(params);
+                                    return`{titel|${params.data.city}}\n{content|发生XXX事件}`
+                                },
+                                backgroundColor:'rgba(8,186,236,.9)',
+                                padding:[0,0],
+                                borderRadius:3,
+                                lineHeight:32,
+                                color:'#ffffff',
+                                rich:{
+                                  title:{
+                                      padding:[0,10,10,10],
+                                      color:'#fff',
+                                  },
+                                  content:{
+                                      padding:[10,10,0,10],
+                                      color:'#fff'
+                                  }
+                                }
+                            },
+                            //鼠标选中高亮展示形式
+                            emphasis:{
+                                show:true,
+                            }
+                        } 
+                    }
+                    ],
                 }
-                   
+                //测试：随机展示事件信息
+                timer = setInterval(()=>{
+                    const _options = cloneDeep(options.value)
+                   //初始化数组
+                   for(let i = 1; i < 4; i++){
+                       _options.series[i].data = []
+                   }
+                    //生成城市随机数
+                    const Citylength = center.length
+                    const cityIndex = Math.floor(Math.random()*Citylength)
+                    const eventIndex = Math.floor(Math.random()*3)+1
+                    _options.series[eventIndex].data = [{
+                        city:center[cityIndex].key,
+                        value:center[cityIndex].value
+                    }]
+
+                    options.value = _options
+                },2000)
+
             } )
             
             
         }
         onMounted(update)
-   
+        onUnmounted(()=>timer && clearInterval(timer))
 
          return{
             options 
