@@ -17,6 +17,7 @@ import BaseScrollList from './components/BaseScrollList/index'
 import SalesList from './components/BaseScrollList/index'
 import TimeLine from './components/TimeLine/index'
 import CustomMap from './components/CustomMap/index'
+import RotatingEarth from './components/RotatingEarth/index'
 export default function(Vue){
     Vue.use(Loading)
     Vue.use(flybox)
@@ -37,6 +38,7 @@ export default function(Vue){
     Vue.use(SalesList)
     Vue.use(TimeLine)
     Vue.use(CustomMap)
+    Vue.use(RotatingEarth)
 
     
 }

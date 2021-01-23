@@ -74,7 +74,8 @@
                <div class="right-bottom-left">
                   <div class="right-bottom-left1">
                     <!-- <TimeLine/> -->
-                    <CustomMap
+                    <!-- <CustomMap /> -->
+                    <RotatingEarth
                     />
                   </div>
                   <div class="right-bottom-left2">
