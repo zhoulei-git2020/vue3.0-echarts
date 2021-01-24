@@ -1,10 +1,6 @@
-import { computed, pushScopeId, popScopeId, openBlock, createBlock, createCommentVNode, createVNode, renderSlot, withScopeId, ref, onMounted, getCurrentInstance, nextTick, onUnmounted, resolveComponent, watch, createTextVNode, toDisplayString, Fragment, renderList } from 'vue';
+import { computed, pushScopeId, popScopeId, openBlock, createBlock, createCommentVNode, createVNode, renderSlot, withScopeId, ref, onMounted, getCurrentInstance, onUnmounted, nextTick, resolveComponent, watch, createTextVNode, toDisplayString, Fragment, renderList } from 'vue';
 import crypto from 'crypto';
-import _regeneratorRuntime from '@babel/runtime/regenerator';
-import _asyncToGenerator from '@babel/runtime/helpers/asyncToGenerator';
 import Echarts$1 from 'echarts';
-import _toConsumableArray from '@babel/runtime/helpers/toConsumableArray';
-import _defineProperty$1 from '@babel/runtime/helpers/defineProperty';
 
 var script = {
   name: 'Loading',
@@ -389,6 +385,806 @@ function flybox (Vue) {
   Vue.component(script$1.name, script$1);
 }
 
+var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
+
+function unwrapExports (x) {
+	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
+}
+
+function createCommonjsModule(fn, module) {
+	return module = { exports: {} }, fn(module, module.exports), module.exports;
+}
+
+var runtime_1 = createCommonjsModule(function (module) {
+/**
+ * Copyright (c) 2014-present, Facebook, Inc.
+ *
+ * This source code is licensed under the MIT license found in the
+ * LICENSE file in the root directory of this source tree.
+ */
+
+var runtime = (function (exports) {
+
+  var Op = Object.prototype;
+  var hasOwn = Op.hasOwnProperty;
+  var undefined$1; // More compressible than void 0.
+  var $Symbol = typeof Symbol === "function" ? Symbol : {};
+  var iteratorSymbol = $Symbol.iterator || "@@iterator";
+  var asyncIteratorSymbol = $Symbol.asyncIterator || "@@asyncIterator";
+  var toStringTagSymbol = $Symbol.toStringTag || "@@toStringTag";
+
+  function define(obj, key, value) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+    return obj[key];
+  }
+  try {
+    // IE 8 has a broken Object.defineProperty that only works on DOM objects.
+    define({}, "");
+  } catch (err) {
+    define = function(obj, key, value) {
+      return obj[key] = value;
+    };
+  }
+
+  function wrap(innerFn, outerFn, self, tryLocsList) {
+    // If outerFn provided and outerFn.prototype is a Generator, then outerFn.prototype instanceof Generator.
+    var protoGenerator = outerFn && outerFn.prototype instanceof Generator ? outerFn : Generator;
+    var generator = Object.create(protoGenerator.prototype);
+    var context = new Context(tryLocsList || []);
+
+    // The ._invoke method unifies the implementations of the .next,
+    // .throw, and .return methods.
+    generator._invoke = makeInvokeMethod(innerFn, self, context);
+
+    return generator;
+  }
+  exports.wrap = wrap;
+
+  // Try/catch helper to minimize deoptimizations. Returns a completion
+  // record like context.tryEntries[i].completion. This interface could
+  // have been (and was previously) designed to take a closure to be
+  // invoked without arguments, but in all the cases we care about we
+  // already have an existing method we want to call, so there's no need
+  // to create a new function object. We can even get away with assuming
+  // the method takes exactly one argument, since that happens to be true
+  // in every case, so we don't have to touch the arguments object. The
+  // only additional allocation required is the completion record, which
+  // has a stable shape and so hopefully should be cheap to allocate.
+  function tryCatch(fn, obj, arg) {
+    try {
+      return { type: "normal", arg: fn.call(obj, arg) };
+    } catch (err) {
+      return { type: "throw", arg: err };
+    }
+  }
+
+  var GenStateSuspendedStart = "suspendedStart";
+  var GenStateSuspendedYield = "suspendedYield";
+  var GenStateExecuting = "executing";
+  var GenStateCompleted = "completed";
+
+  // Returning this object from the innerFn has the same effect as
+  // breaking out of the dispatch switch statement.
+  var ContinueSentinel = {};
+
+  // Dummy constructor functions that we use as the .constructor and
+  // .constructor.prototype properties for functions that return Generator
+  // objects. For full spec compliance, you may wish to configure your
+  // minifier not to mangle the names of these two functions.
+  function Generator() {}
+  function GeneratorFunction() {}
+  function GeneratorFunctionPrototype() {}
+
+  // This is a polyfill for %IteratorPrototype% for environments that
+  // don't natively support it.
+  var IteratorPrototype = {};
+  IteratorPrototype[iteratorSymbol] = function () {
+    return this;
+  };
+
+  var getProto = Object.getPrototypeOf;
+  var NativeIteratorPrototype = getProto && getProto(getProto(values([])));
+  if (NativeIteratorPrototype &&
+      NativeIteratorPrototype !== Op &&
+      hasOwn.call(NativeIteratorPrototype, iteratorSymbol)) {
+    // This environment has a native %IteratorPrototype%; use it instead
+    // of the polyfill.
+    IteratorPrototype = NativeIteratorPrototype;
+  }
+
+  var Gp = GeneratorFunctionPrototype.prototype =
+    Generator.prototype = Object.create(IteratorPrototype);
+  GeneratorFunction.prototype = Gp.constructor = GeneratorFunctionPrototype;
+  GeneratorFunctionPrototype.constructor = GeneratorFunction;
+  GeneratorFunction.displayName = define(
+    GeneratorFunctionPrototype,
+    toStringTagSymbol,
+    "GeneratorFunction"
+  );
+
+  // Helper for defining the .next, .throw, and .return methods of the
+  // Iterator interface in terms of a single ._invoke method.
+  function defineIteratorMethods(prototype) {
+    ["next", "throw", "return"].forEach(function(method) {
+      define(prototype, method, function(arg) {
+        return this._invoke(method, arg);
+      });
+    });
+  }
+
+  exports.isGeneratorFunction = function(genFun) {
+    var ctor = typeof genFun === "function" && genFun.constructor;
+    return ctor
+      ? ctor === GeneratorFunction ||
+        // For the native GeneratorFunction constructor, the best we can
+        // do is to check its .name property.
+        (ctor.displayName || ctor.name) === "GeneratorFunction"
+      : false;
+  };
+
+  exports.mark = function(genFun) {
+    if (Object.setPrototypeOf) {
+      Object.setPrototypeOf(genFun, GeneratorFunctionPrototype);
+    } else {
+      genFun.__proto__ = GeneratorFunctionPrototype;
+      define(genFun, toStringTagSymbol, "GeneratorFunction");
+    }
+    genFun.prototype = Object.create(Gp);
+    return genFun;
+  };
+
+  // Within the body of any async function, `await x` is transformed to
+  // `yield regeneratorRuntime.awrap(x)`, so that the runtime can test
+  // `hasOwn.call(value, "__await")` to determine if the yielded value is
+  // meant to be awaited.
+  exports.awrap = function(arg) {
+    return { __await: arg };
+  };
+
+  function AsyncIterator(generator, PromiseImpl) {
+    function invoke(method, arg, resolve, reject) {
+      var record = tryCatch(generator[method], generator, arg);
+      if (record.type === "throw") {
+        reject(record.arg);
+      } else {
+        var result = record.arg;
+        var value = result.value;
+        if (value &&
+            typeof value === "object" &&
+            hasOwn.call(value, "__await")) {
+          return PromiseImpl.resolve(value.__await).then(function(value) {
+            invoke("next", value, resolve, reject);
+          }, function(err) {
+            invoke("throw", err, resolve, reject);
+          });
+        }
+
+        return PromiseImpl.resolve(value).then(function(unwrapped) {
+          // When a yielded Promise is resolved, its final value becomes
+          // the .value of the Promise<{value,done}> result for the
+          // current iteration.
+          result.value = unwrapped;
+          resolve(result);
+        }, function(error) {
+          // If a rejected Promise was yielded, throw the rejection back
+          // into the async generator function so it can be handled there.
+          return invoke("throw", error, resolve, reject);
+        });
+      }
+    }
+
+    var previousPromise;
+
+    function enqueue(method, arg) {
+      function callInvokeWithMethodAndArg() {
+        return new PromiseImpl(function(resolve, reject) {
+          invoke(method, arg, resolve, reject);
+        });
+      }
+
+      return previousPromise =
+        // If enqueue has been called before, then we want to wait until
+        // all previous Promises have been resolved before calling invoke,
+        // so that results are always delivered in the correct order. If
+        // enqueue has not been called before, then it is important to
+        // call invoke immediately, without waiting on a callback to fire,
+        // so that the async generator function has the opportunity to do
+        // any necessary setup in a predictable way. This predictability
+        // is why the Promise constructor synchronously invokes its
+        // executor callback, and why async functions synchronously
+        // execute code before the first await. Since we implement simple
+        // async functions in terms of async generators, it is especially
+        // important to get this right, even though it requires care.
+        previousPromise ? previousPromise.then(
+          callInvokeWithMethodAndArg,
+          // Avoid propagating failures to Promises returned by later
+          // invocations of the iterator.
+          callInvokeWithMethodAndArg
+        ) : callInvokeWithMethodAndArg();
+    }
+
+    // Define the unified helper method that is used to implement .next,
+    // .throw, and .return (see defineIteratorMethods).
+    this._invoke = enqueue;
+  }
+
+  defineIteratorMethods(AsyncIterator.prototype);
+  AsyncIterator.prototype[asyncIteratorSymbol] = function () {
+    return this;
+  };
+  exports.AsyncIterator = AsyncIterator;
+
+  // Note that simple async functions are implemented on top of
+  // AsyncIterator objects; they just return a Promise for the value of
+  // the final result produced by the iterator.
+  exports.async = function(innerFn, outerFn, self, tryLocsList, PromiseImpl) {
+    if (PromiseImpl === void 0) PromiseImpl = Promise;
+
+    var iter = new AsyncIterator(
+      wrap(innerFn, outerFn, self, tryLocsList),
+      PromiseImpl
+    );
+
+    return exports.isGeneratorFunction(outerFn)
+      ? iter // If outerFn is a generator, return the full iterator.
+      : iter.next().then(function(result) {
+          return result.done ? result.value : iter.next();
+        });
+  };
+
+  function makeInvokeMethod(innerFn, self, context) {
+    var state = GenStateSuspendedStart;
+
+    return function invoke(method, arg) {
+      if (state === GenStateExecuting) {
+        throw new Error("Generator is already running");
+      }
+
+      if (state === GenStateCompleted) {
+        if (method === "throw") {
+          throw arg;
+        }
+
+        // Be forgiving, per 25.3.3.3.3 of the spec:
+        // https://people.mozilla.org/~jorendorff/es6-draft.html#sec-generatorresume
+        return doneResult();
+      }
+
+      context.method = method;
+      context.arg = arg;
+
+      while (true) {
+        var delegate = context.delegate;
+        if (delegate) {
+          var delegateResult = maybeInvokeDelegate(delegate, context);
+          if (delegateResult) {
+            if (delegateResult === ContinueSentinel) continue;
+            return delegateResult;
+          }
+        }
+
+        if (context.method === "next") {
+          // Setting context._sent for legacy support of Babel's
+          // function.sent implementation.
+          context.sent = context._sent = context.arg;
+
+        } else if (context.method === "throw") {
+          if (state === GenStateSuspendedStart) {
+            state = GenStateCompleted;
+            throw context.arg;
+          }
+
+          context.dispatchException(context.arg);
+
+        } else if (context.method === "return") {
+          context.abrupt("return", context.arg);
+        }
+
+        state = GenStateExecuting;
+
+        var record = tryCatch(innerFn, self, context);
+        if (record.type === "normal") {
+          // If an exception is thrown from innerFn, we leave state ===
+          // GenStateExecuting and loop back for another invocation.
+          state = context.done
+            ? GenStateCompleted
+            : GenStateSuspendedYield;
+
+          if (record.arg === ContinueSentinel) {
+            continue;
+          }
+
+          return {
+            value: record.arg,
+            done: context.done
+          };
+
+        } else if (record.type === "throw") {
+          state = GenStateCompleted;
+          // Dispatch the exception by looping back around to the
+          // context.dispatchException(context.arg) call above.
+          context.method = "throw";
+          context.arg = record.arg;
+        }
+      }
+    };
+  }
+
+  // Call delegate.iterator[context.method](context.arg) and handle the
+  // result, either by returning a { value, done } result from the
+  // delegate iterator, or by modifying context.method and context.arg,
+  // setting context.delegate to null, and returning the ContinueSentinel.
+  function maybeInvokeDelegate(delegate, context) {
+    var method = delegate.iterator[context.method];
+    if (method === undefined$1) {
+      // A .throw or .return when the delegate iterator has no .throw
+      // method always terminates the yield* loop.
+      context.delegate = null;
+
+      if (context.method === "throw") {
+        // Note: ["return"] must be used for ES3 parsing compatibility.
+        if (delegate.iterator["return"]) {
+          // If the delegate iterator has a return method, give it a
+          // chance to clean up.
+          context.method = "return";
+          context.arg = undefined$1;
+          maybeInvokeDelegate(delegate, context);
+
+          if (context.method === "throw") {
+            // If maybeInvokeDelegate(context) changed context.method from
+            // "return" to "throw", let that override the TypeError below.
+            return ContinueSentinel;
+          }
+        }
+
+        context.method = "throw";
+        context.arg = new TypeError(
+          "The iterator does not provide a 'throw' method");
+      }
+
+      return ContinueSentinel;
+    }
+
+    var record = tryCatch(method, delegate.iterator, context.arg);
+
+    if (record.type === "throw") {
+      context.method = "throw";
+      context.arg = record.arg;
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    var info = record.arg;
+
+    if (! info) {
+      context.method = "throw";
+      context.arg = new TypeError("iterator result is not an object");
+      context.delegate = null;
+      return ContinueSentinel;
+    }
+
+    if (info.done) {
+      // Assign the result of the finished delegate to the temporary
+      // variable specified by delegate.resultName (see delegateYield).
+      context[delegate.resultName] = info.value;
+
+      // Resume execution at the desired location (see delegateYield).
+      context.next = delegate.nextLoc;
+
+      // If context.method was "throw" but the delegate handled the
+      // exception, let the outer generator proceed normally. If
+      // context.method was "next", forget context.arg since it has been
+      // "consumed" by the delegate iterator. If context.method was
+      // "return", allow the original .return call to continue in the
+      // outer generator.
+      if (context.method !== "return") {
+        context.method = "next";
+        context.arg = undefined$1;
+      }
+
+    } else {
+      // Re-yield the result returned by the delegate method.
+      return info;
+    }
+
+    // The delegate iterator is finished, so forget it and continue with
+    // the outer generator.
+    context.delegate = null;
+    return ContinueSentinel;
+  }
+
+  // Define Generator.prototype.{next,throw,return} in terms of the
+  // unified ._invoke helper method.
+  defineIteratorMethods(Gp);
+
+  define(Gp, toStringTagSymbol, "Generator");
+
+  // A Generator should always return itself as the iterator object when the
+  // @@iterator function is called on it. Some browsers' implementations of the
+  // iterator prototype chain incorrectly implement this, causing the Generator
+  // object to not be returned from this call. This ensures that doesn't happen.
+  // See https://github.com/facebook/regenerator/issues/274 for more details.
+  Gp[iteratorSymbol] = function() {
+    return this;
+  };
+
+  Gp.toString = function() {
+    return "[object Generator]";
+  };
+
+  function pushTryEntry(locs) {
+    var entry = { tryLoc: locs[0] };
+
+    if (1 in locs) {
+      entry.catchLoc = locs[1];
+    }
+
+    if (2 in locs) {
+      entry.finallyLoc = locs[2];
+      entry.afterLoc = locs[3];
+    }
+
+    this.tryEntries.push(entry);
+  }
+
+  function resetTryEntry(entry) {
+    var record = entry.completion || {};
+    record.type = "normal";
+    delete record.arg;
+    entry.completion = record;
+  }
+
+  function Context(tryLocsList) {
+    // The root entry object (effectively a try statement without a catch
+    // or a finally block) gives us a place to store values thrown from
+    // locations where there is no enclosing try statement.
+    this.tryEntries = [{ tryLoc: "root" }];
+    tryLocsList.forEach(pushTryEntry, this);
+    this.reset(true);
+  }
+
+  exports.keys = function(object) {
+    var keys = [];
+    for (var key in object) {
+      keys.push(key);
+    }
+    keys.reverse();
+
+    // Rather than returning an object with a next method, we keep
+    // things simple and return the next function itself.
+    return function next() {
+      while (keys.length) {
+        var key = keys.pop();
+        if (key in object) {
+          next.value = key;
+          next.done = false;
+          return next;
+        }
+      }
+
+      // To avoid creating an additional object, we just hang the .value
+      // and .done properties off the next function object itself. This
+      // also ensures that the minifier will not anonymize the function.
+      next.done = true;
+      return next;
+    };
+  };
+
+  function values(iterable) {
+    if (iterable) {
+      var iteratorMethod = iterable[iteratorSymbol];
+      if (iteratorMethod) {
+        return iteratorMethod.call(iterable);
+      }
+
+      if (typeof iterable.next === "function") {
+        return iterable;
+      }
+
+      if (!isNaN(iterable.length)) {
+        var i = -1, next = function next() {
+          while (++i < iterable.length) {
+            if (hasOwn.call(iterable, i)) {
+              next.value = iterable[i];
+              next.done = false;
+              return next;
+            }
+          }
+
+          next.value = undefined$1;
+          next.done = true;
+
+          return next;
+        };
+
+        return next.next = next;
+      }
+    }
+
+    // Return an iterator with no values.
+    return { next: doneResult };
+  }
+  exports.values = values;
+
+  function doneResult() {
+    return { value: undefined$1, done: true };
+  }
+
+  Context.prototype = {
+    constructor: Context,
+
+    reset: function(skipTempReset) {
+      this.prev = 0;
+      this.next = 0;
+      // Resetting context._sent for legacy support of Babel's
+      // function.sent implementation.
+      this.sent = this._sent = undefined$1;
+      this.done = false;
+      this.delegate = null;
+
+      this.method = "next";
+      this.arg = undefined$1;
+
+      this.tryEntries.forEach(resetTryEntry);
+
+      if (!skipTempReset) {
+        for (var name in this) {
+          // Not sure about the optimal order of these conditions:
+          if (name.charAt(0) === "t" &&
+              hasOwn.call(this, name) &&
+              !isNaN(+name.slice(1))) {
+            this[name] = undefined$1;
+          }
+        }
+      }
+    },
+
+    stop: function() {
+      this.done = true;
+
+      var rootEntry = this.tryEntries[0];
+      var rootRecord = rootEntry.completion;
+      if (rootRecord.type === "throw") {
+        throw rootRecord.arg;
+      }
+
+      return this.rval;
+    },
+
+    dispatchException: function(exception) {
+      if (this.done) {
+        throw exception;
+      }
+
+      var context = this;
+      function handle(loc, caught) {
+        record.type = "throw";
+        record.arg = exception;
+        context.next = loc;
+
+        if (caught) {
+          // If the dispatched exception was caught by a catch block,
+          // then let that catch block handle the exception normally.
+          context.method = "next";
+          context.arg = undefined$1;
+        }
+
+        return !! caught;
+      }
+
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        var record = entry.completion;
+
+        if (entry.tryLoc === "root") {
+          // Exception thrown outside of any try block that could handle
+          // it, so set the completion value of the entire function to
+          // throw the exception.
+          return handle("end");
+        }
+
+        if (entry.tryLoc <= this.prev) {
+          var hasCatch = hasOwn.call(entry, "catchLoc");
+          var hasFinally = hasOwn.call(entry, "finallyLoc");
+
+          if (hasCatch && hasFinally) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            } else if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else if (hasCatch) {
+            if (this.prev < entry.catchLoc) {
+              return handle(entry.catchLoc, true);
+            }
+
+          } else if (hasFinally) {
+            if (this.prev < entry.finallyLoc) {
+              return handle(entry.finallyLoc);
+            }
+
+          } else {
+            throw new Error("try statement without catch or finally");
+          }
+        }
+      }
+    },
+
+    abrupt: function(type, arg) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc <= this.prev &&
+            hasOwn.call(entry, "finallyLoc") &&
+            this.prev < entry.finallyLoc) {
+          var finallyEntry = entry;
+          break;
+        }
+      }
+
+      if (finallyEntry &&
+          (type === "break" ||
+           type === "continue") &&
+          finallyEntry.tryLoc <= arg &&
+          arg <= finallyEntry.finallyLoc) {
+        // Ignore the finally entry if control is not jumping to a
+        // location outside the try/catch block.
+        finallyEntry = null;
+      }
+
+      var record = finallyEntry ? finallyEntry.completion : {};
+      record.type = type;
+      record.arg = arg;
+
+      if (finallyEntry) {
+        this.method = "next";
+        this.next = finallyEntry.finallyLoc;
+        return ContinueSentinel;
+      }
+
+      return this.complete(record);
+    },
+
+    complete: function(record, afterLoc) {
+      if (record.type === "throw") {
+        throw record.arg;
+      }
+
+      if (record.type === "break" ||
+          record.type === "continue") {
+        this.next = record.arg;
+      } else if (record.type === "return") {
+        this.rval = this.arg = record.arg;
+        this.method = "return";
+        this.next = "end";
+      } else if (record.type === "normal" && afterLoc) {
+        this.next = afterLoc;
+      }
+
+      return ContinueSentinel;
+    },
+
+    finish: function(finallyLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.finallyLoc === finallyLoc) {
+          this.complete(entry.completion, entry.afterLoc);
+          resetTryEntry(entry);
+          return ContinueSentinel;
+        }
+      }
+    },
+
+    "catch": function(tryLoc) {
+      for (var i = this.tryEntries.length - 1; i >= 0; --i) {
+        var entry = this.tryEntries[i];
+        if (entry.tryLoc === tryLoc) {
+          var record = entry.completion;
+          if (record.type === "throw") {
+            var thrown = record.arg;
+            resetTryEntry(entry);
+          }
+          return thrown;
+        }
+      }
+
+      // The context.catch method must only be called with a location
+      // argument that corresponds to a known catch block.
+      throw new Error("illegal catch attempt");
+    },
+
+    delegateYield: function(iterable, resultName, nextLoc) {
+      this.delegate = {
+        iterator: values(iterable),
+        resultName: resultName,
+        nextLoc: nextLoc
+      };
+
+      if (this.method === "next") {
+        // Deliberately forget the last sent value so that we don't
+        // accidentally pass it on to the delegate.
+        this.arg = undefined$1;
+      }
+
+      return ContinueSentinel;
+    }
+  };
+
+  // Regardless of whether this script is executing as a CommonJS module
+  // or not, return the runtime object so that we can declare the variable
+  // regeneratorRuntime in the outer scope, which allows this module to be
+  // injected easily by `bin/regenerator --include-runtime script.js`.
+  return exports;
+
+}(
+  // If this script is executing as a CommonJS module, use module.exports
+  // as the regeneratorRuntime namespace. Otherwise create a new empty
+  // object. Either way, the resulting object will be used to initialize
+  // the regeneratorRuntime variable at the top of this file.
+   module.exports 
+));
+
+try {
+  regeneratorRuntime = runtime;
+} catch (accidentalStrictMode) {
+  // This module should not be running in strict mode, so the above
+  // assignment should always work unless something is misconfigured. Just
+  // in case runtime.js accidentally runs in strict mode, we can escape
+  // strict mode using a global Function call. This could conceivably fail
+  // if a Content Security Policy forbids using Function, but in that case
+  // the proper solution is to fix the accidental strict mode problem. If
+  // you've misconfigured your bundler to force strict mode and applied a
+  // CSP to forbid Function, and you're not willing to fix either of those
+  // problems, please detail your unique predicament in a GitHub issue.
+  Function("r", "regeneratorRuntime = r")(runtime);
+}
+});
+
+var regenerator = runtime_1;
+
+function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) {
+  try {
+    var info = gen[key](arg);
+    var value = info.value;
+  } catch (error) {
+    reject(error);
+    return;
+  }
+
+  if (info.done) {
+    resolve(value);
+  } else {
+    Promise.resolve(value).then(_next, _throw);
+  }
+}
+
+function _asyncToGenerator(fn) {
+  return function () {
+    var self = this,
+        args = arguments;
+    return new Promise(function (resolve, reject) {
+      var gen = fn.apply(self, args);
+
+      function _next(value) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "next", value);
+      }
+
+      function _throw(err) {
+        asyncGeneratorStep(gen, resolve, reject, _next, _throw, "throw", err);
+      }
+
+      _next(undefined);
+    });
+  };
+}
+
+var asyncToGenerator = _asyncToGenerator;
+
 function debounce(delay, callback) {
   var task;
   return function () {
@@ -473,8 +1269,8 @@ var script$2 = {
     };
 
     var onResize = /*#__PURE__*/function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee(e) {
-        return _regeneratorRuntime.wrap(function _callee$(_context) {
+      var _ref = asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee(e) {
+        return regenerator.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
@@ -521,8 +1317,8 @@ var script$2 = {
       }
     };
 
-    onMounted( /*#__PURE__*/_asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee2() {
-      return _regeneratorRuntime.wrap(function _callee2$(_context2) {
+    onMounted( /*#__PURE__*/asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee2() {
+      return regenerator.wrap(function _callee2$(_context2) {
         while (1) {
           switch (_context2.prev = _context2.next) {
             case 0:
@@ -1096,16 +1892,6 @@ script$6.__file = "src/components/VueCountTo/vue-countTo.vue";
 
 function VueCountTo (Vue) {
   Vue.component(script$6.name, script$6);
-}
-
-var commonjsGlobal = typeof globalThis !== 'undefined' ? globalThis : typeof window !== 'undefined' ? window : typeof global !== 'undefined' ? global : typeof self !== 'undefined' ? self : {};
-
-function unwrapExports (x) {
-	return x && x.__esModule && Object.prototype.hasOwnProperty.call(x, 'default') ? x['default'] : x;
-}
-
-function createCommonjsModule(fn, module) {
-	return module = { exports: {} }, fn(module, module.exports), module.exports;
 }
 
 /**
@@ -7663,10 +8449,11 @@ function gallopRight(value, array, start, length, hint, compare) {
 
 function TimSort(array, compare) {
   var minGallop = DEFAULT_MIN_GALLOPING;
+  var length = 0;
   var runStart;
   var runLength;
   var stackSize = 0;
-  array.length;
+  length = array.length;
 
   var tmp = [];
   runStart = [];
@@ -11526,10 +12313,7 @@ Painter.prototype = {
 
       if (this._layerConfig[zlevel]) {
         util.merge(layer, this._layerConfig[zlevel], true);
-      } // TODO Remove EL_AFTER_INCREMENTAL_INC magic number
-      else if (this._layerConfig[zlevel - EL_AFTER_INCREMENTAL_INC]) {
-          util.merge(layer, this._layerConfig[zlevel - EL_AFTER_INCREMENTAL_INC], true);
-        }
+      }
 
       if (virtual) {
         layer.virtual = virtual;
@@ -11672,25 +12456,12 @@ Painter.prototype = {
 
     var prevLayer = null;
     var incrementalLayerCount = 0;
-    var prevZlevel;
 
     for (var i = 0; i < list.length; i++) {
       var el = list[i];
       var zlevel = el.zlevel;
-      var layer;
-
-      if (prevZlevel !== zlevel) {
-        prevZlevel = zlevel;
-        incrementalLayerCount = 0;
-      } // TODO Not use magic number on zlevel.
-      // Each layer with increment element can be separated to 3 layers.
-      //          (Other Element drawn after incremental element)
-      // -----------------zlevel + EL_AFTER_INCREMENTAL_INC--------------------
-      //                      (Incremental element)
-      // ----------------------zlevel + INCREMENTAL_INC------------------------
-      //              (Element drawn before incremental element)
-      // --------------------------------zlevel--------------------------------
-
+      var layer; // PENDING If change one incremental element style ?
+      // TODO Where there are non-incremental elements between incremental elements.
 
       if (el.incremental) {
         layer = this.getLayer(zlevel + INCREMENTAL_INC, this._needsManuallyCompositing);
@@ -11784,7 +12555,7 @@ Painter.prototype = {
       }
 
       for (var i = 0; i < this._zlevelList.length; i++) {
-        var _zlevel = this._zlevelList[i]; // TODO Remove EL_AFTER_INCREMENTAL_INC magic number
+        var _zlevel = this._zlevelList[i];
 
         if (_zlevel === zlevel || _zlevel === zlevel + EL_AFTER_INCREMENTAL_INC) {
           var layer = this._layers[_zlevel];
@@ -12784,7 +13555,7 @@ var instances = {}; // ZRender实例map索引
  * @type {string}
  */
 
-var version = '4.3.2';
+var version = '4.3.0';
 /**
  * Initializing a zrender instance
  * @param {HTMLElement} dom
@@ -17323,7 +18094,8 @@ Text.prototype = {
     this.__dirty && text$1.normalizeTextStyle(style, true);
 
     if (!this._rect) {
-      style.text;
+      var text$2 = style.text;
+      text$2 != null ? text$2 += '' : text$2 = '';
       var rect = text.getBoundingRect(style.text + '', style.font, style.textAlign, style.textVerticalAlign, style.textPadding, style.textLineHeight, style.rich);
       rect.x += style.x || 0;
       rect.y += style.y || 0;
@@ -19145,13 +19917,11 @@ function getHighlightDigit(highlightKey) {
  * @param {Object} opt Check `opt` of `setTextStyleCommon` to find other props.
  * @param {string|Function} [opt.defaultText]
  * @param {module:echarts/model/Model} [opt.labelFetcher] Fetch text by
- *      `opt.labelFetcher.getFormattedLabel(opt.labelDataIndex, 'normal'/'emphasis', null, opt.labelDimIndex, opt.labelProp)`
- * @param {number} [opt.labelDataIndex] Fetch text by
- *      `opt.textFetcher.getFormattedLabel(opt.labelDataIndex, 'normal'/'emphasis', null, opt.labelDimIndex, opt.labelProp)`
- * @param {number} [opt.labelDimIndex] Fetch text by
- *      `opt.textFetcher.getFormattedLabel(opt.labelDataIndex, 'normal'/'emphasis', null, opt.labelDimIndex, opt.labelProp)`
- * @param {string} [opt.labelProp] Fetch text by
- *      `opt.textFetcher.getFormattedLabel(opt.labelDataIndex, 'normal'/'emphasis', null, opt.labelDimIndex, opt.labelProp)`
+ *      `opt.labelFetcher.getFormattedLabel(opt.labelDataIndex, 'normal'/'emphasis', null, opt.labelDimIndex)`
+ * @param {module:echarts/model/Model} [opt.labelDataIndex] Fetch text by
+ *      `opt.textFetcher.getFormattedLabel(opt.labelDataIndex, 'normal'/'emphasis', null, opt.labelDimIndex)`
+ * @param {module:echarts/model/Model} [opt.labelDimIndex] Fetch text by
+ *      `opt.textFetcher.getFormattedLabel(opt.labelDataIndex, 'normal'/'emphasis', null, opt.labelDimIndex)`
  * @param {Object} [normalSpecified]
  * @param {Object} [emphasisSpecified]
  */
@@ -19161,8 +19931,7 @@ function setLabelStyle(normalStyle, emphasisStyle, normalModel, emphasisModel, o
   opt = opt || EMPTY_OBJ;
   var labelFetcher = opt.labelFetcher;
   var labelDataIndex = opt.labelDataIndex;
-  var labelDimIndex = opt.labelDimIndex;
-  var labelProp = opt.labelProp; // This scenario, `label.normal.show = true; label.emphasis.show = false`,
+  var labelDimIndex = opt.labelDimIndex; // This scenario, `label.normal.show = true; label.emphasis.show = false`,
   // is not supported util someone requests.
 
   var showNormal = normalModel.getShallow('show');
@@ -19174,7 +19943,7 @@ function setLabelStyle(normalStyle, emphasisStyle, normalModel, emphasisModel, o
 
   if (showNormal || showEmphasis) {
     if (labelFetcher) {
-      baseText = labelFetcher.getFormattedLabel(labelDataIndex, 'normal', null, labelDimIndex, labelProp);
+      baseText = labelFetcher.getFormattedLabel(labelDataIndex, 'normal', null, labelDimIndex);
     }
 
     if (baseText == null) {
@@ -19183,7 +19952,7 @@ function setLabelStyle(normalStyle, emphasisStyle, normalModel, emphasisModel, o
   }
 
   var normalStyleText = showNormal ? baseText : null;
-  var emphasisStyleText = showEmphasis ? util.retrieve2(labelFetcher ? labelFetcher.getFormattedLabel(labelDataIndex, 'emphasis', null, labelDimIndex, labelProp) : null, baseText) : null; // Optimize: If style.text is null, text will not be drawn.
+  var emphasisStyleText = showEmphasis ? util.retrieve2(labelFetcher ? labelFetcher.getFormattedLabel(labelDataIndex, 'emphasis', null, labelDimIndex) : null, baseText) : null; // Optimize: If style.text is null, text will not be drawn.
 
   if (normalStyleText != null || emphasisStyleText != null) {
     // Always set `textStyle` even if `normalStyle.text` is null, because default
@@ -21239,7 +22008,7 @@ var number = {
 // import Text from 'zrender/src/graphic/Text';
 
 /**
- * add commas after every three numbers
+ * 每三位默认加,格式化
  * @param {string|number} x
  * @return {string}
  */
@@ -21455,22 +22224,6 @@ function getTextBoundingRect(opt) {
 function getTextRect(text$1, font, textAlign, textVerticalAlign, textPadding, rich, truncate, textLineHeight) {
   return text.getBoundingRect(text$1, font, textAlign, textVerticalAlign, textPadding, textLineHeight, rich, truncate);
 }
-/**
- * open new tab
- * @param {string} link url
- * @param {string} target blank or self
- */
-
-
-function windowOpen(link, target) {
-  if (target === '_blank' || target === 'blank') {
-    var blank = window.open();
-    blank.opener = null;
-    blank.location = link;
-  } else {
-    window.open(link, target);
-  }
-}
 
 var addCommas_1 = addCommas;
 var toCamelCase_1 = toCamelCase;
@@ -21484,7 +22237,6 @@ var capitalFirst_1 = capitalFirst;
 var truncateText_1$1 = truncateText$1;
 var getTextBoundingRect_1 = getTextBoundingRect;
 var getTextRect_1 = getTextRect;
-var windowOpen_1 = windowOpen;
 
 var format = {
 	addCommas: addCommas_1,
@@ -21498,8 +22250,7 @@ var format = {
 	capitalFirst: capitalFirst_1,
 	truncateText: truncateText_1$1,
 	getTextBoundingRect: getTextBoundingRect_1,
-	getTextRect: getTextRect_1,
-	windowOpen: windowOpen_1
+	getTextRect: getTextRect_1
 };
 
 /*
@@ -26694,7 +27445,7 @@ function dataTaskReset(context) {
 
 function dataTaskProgress(param, context) {
   // Avoid repead cloneShallow when data just created in reset.
-  if (context.outputData && param.end > context.outputData.count()) {
+  if (param.end > context.outputData.count()) {
     context.model.getRawData().cloneShallow(context.outputData);
   }
 } // TODO refactor
@@ -27808,8 +28559,6 @@ var aria = _default$1a;
 
 
 
-
-
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
 * or more contributor license agreements.  See the NOTICE file
@@ -27842,16 +28591,11 @@ function _default$1b(api, opts) {
   opts = opts || {};
   util.defaults(opts, {
     text: 'loading',
-    textColor: '#000',
-    fontSize: '12px',
-    maskColor: 'rgba(255, 255, 255, 0.8)',
-    showSpinner: true,
     color: '#c23531',
-    spinnerRadius: 10,
-    lineWidth: 5,
+    textColor: '#000',
+    maskColor: 'rgba(255, 255, 255, 0.8)',
     zlevel: 0
   });
-  var group = new graphic.Group();
   var mask = new graphic.Rect({
     style: {
       fill: opts.maskColor
@@ -27859,13 +28603,24 @@ function _default$1b(api, opts) {
     zlevel: opts.zlevel,
     z: 10000
   });
-  group.add(mask);
-  var font = opts.fontSize + ' sans-serif';
+  var arc = new graphic.Arc({
+    shape: {
+      startAngle: -PI$1 / 2,
+      endAngle: -PI$1 / 2 + 0.1,
+      r: 10
+    },
+    style: {
+      stroke: opts.color,
+      lineCap: 'round',
+      lineWidth: 5
+    },
+    zlevel: opts.zlevel,
+    z: 10001
+  });
   var labelRect = new graphic.Rect({
     style: {
       fill: 'none',
       text: opts.text,
-      font: font,
       textPosition: 'right',
       textDistance: 10,
       textFill: opts.textColor
@@ -27873,45 +28628,25 @@ function _default$1b(api, opts) {
     zlevel: opts.zlevel,
     z: 10001
   });
+  arc.animateShape(true).when(1000, {
+    endAngle: PI$1 * 3 / 2
+  }).start('circularInOut');
+  arc.animateShape(true).when(1000, {
+    startAngle: PI$1 * 3 / 2
+  }).delay(300).start('circularInOut');
+  var group = new graphic.Group();
+  group.add(arc);
   group.add(labelRect);
-
-  if (opts.showSpinner) {
-    var arc = new graphic.Arc({
-      shape: {
-        startAngle: -PI$1 / 2,
-        endAngle: -PI$1 / 2 + 0.1,
-        r: opts.spinnerRadius
-      },
-      style: {
-        stroke: opts.color,
-        lineCap: 'round',
-        lineWidth: opts.lineWidth
-      },
-      zlevel: opts.zlevel,
-      z: 10001
-    });
-    arc.animateShape(true).when(1000, {
-      endAngle: PI$1 * 3 / 2
-    }).start('circularInOut');
-    arc.animateShape(true).when(1000, {
-      startAngle: PI$1 * 3 / 2
-    }).delay(300).start('circularInOut');
-    group.add(arc);
-  } // Inject resize
-
+  group.add(mask); // Inject resize
 
   group.resize = function () {
-    var textWidth = text.getWidth(opts.text, font);
-    var r = opts.showSpinner ? opts.spinnerRadius : 0; // cx = (containerWidth - arcDiameter - textDistance - textWidth) / 2
-    // textDistance needs to be calculated when both animation and text exist
-
-    var cx = (api.getWidth() - r * 2 - (opts.showSpinner && textWidth ? 10 : 0) - textWidth) / 2 // only show the text
-    - (opts.showSpinner ? 0 : textWidth / 2);
+    var cx = api.getWidth() / 2;
     var cy = api.getHeight() / 2;
-    opts.showSpinner && arc.setShape({
+    arc.setShape({
       cx: cx,
       cy: cy
     });
+    var r = arc.shape.r;
     labelRect.setShape({
       x: cx - r,
       y: cy - r,
@@ -28034,7 +28769,7 @@ var proto = Scheduler.prototype;
  */
 
 proto.restoreData = function (ecModel, payload) {
-  // TODO: Only restore needed series and components, but not all components.
+  // TODO: Only restroe needed series and components, but not all components.
   // Currently `restoreData` of all of the series and component will be called.
   // But some independent components like `title`, `legend`, `graphic`, `toolbox`,
   // `tooltip`, `axisPointer`, etc, do not need series refresh when `setOption`,
@@ -30465,7 +31200,7 @@ listProto.mapDimension = function (coordDim, idx) {
  * Initialize from data
  * @param {Array.<Object|number|Array>} data source or data or data provider.
  * @param {Array.<string>} [nameLIst] The name of a datum is used on data diff and
- *        default label/tooltip.
+ *        defualt label/tooltip.
  *        A name can be specified in encode.itemName,
  *        or dataItem.name (only for series option data),
  *        or provided in nameList from outside.
@@ -35041,6 +35776,8 @@ function getScaleExtent(scale, model) {
   var scaleType = scale.type;
   var min = model.getMin();
   var max = model.getMax();
+  var fixMin = min != null;
+  var fixMax = max != null;
   var originalExtent = scale.getExtent();
   var axisDataLen;
   var boundaryGap;
@@ -35077,6 +35814,14 @@ function getScaleExtent(scale, model) {
   // that the results processed by boundaryGap are positive/negative?
 
 
+  if (min == null) {
+    min = scaleType === 'ordinal' ? axisDataLen ? 0 : NaN : originalExtent[0] - boundaryGap[0] * span;
+  }
+
+  if (max == null) {
+    max = scaleType === 'ordinal' ? axisDataLen ? axisDataLen - 1 : NaN : originalExtent[1] + boundaryGap[1] * span;
+  }
+
   if (min === 'dataMin') {
     min = originalExtent[0];
   } else if (typeof min === 'function') {
@@ -35093,17 +35838,6 @@ function getScaleExtent(scale, model) {
       min: originalExtent[0],
       max: originalExtent[1]
     });
-  }
-
-  var fixMin = min != null;
-  var fixMax = max != null;
-
-  if (min == null) {
-    min = scaleType === 'ordinal' ? axisDataLen ? 0 : NaN : originalExtent[0] - boundaryGap[0] * span;
-  }
-
-  if (max == null) {
-    max = scaleType === 'ordinal' ? axisDataLen ? axisDataLen - 1 : NaN : originalExtent[1] + boundaryGap[1] * span;
   }
 
   (min == null || !isFinite(min)) && (min = NaN);
@@ -35152,13 +35886,7 @@ function getScaleExtent(scale, model) {
     }
   }
 
-  return {
-    extent: [min, max],
-    // "fix" means "fixed", the value should not be
-    // changed in the subsequent steps.
-    fixMin: fixMin,
-    fixMax: fixMax
-  };
+  return [min, max];
 }
 
 function adjustScaleForOverflow(min, max, model, barWidthAndOffset) {
@@ -35199,8 +35927,9 @@ function adjustScaleForOverflow(min, max, model, barWidthAndOffset) {
 }
 
 function niceScaleExtent(scale, model) {
-  var extentInfo = getScaleExtent(scale, model);
-  var extent = extentInfo.extent;
+  var extent = getScaleExtent(scale, model);
+  var fixMin = model.getMin() != null;
+  var fixMax = model.getMax() != null;
   var splitNumber = model.get('splitNumber');
 
   if (scale.type === 'log') {
@@ -35211,8 +35940,8 @@ function niceScaleExtent(scale, model) {
   scale.setExtent(extent[0], extent[1]);
   scale.niceExtent({
     splitNumber: splitNumber,
-    fixMin: extentInfo.fixMin,
-    fixMax: extentInfo.fixMax,
+    fixMin: fixMin,
+    fixMax: fixMax,
     minInterval: scaleType === 'interval' || scaleType === 'time' ? model.get('minInterval') : null,
     maxInterval: scaleType === 'interval' || scaleType === 'time' ? model.get('maxInterval') : null
   }); // If some one specified the min, max. And the default calculated interval
@@ -35367,8 +36096,8 @@ function rotateTextRect(textRect, rotate) {
   var boundingBox = textRect.plain();
   var beforeWidth = boundingBox.width;
   var beforeHeight = boundingBox.height;
-  var afterWidth = beforeWidth * Math.abs(Math.cos(rotateRadians)) + Math.abs(beforeHeight * Math.sin(rotateRadians));
-  var afterHeight = beforeWidth * Math.abs(Math.sin(rotateRadians)) + Math.abs(beforeHeight * Math.cos(rotateRadians));
+  var afterWidth = beforeWidth * Math.cos(rotateRadians) + beforeHeight * Math.sin(rotateRadians);
+  var afterHeight = beforeWidth * Math.sin(rotateRadians) + beforeHeight * Math.cos(rotateRadians);
   var rotatedRect = new BoundingRect_1(boundingBox.x, boundingBox.y, afterWidth, afterHeight);
   return rotatedRect;
 }
@@ -36344,12 +37073,11 @@ function decodePolygon(coordinate, encodeOffsets, encodeScale) {
 /**
  * @alias module:echarts/coord/geo/parseGeoJson
  * @param {Object} geoJson
- * @param {string} nameProperty
  * @return {module:zrender/container/Group}
  */
 
 
-function _default$1t(geoJson, nameProperty) {
+function _default$1t(geoJson) {
   decode(geoJson);
   return util.map(util.filter(geoJson.features, function (featureObj) {
     // Output of mapshaper may have geometry null
@@ -36382,7 +37110,7 @@ function _default$1t(geoJson, nameProperty) {
       });
     }
 
-    var region = new Region_1(properties[nameProperty || 'name'], geometries, properties.cp);
+    var region = new Region_1(properties.name, geometries, properties.cp);
     region.properties = properties;
     return region;
   });
@@ -37370,9 +38098,9 @@ var each = util.each;
 var isFunction = util.isFunction;
 var isObject = util.isObject;
 var parseClassType = Component.parseClassType;
-var version = '4.9.0';
+var version = '4.7.0';
 var dependencies = {
-  zrender: '4.3.2'
+  zrender: '4.3.0'
 };
 var TEST_FRAME_REMAIN_TIME = 1;
 var PRIORITY_PROCESSOR_FILTER = 1000;
@@ -37767,7 +38495,7 @@ echartsProto.getRenderedCanvas = function (opts) {
  */
 
 
-echartsProto.getSvgDataURL = function () {
+echartsProto.getSvgDataUrl = function () {
   if (!env_1.svgSupported) {
     return;
   }
@@ -37778,7 +38506,7 @@ echartsProto.getSvgDataURL = function () {
   util.each(list, function (el) {
     el.stopAnimation(true);
   });
-  return zr.painter.toDataURL();
+  return zr.painter.pathToDataUrl();
 };
 /**
  * @return {string}
@@ -37813,7 +38541,7 @@ echartsProto.getDataURL = function (opts) {
       }
     });
   });
-  var url = this._zr.painter.getType() === 'svg' ? this.getSvgDataURL() : this.getRenderedCanvas(opts).toDataURL('image/' + (opts && opts.type || 'png'));
+  var url = this._zr.painter.getType() === 'svg' ? this.getSvgDataUrl() : this.getRenderedCanvas(opts).toDataURL('image/' + (opts && opts.type || 'png'));
   each(excludesComponentViews, function (view) {
     view.group.ignore = false;
   });
@@ -37838,7 +38566,6 @@ echartsProto.getConnectedDataURL = function (opts) {
     return;
   }
 
-  var isSvg = opts.type === 'svg';
   var groupId = this.group;
   var mathMin = Math.min;
   var mathMax = Math.max;
@@ -37853,7 +38580,7 @@ echartsProto.getConnectedDataURL = function (opts) {
     var dpr = opts && opts.pixelRatio || 1;
     util.each(instances, function (chart, id) {
       if (chart.group === groupId) {
-        var canvas = isSvg ? chart.getZr().painter.getSvgDom().innerHTML : chart.getRenderedCanvas(util.clone(opts));
+        var canvas = chart.getRenderedCanvas(util.clone(opts));
         var boundingRect = chart.getDom().getBoundingClientRect();
         left = mathMin(boundingRect.left, left);
         top = mathMin(boundingRect.top, top);
@@ -37873,58 +38600,36 @@ echartsProto.getConnectedDataURL = function (opts) {
     var width = right - left;
     var height = bottom - top;
     var targetCanvas = util.createCanvas();
-    var zr = zrender.init(targetCanvas, {
-      renderer: isSvg ? 'svg' : 'canvas'
-    });
-    zr.resize({
-      width: width,
-      height: height
-    });
+    targetCanvas.width = width;
+    targetCanvas.height = height;
+    var zr = zrender.init(targetCanvas); // Background between the charts
 
-    if (isSvg) {
-      var content = '';
-      each(canvasList, function (item) {
-        var x = item.left - left;
-        var y = item.top - top;
-        content += '<g transform="translate(' + x + ',' + y + ')">' + item.dom + '</g>';
-      });
-      zr.painter.getSvgRoot().innerHTML = content;
-
-      if (opts.connectedBackgroundColor) {
-        zr.painter.setBackgroundColor(opts.connectedBackgroundColor);
-      }
-
-      zr.refreshImmediately();
-      return zr.painter.toDataURL();
-    } else {
-      // Background between the charts
-      if (opts.connectedBackgroundColor) {
-        zr.add(new graphic.Rect({
-          shape: {
-            x: 0,
-            y: 0,
-            width: width,
-            height: height
-          },
-          style: {
-            fill: opts.connectedBackgroundColor
-          }
-        }));
-      }
-
-      each(canvasList, function (item) {
-        var img = new graphic.Image({
-          style: {
-            x: item.left * dpr - left,
-            y: item.top * dpr - top,
-            image: item.dom
-          }
-        });
-        zr.add(img);
-      });
-      zr.refreshImmediately();
-      return targetCanvas.toDataURL('image/' + (opts && opts.type || 'png'));
+    if (opts.connectedBackgroundColor) {
+      zr.add(new graphic.Rect({
+        shape: {
+          x: 0,
+          y: 0,
+          width: width,
+          height: height
+        },
+        style: {
+          fill: opts.connectedBackgroundColor
+        }
+      }));
     }
+
+    each(canvasList, function (item) {
+      var img = new graphic.Image({
+        style: {
+          x: item.left * dpr - left,
+          y: item.top * dpr - top,
+          image: item.dom
+        }
+      });
+      zr.add(img);
+    });
+    zr.refreshImmediately();
+    return targetCanvas.toDataURL('image/' + (opts && opts.type || 'png'));
   } else {
     return this.getDataURL(opts);
   }
@@ -39614,34 +40319,34 @@ exports.dataTool = dataTool;
     }
 })();
 });
-echarts.version;
-echarts.dependencies;
-echarts.PRIORITY;
-echarts.init;
-echarts.connect;
-echarts.disConnect;
-echarts.disconnect;
-echarts.dispose;
-echarts.getInstanceByDom;
-echarts.getInstanceById;
-echarts.registerTheme;
-echarts.registerPreprocessor;
-echarts.registerProcessor;
-echarts.registerPostUpdate;
-echarts.registerAction;
-echarts.registerCoordinateSystem;
-echarts.getCoordinateSystemDimensions;
-echarts.registerLayout;
-echarts.registerVisual;
-echarts.registerLoading;
-echarts.extendComponentModel;
-echarts.extendComponentView;
-echarts.extendSeriesModel;
-echarts.extendChartView;
-echarts.setCanvasCreator;
-echarts.registerMap;
-echarts.getMap;
-echarts.dataTool;
+var echarts_1 = echarts.version;
+var echarts_2 = echarts.dependencies;
+var echarts_3 = echarts.PRIORITY;
+var echarts_4 = echarts.init;
+var echarts_5 = echarts.connect;
+var echarts_6 = echarts.disConnect;
+var echarts_7 = echarts.disconnect;
+var echarts_8 = echarts.dispose;
+var echarts_9 = echarts.getInstanceByDom;
+var echarts_10 = echarts.getInstanceById;
+var echarts_11 = echarts.registerTheme;
+var echarts_12 = echarts.registerPreprocessor;
+var echarts_13 = echarts.registerProcessor;
+var echarts_14 = echarts.registerPostUpdate;
+var echarts_15 = echarts.registerAction;
+var echarts_16 = echarts.registerCoordinateSystem;
+var echarts_17 = echarts.getCoordinateSystemDimensions;
+var echarts_18 = echarts.registerLayout;
+var echarts_19 = echarts.registerVisual;
+var echarts_20 = echarts.registerLoading;
+var echarts_21 = echarts.extendComponentModel;
+var echarts_22 = echarts.extendComponentView;
+var echarts_23 = echarts.extendSeriesModel;
+var echarts_24 = echarts.extendChartView;
+var echarts_25 = echarts.setCanvasCreator;
+var echarts_26 = echarts.registerMap;
+var echarts_27 = echarts.getMap;
+var echarts_28 = echarts.dataTool;
 
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
@@ -40138,7 +40843,7 @@ var defaultOption = {
   name: '',
   // 'start' | 'middle' | 'end'
   nameLocation: 'end',
-  // By degree. By default auto rotate by nameLocation.
+  // By degree. By defualt auto rotate by nameLocation.
   nameRotate: null,
   nameTruncate: {
     maxWidth: null,
@@ -40565,7 +41270,7 @@ axisModelCreator('y', AxisModel, getAxisType, extraOption);
 */
 // Grid 是在有直角坐标系的时候必须要存在的
 // 所以这里也要被 Cartesian2D 依赖
-Component.extend({
+var _default$1A = Component.extend({
   type: 'grid',
   dependencies: ['xAxis', 'yAxis'],
   layoutMode: 'box',
@@ -41215,7 +41920,7 @@ CoordinateSystem.register('cartesian2d', Grid);
 * specific language governing permissions and limitations
 * under the License.
 */
-var _default$1A = Series.extend({
+var _default$1B = Series.extend({
   type: 'series.__base_bar__',
   getInitialData: function (option, ecModel) {
     return createListFromArray_1(this.getSource(), this, {
@@ -41275,7 +41980,7 @@ var _default$1A = Series.extend({
   }
 });
 
-var BaseBarSeries = _default$1A;
+var BaseBarSeries = _default$1B;
 
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
@@ -41316,7 +42021,7 @@ var BaseBarSeries = _default$1A;
 * specific language governing permissions and limitations
 * under the License.
 */
-BaseBarSeries.extend({
+var _default$1C = BaseBarSeries.extend({
   type: 'series.bar',
   dependencies: ['grid', 'polar'],
   brushSelector: 'rect',
@@ -41547,7 +42252,7 @@ var helper$3 = {
 */
 var getBarItemStyle = makeStyleMapper([['fill', 'color'], ['stroke', 'borderColor'], ['lineWidth', 'borderWidth'], // Compatitable with 2
 ['stroke', 'barBorderColor'], ['lineWidth', 'barBorderWidth'], ['opacity'], ['shadowBlur'], ['shadowOffsetX'], ['shadowOffsetY'], ['shadowColor']]);
-var _default$1B = {
+var _default$1D = {
   getBarItemStyle: function (excludes) {
     var style = getBarItemStyle(this, excludes);
 
@@ -41559,7 +42264,7 @@ var _default$1B = {
     return style;
   }
 };
-var barItemStyle = _default$1B;
+var barItemStyle = _default$1D;
 
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
@@ -41616,10 +42321,7 @@ function createGridClipPath(cartesian, hasAnimation, seriesModel) {
   x -= lineWidth / 2;
   y -= lineWidth / 2;
   width += lineWidth;
-  height += lineWidth; // fix: https://github.com/apache/incubator-echarts/issues/11369
-
-  x = Math.floor(x);
-  width = Math.round(width);
+  height += lineWidth;
   var clipPath = new graphic.Rect({
     shape: {
       x: x,
@@ -41737,7 +42439,7 @@ var extendShape$1 = graphic.extendShape;
  * Sausage: similar to sector, but have half circle on both sides
  * @public
  */
-var _default$1C = extendShape$1({
+var _default$1E = extendShape$1({
   type: 'sausage',
   shape: {
     cx: 0,
@@ -41782,7 +42484,7 @@ var _default$1C = extendShape$1({
   }
 });
 
-var sausage = _default$1C;
+var sausage = _default$1E;
 
 var setLabel$1 = helper$3.setLabel;
 
@@ -41852,7 +42554,7 @@ function getClipArea(coord, data) {
   return coordSysClipArea;
 }
 
-echarts.extendChartView({
+var _default$1F = echarts.extendChartView({
   type: 'bar',
   render: function (seriesModel, ecModel, api) {
     this._updateDrawMode(seriesModel);
@@ -41907,29 +42609,16 @@ echarts.extendChartView({
     var roundCap = seriesModel.get('roundCap', true);
     var drawBackground = seriesModel.get('showBackground', true);
     var backgroundModel = seriesModel.getModel('backgroundStyle');
-    var barBorderRadius = backgroundModel.get('barBorderRadius') || 0;
     var bgEls = [];
     var oldBgEls = this._backgroundEls || [];
-
-    var createBackground = function (dataIndex) {
-      var bgLayout = getLayout[coord.type](data, dataIndex);
-      var bgEl = createBackgroundEl(coord, isHorizontalOrRadial, bgLayout);
-      bgEl.useStyle(backgroundModel.getBarItemStyle()); // Only cartesian2d support borderRadius.
-
-      if (coord.type === 'cartesian2d') {
-        bgEl.setShape('r', barBorderRadius);
-      }
-
-      bgEls[dataIndex] = bgEl;
-      return bgEl;
-    };
-
     data.diff(oldData).add(function (dataIndex) {
       var itemModel = data.getItemModel(dataIndex);
       var layout = getLayout[coord.type](data, dataIndex, itemModel);
 
       if (drawBackground) {
-        createBackground(dataIndex);
+        var bgEl = createBackgroundEl(coord, isHorizontalOrRadial, layout);
+        bgEl.useStyle(backgroundModel.getBarItemStyle());
+        bgEls[dataIndex] = bgEl;
       } // If dataZoom in filteMode: 'empty', the baseValue can be set as NaN in "axisProxy".
 
 
@@ -41957,23 +42646,10 @@ echarts.extendChartView({
       var layout = getLayout[coord.type](data, newIndex, itemModel);
 
       if (drawBackground) {
-        var bgEl;
-
-        if (oldBgEls.length === 0) {
-          bgEl = createBackground(oldIndex);
-        } else {
-          bgEl = oldBgEls[oldIndex];
-          bgEl.useStyle(backgroundModel.getBarItemStyle()); // Only cartesian2d support borderRadius.
-
-          if (coord.type === 'cartesian2d') {
-            bgEl.setShape('r', barBorderRadius);
-          }
-
-          bgEls[newIndex] = bgEl;
-        }
-
-        var bgLayout = getLayout[coord.type](data, newIndex);
-        var shape = createBackgroundShape(isHorizontalOrRadial, bgLayout, coord);
+        var bgEl = oldBgEls[oldIndex];
+        bgEl.useStyle(backgroundModel.getBarItemStyle());
+        bgEls[newIndex] = bgEl;
+        var shape = createBackgroundShape(isHorizontalOrRadial, layout, coord);
         graphic.updateProps(bgEl, {
           shape: shape
         }, animationModel, newIndex);
@@ -42115,28 +42791,8 @@ var clip = {
 
     return clipped;
   },
-  polar: function (coordSysClipArea, layout) {
-    var signR = layout.r0 <= layout.r ? 1 : -1; // Make sure r is larger than r0
-
-    if (signR < 0) {
-      var r = layout.r;
-      layout.r = layout.r0;
-      layout.r0 = r;
-    }
-
-    var r = mathMin$4(layout.r, coordSysClipArea.r);
-    var r0 = mathMax$4(layout.r0, coordSysClipArea.r0);
-    layout.r = r;
-    layout.r0 = r0;
-    var clipped = r - r0 < 0; // Reverse back
-
-    if (signR < 0) {
-      var r = layout.r;
-      layout.r = layout.r0;
-      layout.r0 = r;
-    }
-
-    return clipped;
+  polar: function (coordSysClipArea) {
+    return false;
   }
 };
 var elementCreator = {
@@ -42215,11 +42871,9 @@ function removeSector(dataIndex, animationModel, el) {
 }
 
 var getLayout = {
-  // itemModel is only used to get borderWidth, which is not needed
-  // when calculating bar background layout.
   cartesian2d: function (data, dataIndex, itemModel) {
     var layout = data.getItemLayout(dataIndex);
-    var fixedLineWidth = itemModel ? getLineWidth(itemModel, layout) : 0; // fix layout with lineWidth
+    var fixedLineWidth = getLineWidth(itemModel, layout); // fix layout with lineWidth
 
     var signX = layout.width > 0 ? 1 : -1;
     var signY = layout.height > 0 ? 1 : -1;
@@ -43129,8 +43783,8 @@ function buildAxisLabel(axisBuilder, axisModel, opt) {
   return labelEls;
 }
 
-var _default$1D = AxisBuilder;
-var AxisBuilder_1 = _default$1D;
+var _default$1G = AxisBuilder;
+var AxisBuilder_1 = _default$1G;
 
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
@@ -43576,8 +44230,8 @@ AxisView.getAxisPointerClass = function (type) {
   return type && axisPointerClazz[type];
 };
 
-var _default$1E = AxisView;
-var AxisView_1 = _default$1E;
+var _default$1H = AxisView;
+var AxisView_1 = _default$1H;
 
 /*
 * Licensed to the Apache Software Foundation (ASF) under one
@@ -45206,6 +45860,53 @@ function HotCategory (Vue) {
   Vue.component(script$c.name, script$c);
 }
 
+function _arrayLikeToArray(arr, len) {
+  if (len == null || len > arr.length) len = arr.length;
+
+  for (var i = 0, arr2 = new Array(len); i < len; i++) {
+    arr2[i] = arr[i];
+  }
+
+  return arr2;
+}
+
+var arrayLikeToArray = _arrayLikeToArray;
+
+function _arrayWithoutHoles(arr) {
+  if (Array.isArray(arr)) return arrayLikeToArray(arr);
+}
+
+var arrayWithoutHoles = _arrayWithoutHoles;
+
+function _iterableToArray(iter) {
+  if (typeof Symbol !== "undefined" && Symbol.iterator in Object(iter)) return Array.from(iter);
+}
+
+var iterableToArray = _iterableToArray;
+
+function _unsupportedIterableToArray(o, minLen) {
+  if (!o) return;
+  if (typeof o === "string") return arrayLikeToArray(o, minLen);
+  var n = Object.prototype.toString.call(o).slice(8, -1);
+  if (n === "Object" && o.constructor) n = o.constructor.name;
+  if (n === "Map" || n === "Set") return Array.from(o);
+  if (n === "Arguments" || /^(?:Ui|I)nt(?:8|16|32)(?:Clamped)?Array$/.test(n)) return arrayLikeToArray(o, minLen);
+}
+
+var unsupportedIterableToArray = _unsupportedIterableToArray;
+
+function _nonIterableSpread() {
+  throw new TypeError("Invalid attempt to spread non-iterable instance.\nIn order to be iterable, non-array objects must have a [Symbol.iterator]() method.");
+}
+
+var nonIterableSpread = _nonIterableSpread;
+
+function _toConsumableArray(arr) {
+  return arrayWithoutHoles(arr) || iterableToArray(arr) || unsupportedIterableToArray(arr) || nonIterableSpread();
+}
+
+var toConsumableArray = _toConsumableArray;
+
 var script$d = {
   name: 'CenterHeader',
   props: {
@@ -45217,8 +45918,8 @@ var script$d = {
     var startPercent = ref(0);
 
     var update = function update(newdata) {
-      project.value = _toConsumableArray(props.data.project.value);
-      headerData.value = _toConsumableArray(props.data.headerData.value);
+      project.value = toConsumableArray(props.data.project.value);
+      headerData.value = toConsumableArray(props.data.headerData.value);
     };
 
     onMounted(function () {
@@ -45761,9 +46462,9 @@ var root = _freeGlobal || freeSelf || Function('return this')();
 var _root = root;
 
 /** Built-in value references. */
-var Symbol = _root.Symbol;
+var Symbol$1 = _root.Symbol;
 
-var _Symbol = Symbol;
+var _Symbol = Symbol$1;
 
 /** Used for built-in method references. */
 var objectProto = Object.prototype;
@@ -48440,7 +49141,7 @@ var script$f = {
       var rowNum = config.rowNum;
 
       if (_rowsData.length >= rowNum && _rowsData.length < rowNum * 2) {
-        var newRowData = [].concat(_toConsumableArray(_rowsData), _toConsumableArray(_rowsData));
+        var newRowData = [].concat(toConsumableArray(_rowsData), toConsumableArray(_rowsData));
         rowsData.value = newRowData.map(function (item, index) {
           return {
             data: item,
@@ -48480,12 +49181,12 @@ var script$f = {
 
 
     var startAnimation = /*#__PURE__*/function () {
-      var _ref = _asyncToGenerator( /*#__PURE__*/_regeneratorRuntime.mark(function _callee() {
+      var _ref = asyncToGenerator( /*#__PURE__*/regenerator.mark(function _callee() {
         var _rowHeight$value;
 
         var config, rowNum, moveNum, duration, totalLength, index, _rowsData, rows, waitTime, isLast;
 
-        return _regeneratorRuntime.wrap(function _callee$(_context) {
+        return regenerator.wrap(function _callee$(_context) {
           while (1) {
             switch (_context.prev = _context.next) {
               case 0:
@@ -48517,7 +49218,7 @@ var script$f = {
                 //将数据头尾连接  
 
                 rows = _rowsData.slice(index);
-                rows.push.apply(rows, _toConsumableArray(_rowsData.slice(0, index)));
+                rows.push.apply(rows, toConsumableArray(_rowsData.slice(0, index)));
                 currentRowsData.value = rows; //先将所有行的高度还原
 
                 rowHeight.value = new Array(totalLength).fill(avgHeight);
@@ -48538,7 +49239,7 @@ var script$f = {
 
               case 18:
                 //将moveNum的行高度设为0
-                (_rowHeight$value = rowHeight.value).splice.apply(_rowHeight$value, [0, moveNum].concat(_toConsumableArray(new Array(moveNum).fill(0))));
+                (_rowHeight$value = rowHeight.value).splice.apply(_rowHeight$value, [0, moveNum].concat(toConsumableArray(new Array(moveNum).fill(0))));
 
                 currentIndex.value += moveNum; //是否到达最后一组数据
 
@@ -48620,9 +49321,26 @@ var script$f = {
   }
 };
 
+function _defineProperty$1(obj, key, value) {
+  if (key in obj) {
+    Object.defineProperty(obj, key, {
+      value: value,
+      enumerable: true,
+      configurable: true,
+      writable: true
+    });
+  } else {
+    obj[key] = value;
+  }
+
+  return obj;
+}
+
+var defineProperty$1 = _defineProperty$1;
+
 function ownKeys(object, enumerableOnly) { var keys = Object.keys(object); if (Object.getOwnPropertySymbols) { var symbols = Object.getOwnPropertySymbols(object); if (enumerableOnly) symbols = symbols.filter(function (sym) { return Object.getOwnPropertyDescriptor(object, sym).enumerable; }); keys.push.apply(keys, symbols); } return keys; }
 
-function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { _defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
+function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { var source = arguments[i] != null ? arguments[i] : {}; if (i % 2) { ownKeys(Object(source), true).forEach(function (key) { defineProperty$1(target, key, source[key]); }); } else if (Object.getOwnPropertyDescriptors) { Object.defineProperties(target, Object.getOwnPropertyDescriptors(source)); } else { ownKeys(Object(source)).forEach(function (key) { Object.defineProperty(target, key, Object.getOwnPropertyDescriptor(source, key)); }); } } return target; }
 
 var _withId$d = /*#__PURE__*/withScopeId("data-v-69eed30f");
 
@@ -53464,7 +54182,7 @@ Shader.source = function (name) {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__core_Base__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Texture__ = __webpack_require__(4);
-/* harmony import */ __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__TextureCube__ = __webpack_require__(27);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__core_glenum__ = __webpack_require__(11);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_Cache__ = __webpack_require__(57);
 
@@ -63948,7 +64666,7 @@ var Plane = __WEBPACK_IMPORTED_MODULE_0__Geometry__["a" /* default */].extend(
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_claygl_src_core_Base__ = __webpack_require__(8);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_claygl_src_math_Vector2__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_claygl_src_math_Vector3__ = __webpack_require__(3);
-/* harmony import */ __webpack_require__(56);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_claygl_src_math_Quaternion__ = __webpack_require__(56);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__retrieve__ = __webpack_require__(2);
 /**
  * Provide orbit control for 3D objects
@@ -77614,23 +78332,23 @@ __WEBPACK_IMPORTED_MODULE_1_echarts_lib_echarts___default.a.util.defaults(LinesG
 /* 105 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ __webpack_require__(106);
-/* harmony import */ __webpack_require__(153);
-/* harmony import */ __webpack_require__(203);
-/* harmony import */ __webpack_require__(209);
-/* harmony import */ __webpack_require__(215);
-/* harmony import */ __webpack_require__(221);
-/* harmony import */ __webpack_require__(227);
-/* harmony import */ __webpack_require__(234);
-/* harmony import */ __webpack_require__(238);
-/* harmony import */ __webpack_require__(245);
-/* harmony import */ __webpack_require__(251);
-/* harmony import */ __webpack_require__(254);
-/* harmony import */ __webpack_require__(258);
-/* harmony import */ __webpack_require__(261);
-/* harmony import */ __webpack_require__(266);
-/* harmony import */ __webpack_require__(279);
-/* harmony import */ __webpack_require__(285);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__src_echarts_gl__ = __webpack_require__(106);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__src_component_grid3D__ = __webpack_require__(153);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__src_component_geo3D__ = __webpack_require__(203);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__src_component_globe__ = __webpack_require__(209);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__src_component_mapbox3D__ = __webpack_require__(215);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__src_component_maptalks3D__ = __webpack_require__(221);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__src_chart_bar3D__ = __webpack_require__(227);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__src_chart_line3D__ = __webpack_require__(234);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__src_chart_scatter3D__ = __webpack_require__(238);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__src_chart_lines3D__ = __webpack_require__(245);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__src_chart_polygons3D__ = __webpack_require__(251);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__src_chart_surface__ = __webpack_require__(254);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__src_chart_map3D__ = __webpack_require__(258);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__src_chart_scatterGL__ = __webpack_require__(261);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_14__src_chart_graphGL__ = __webpack_require__(266);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_15__src_chart_flowGL__ = __webpack_require__(279);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_16__src_chart_linesGL__ = __webpack_require__(285);
 
 
 
@@ -81240,7 +81958,7 @@ var unconfigurable = ':unconfigurable;';
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Texture__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__Texture2D__ = __webpack_require__(5);
-/* harmony import */ __webpack_require__(27);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__TextureCube__ = __webpack_require__(27);
 
 
 
@@ -81921,14 +82639,14 @@ var AmbientSHLight = __WEBPACK_IMPORTED_MODULE_0__Light__["a" /* default */].ext
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__Texture__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__FrameBuffer__ = __webpack_require__(10);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__Texture2D__ = __webpack_require__(5);
-/* harmony import */ __webpack_require__(15);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__compositor_Pass__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__core_vendor__ = __webpack_require__(13);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__plugin_Skybox__ = __webpack_require__(42);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__plugin_Skydome__ = __webpack_require__(75);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__prePass_EnvironmentMap__ = __webpack_require__(61);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__Scene__ = __webpack_require__(36);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__glmatrix_vec3__ = __webpack_require__(12);
-/* harmony import */ __webpack_require__(130);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__shader_projectEnvMap_glsl_js__ = __webpack_require__(130);
 // Spherical Harmonic Helpers
 
 
@@ -86226,10 +86944,10 @@ function removeTextStyleInAxis(axesOpt) {
 /***/ }),
 /* 153 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
-/* harmony import */ __webpack_require__(154);
-/* harmony import */ __webpack_require__(158);
-/* harmony import */ __webpack_require__(159);
-/* harmony import */ __webpack_require__(166);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__grid3D_Axis3DModel__ = __webpack_require__(154);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__grid3D_Grid3DModel__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__grid3D_Grid3DView__ = __webpack_require__(159);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__coord_grid3DCreator__ = __webpack_require__(166);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_echarts_lib_echarts__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_echarts_lib_echarts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_4_echarts_lib_echarts__);
 
@@ -86856,7 +87574,7 @@ var dimIndicesMap = {
     z: 1
 };
 
-/* unused harmony default export */ (__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendComponentView({
+/* unused harmony default export */ var _unused_webpack_default_export = (__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendComponentView({
 
     type: 'grid3D',
 
@@ -87208,7 +87926,7 @@ var dimIndicesMap = {
         center.y /= center.w;
         this._axes.forEach(function (axisInfo) {
             var lineCoords = axisInfo.axisLineCoords;
-            axisInfo.labelsMesh.geometry;
+            var labelGeo = axisInfo.labelsMesh.geometry;
             for (var i = 0; i < coords.length; i++) {
                 coords[i].setArray(lineCoords[i]);
                 coords[i].w = 1.0;
@@ -91368,7 +92086,7 @@ ShadowMapPass.PCF = 2;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__util_graphicGL__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__NormalPass__ = __webpack_require__(196);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__EdgePass__ = __webpack_require__(198);
-/* harmony import */ __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11_claygl_src_math_Matrix4__ = __webpack_require__(7);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__composite_js__ = __webpack_require__(199);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13_claygl_src_shader_source_compositor_blur_glsl_js__ = __webpack_require__(86);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_14_claygl_src_shader_source_compositor_lut_glsl_js__ = __webpack_require__(87);
@@ -93228,13 +93946,13 @@ SSAOPass.prototype.dispose = function (renderer) {
 /* 193 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_claygl_src_math_Matrix4__ = __webpack_require__(7);
-/* harmony import */ __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_claygl_src_math_Vector3__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_claygl_src_Texture2D__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_claygl_src_Texture__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_claygl_src_compositor_Pass__ = __webpack_require__(15);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5_claygl_src_Shader__ = __webpack_require__(9);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_6_claygl_src_FrameBuffer__ = __webpack_require__(10);
-/* harmony import */ __webpack_require__(49);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__halton__ = __webpack_require__(49);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8_claygl_src_util_cubemap__ = __webpack_require__(77);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__SSR_glsl_js__ = __webpack_require__(194);
 
@@ -93732,8 +94450,8 @@ NormalPass.prototype.dispose = function (renderer) {
 /***/ }),
 /* 198 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
-/* harmony import */ __webpack_require__(7);
-/* harmony import */ __webpack_require__(3);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_claygl_src_math_Matrix4__ = __webpack_require__(7);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_claygl_src_math_Vector3__ = __webpack_require__(3);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_claygl_src_Texture2D__ = __webpack_require__(5);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_claygl_src_Texture__ = __webpack_require__(4);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4_claygl_src_compositor_Pass__ = __webpack_require__(15);
@@ -94564,9 +95282,9 @@ TemporalSuperSampling.prototype = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__);
-/* harmony import */ __webpack_require__(204);
-/* harmony import */ __webpack_require__(205);
-/* harmony import */ __webpack_require__(97);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__geo3D_Geo3DModel__ = __webpack_require__(204);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__geo3D_Geo3DView__ = __webpack_require__(205);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__coord_geo3DCreator__ = __webpack_require__(97);
 
 
 
@@ -94713,7 +95431,7 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.util.merge(Geo3DMode
 
 
 
-/* unused harmony default export */ (__WEBPACK_IMPORTED_MODULE_1_echarts_lib_echarts___default.a.extendComponentView({
+/* unused harmony default export */ var _unused_webpack_default_export = (__WEBPACK_IMPORTED_MODULE_1_echarts_lib_echarts___default.a.extendComponentView({
 
     type: 'geo3D',
 
@@ -95557,9 +96275,9 @@ module.exports = _default;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__);
-/* harmony import */ __webpack_require__(210);
-/* harmony import */ __webpack_require__(211);
-/* harmony import */ __webpack_require__(213);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__globe_GlobeModel__ = __webpack_require__(210);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__globe_GlobeView__ = __webpack_require__(211);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__coord_globeCreator__ = __webpack_require__(213);
 
 
 
@@ -95813,7 +96531,7 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.util.merge(GlobeMode
 
 
 
-/* unused harmony default export */ (__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendComponentView({
+/* unused harmony default export */ var _unused_webpack_default_export = (__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendComponentView({
 
     type: 'globe',
 
@@ -96076,7 +96794,7 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.util.merge(GlobeMode
         // Update camera
         var viewControlModel = globeModel.getModel('viewControl');
 
-        coordSys.viewGL.camera;
+        var camera = coordSys.viewGL.camera;
         var self = this;
 
         function makeAction() {
@@ -96607,9 +97325,9 @@ Globe.prototype = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__);
-/* harmony import */ __webpack_require__(216);
-/* harmony import */ __webpack_require__(218);
-/* harmony import */ __webpack_require__(219);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__coord_mapbox3DCreator__ = __webpack_require__(216);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__mapbox3D_Mapbox3DModel__ = __webpack_require__(218);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__mapbox3D_Mapbox3DView__ = __webpack_require__(219);
 
 
 
@@ -96762,7 +97480,7 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.util.merge(Mapbox3DM
 
 __WEBPACK_IMPORTED_MODULE_3__util_graphicGL__["a" /* default */].Shader.import(__WEBPACK_IMPORTED_MODULE_4__util_shader_displayShadow_glsl_js__["a" /* default */]);
 
-/* unused harmony default export */ (__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendComponentView({
+/* unused harmony default export */ var _unused_webpack_default_export = (__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendComponentView({
 
     type: 'mapbox3D',
 
@@ -96985,9 +97703,9 @@ Mapbox3DLayer.prototype.dispose = function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__);
-/* harmony import */ __webpack_require__(222);
-/* harmony import */ __webpack_require__(224);
-/* harmony import */ __webpack_require__(225);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__coord_maptalks3DCreator__ = __webpack_require__(222);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__maptalks3D_Maptalks3DModel__ = __webpack_require__(224);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__maptalks3D_Maptalks3DView__ = __webpack_require__(225);
 // Thanks to https://gitee.com/iverson_hu/maptalks-echarts-gl
 
 
@@ -97145,7 +97863,7 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.util.merge(Maptalks3
 
 __WEBPACK_IMPORTED_MODULE_3__util_graphicGL__["a" /* default */].Shader.import(__WEBPACK_IMPORTED_MODULE_4__util_shader_displayShadow_glsl_js__["a" /* default */]);
 
-/* unused harmony default export */ (__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendComponentView({
+/* unused harmony default export */ var _unused_webpack_default_export = (__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendComponentView({
 
     type: 'maptalks3D',
 
@@ -97407,9 +98125,9 @@ Maptalks3DLayer.prototype.dispose = function () {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__);
-/* harmony import */ __webpack_require__(228);
-/* harmony import */ __webpack_require__(231);
-/* harmony import */ __webpack_require__(233);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__bar3D_bar3DLayout__ = __webpack_require__(228);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__bar3D_Bar3DView__ = __webpack_require__(231);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__bar3D_Bar3DSeries__ = __webpack_require__(233);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_opacityVisual__ = __webpack_require__(17);
 
 
@@ -97748,7 +98466,7 @@ function cartesian3DLayout(seriesModel, coordSys) {
 
 var vec3 = __WEBPACK_IMPORTED_MODULE_6_claygl_src_dep_glmatrix__["a" /* default */].vec3;
 
-/* unused harmony default export */ (__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendChartView({
+/* unused harmony default export */ var _unused_webpack_default_export = (__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendChartView({
 
     type: 'bar3D',
 
@@ -98562,8 +99280,8 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.util.merge(Bar3DSeri
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__);
-/* harmony import */ __webpack_require__(235);
-/* harmony import */ __webpack_require__(236);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__line3D_Line3DSeries__ = __webpack_require__(235);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__line3D_Line3DView__ = __webpack_require__(236);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_echarts_lib_visual_symbol__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_echarts_lib_visual_symbol___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_echarts_lib_visual_symbol__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_opacityVisual__ = __webpack_require__(17);
@@ -98629,7 +99347,7 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.registerLayout(funct
 
 
 
-__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendSeriesModel({
+var Line3DSeries = __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendSeriesModel({
 
     type: 'series.line3D',
 
@@ -98689,7 +99407,7 @@ var vec3 = __WEBPACK_IMPORTED_MODULE_7_claygl_src_dep_glmatrix__["a" /* default 
 
 __WEBPACK_IMPORTED_MODULE_1__util_graphicGL__["a" /* default */].Shader.import(__WEBPACK_IMPORTED_MODULE_8__util_shader_lines3D_glsl_js__["a" /* default */]);
 
-/* unused harmony default export */ (__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendChartView({
+/* unused harmony default export */ var _unused_webpack_default_export = (__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendChartView({
 
     type: 'line3D',
 
@@ -99019,8 +99737,8 @@ exports.containStroke = containStroke;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__);
-/* harmony import */ __webpack_require__(239);
-/* harmony import */ __webpack_require__(240);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__scatter3D_Scatter3DSeries__ = __webpack_require__(239);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scatter3D_Scatter3DView__ = __webpack_require__(240);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_echarts_lib_visual_symbol__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_echarts_lib_visual_symbol___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_echarts_lib_visual_symbol__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_opacityVisual__ = __webpack_require__(17);
@@ -99731,9 +100449,9 @@ var vec3 = __WEBPACK_IMPORTED_MODULE_1_claygl_src_dep_glmatrix__["a" /* default 
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__);
-/* harmony import */ __webpack_require__(246);
-/* harmony import */ __webpack_require__(247);
-/* harmony import */ __webpack_require__(250);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__lines3D_lines3DLayout__ = __webpack_require__(246);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__lines3D_Lines3DView__ = __webpack_require__(247);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__lines3D_Lines3DSeries__ = __webpack_require__(250);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_opacityVisual__ = __webpack_require__(17);
 
 
@@ -99968,7 +100686,7 @@ function getCoordSysSize(coordSys) {
     }
 }
 
-/* unused harmony default export */ (__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendChartView({
+/* unused harmony default export */ var _unused_webpack_default_export = (__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendChartView({
 
     type: 'lines3D',
 
@@ -100137,7 +100855,7 @@ function getCoordSysSize(coordSys) {
 /* 248 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__ = __webpack_require__(0);
-/* harmony import */ __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_graphicGL__ = __webpack_require__(1);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_claygl_src_dep_glmatrix__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__util_geometry_Lines3D__ = __webpack_require__(25);
@@ -100378,8 +101096,8 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendSeriesModel({
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__);
-/* harmony import */ __webpack_require__(252);
-/* harmony import */ __webpack_require__(253);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__polygons3D_Polygons3DSeries__ = __webpack_require__(252);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__polygons3D_Polygons3DView__ = __webpack_require__(253);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_opacityVisual__ = __webpack_require__(17);
 
 
@@ -100610,9 +101328,9 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendChartView({
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__);
-/* harmony import */ __webpack_require__(255);
-/* harmony import */ __webpack_require__(256);
-/* harmony import */ __webpack_require__(257);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__surface_SurfaceSeries__ = __webpack_require__(255);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__surface_SurfaceView__ = __webpack_require__(256);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__surface_surfaceLayout__ = __webpack_require__(257);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_opacityVisual__ = __webpack_require__(17);
 
 
@@ -100842,7 +101560,7 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.util.merge(SurfaceSe
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__util_graphicGL__ = __webpack_require__(1);
-/* harmony import */ __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__util_retrieve__ = __webpack_require__(2);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_claygl_src_dep_glmatrix__ = __webpack_require__(6);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__util_geometry_trianglesSortMixin__ = __webpack_require__(64);
 
@@ -101382,9 +102100,9 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.registerLayout(funct
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__);
-/* harmony import */ __webpack_require__(98);
-/* harmony import */ __webpack_require__(259);
-/* harmony import */ __webpack_require__(260);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__coord_geo3D_Geo3D__ = __webpack_require__(98);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__map3D_Map3DSeries__ = __webpack_require__(259);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__map3D_Map3DView__ = __webpack_require__(260);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_opacityVisual__ = __webpack_require__(17);
 
 
@@ -101592,7 +102310,7 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.util.merge(Map3DSeri
 
 
 
-/* unused harmony default export */ (__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendChartView({
+/* unused harmony default export */ var _unused_webpack_default_export = (__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendChartView({
 
     type: 'map3D',
 
@@ -101613,7 +102331,10 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.util.merge(Map3DSeri
 
         this.groupGL.add(this._geo3DBuilder.rootNode);
         coordSys.viewGL.add(this.groupGL);
+
+        var geo3D;
         if (coordSys.type === 'geo3D') {
+            geo3D = coordSys;
 
             if (!this._sceneHelper) {
                 this._sceneHelper = new __WEBPACK_IMPORTED_MODULE_3__component_common_SceneHelper__["a" /* default */]();
@@ -101661,7 +102382,7 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.util.merge(Map3DSeri
                 this._sceneHelper.dispose();
                 this._sceneHelper = null;
             }
-            map3DModel.getData().getLayout('geo3D');
+            geo3D = map3DModel.getData().getLayout('geo3D');
 
             this._geo3DBuilder.extrudeY = false;
         }
@@ -101698,8 +102419,8 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.util.merge(Map3DSeri
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__);
-/* harmony import */ __webpack_require__(262);
-/* harmony import */ __webpack_require__(263);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__scatterGL_ScatterGLSeries__ = __webpack_require__(262);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__scatterGL_ScatterGLView__ = __webpack_require__(263);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_echarts_lib_visual_symbol__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_echarts_lib_visual_symbol___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_echarts_lib_visual_symbol__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_opacityVisual__ = __webpack_require__(17);
@@ -101835,7 +102556,7 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendSeriesModel({
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__core_ViewGL__ = __webpack_require__(22);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_PointsBuilder__ = __webpack_require__(66);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_GLViewHelper__ = __webpack_require__(102);
-/* harmony import */ __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__util_retrieve__ = __webpack_require__(2);
 
 
 
@@ -102467,8 +103188,8 @@ exports.max = max;
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__);
-/* harmony import */ __webpack_require__(267);
-/* harmony import */ __webpack_require__(272);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__graphGL_GraphGLSeries__ = __webpack_require__(267);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__graphGL_GraphGLView__ = __webpack_require__(272);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_echarts_lib_visual_symbol__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_echarts_lib_visual_symbol___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_3_echarts_lib_visual_symbol__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__common_opacityVisual__ = __webpack_require__(17);
@@ -102962,7 +103683,7 @@ var GraphSeries = __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.ex
 
 var _config = __webpack_require__(103);
 
-_config.__DEV__;
+var __DEV__ = _config.__DEV__;
 
 var zrUtil = __webpack_require__(16);
 
@@ -103538,7 +104259,7 @@ module.exports = _default;
 
 var _config = __webpack_require__(103);
 
-_config.__DEV__;
+var __DEV__ = _config.__DEV__;
 
 var zrUtil = __webpack_require__(16);
 
@@ -106161,7 +106882,7 @@ function forceAtlas2Worker() {
 /* 277 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_claygl_src_core_Base__ = __webpack_require__(8);
-/* harmony import */ __webpack_require__(2);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__retrieve__ = __webpack_require__(2);
 
 
 
@@ -106370,9 +107091,9 @@ var Roam2DControl = __WEBPACK_IMPORTED_MODULE_0_claygl_src_core_Base__["a" /* de
 /* 279 */
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__ = __webpack_require__(0);
-/* harmony import */ __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__);
-/* harmony import */ __webpack_require__(280);
-/* harmony import */ __webpack_require__(284);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__flowGL_FlowGLView__ = __webpack_require__(280);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__flowGL_FlowGLSeries__ = __webpack_require__(284);
 
 
 
@@ -107211,7 +107932,7 @@ VectorFieldParticleSurface.prototype = {
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_claygl_src_Geometry__ = __webpack_require__(14);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_echarts_lib_echarts__ = __webpack_require__(0);
-/* harmony import */ __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_echarts_lib_echarts__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_echarts_lib_echarts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_echarts_lib_echarts__);
 /**
  * Lines geometry
  * Use screen space projected lines lineWidth > MAX_LINE_WIDTH
@@ -107363,8 +108084,8 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendSeriesModel({
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__);
-/* harmony import */ __webpack_require__(286);
-/* harmony import */ __webpack_require__(287);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__linesGL_LinesGLSeries__ = __webpack_require__(286);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__linesGL_LinesGLView__ = __webpack_require__(287);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__common_opacityVisual__ = __webpack_require__(17);
 
 
@@ -107381,7 +108102,7 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.registerVisual(Objec
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts__);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_zrender_lib_core_util__ = __webpack_require__(80);
-/* harmony import */ __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_zrender_lib_core_util__);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_zrender_lib_core_util___default = __webpack_require__.n(__WEBPACK_IMPORTED_MODULE_1_zrender_lib_core_util__);
 
 
 
@@ -107997,11 +108718,298 @@ var script$j = {
       fetch('http://www.youbaobao.xyz/datav-res/datav/map.json').then(function (response) {
         return response.json();
       }).then(function (data) {
+        var geoCoordMap = {
+          '江苏': [118.8062, 31.9208],
+          '黑龙江': [127.9688, 45.368],
+          '内蒙古': [110.3467, 41.4899],
+          '吉林': [125.8154, 44.2584],
+          '北京市': [116.4551, 40.2539],
+          '辽宁': [123.1238, 42.1216],
+          '河北': [114.4995, 38.1006],
+          '天津': [117.4219, 39.4189],
+          '山西': [112.3352, 37.9413],
+          '陕西': [109.1162, 34.2004],
+          '甘肃': [103.5901, 36.3043],
+          '宁夏': [106.3586, 38.1775],
+          '青海': [101.4038, 36.8207],
+          '新疆': [87.9236, 43.5883],
+          '四川': [103.9526, 30.7617],
+          '重庆': [108.384366, 30.439702],
+          '山东': [117.1582, 36.8701],
+          '河南': [113.4668, 34.6234],
+          '安徽': [117.29, 32.0581],
+          '湖北': [114.3896, 30.6628],
+          '浙江': [119.5313, 29.8773],
+          '福建': [119.4543, 25.9222],
+          '江西': [116.0046, 28.6633],
+          '湖南': [113.0823, 28.2568],
+          '贵州': [106.6992, 26.7682],
+          '云南': [102.9199, 25.4663],
+          '广东': [113.12244, 23.009505],
+          '广西': [108.479, 23.1152],
+          '海南': [110.3893, 19.8516],
+          '上海': [121.4648, 31.2891]
+        };
+        var d1 = {
+          '江苏': 10041,
+          '黑龙江': 4093,
+          '内蒙古': 1157,
+          '吉林': 4903,
+          '北京市': 2667,
+          '辽宁': 8331,
+          '河北': 23727,
+          '天津': 681,
+          '山西': 5352,
+          '陕西': 38,
+          '甘肃': 77,
+          '宁夏': 65,
+          '青海': 10,
+          '新疆': 193,
+          '四川': 309,
+          '重庆': 77,
+          '山东': 21666,
+          '河南': 15717,
+          '安徽': 15671,
+          '湖北': 3714,
+          '浙江': 3141,
+          '福建': 955,
+          '江西': 4978,
+          '湖南': 778,
+          '贵州': 33,
+          '云南': 149,
+          '广东': 1124,
+          '广西': 125,
+          '海南': 7,
+          '上海': 2155
+        };
+        var d2 = {
+          '江苏': 0,
+          '黑龙江': 0,
+          '内蒙古': 0,
+          '吉林': 0,
+          '北京市': 0,
+          '辽宁': 0,
+          '河北': 0,
+          '天津': 0,
+          '山西': 0,
+          '陕西': 0,
+          '甘肃': 0,
+          '宁夏': 0,
+          '青海': 0,
+          '新疆': 0,
+          '四川': 0,
+          '重庆': 0,
+          '山东': 0,
+          '河南': 0,
+          '安徽': 0,
+          '湖北': 0,
+          '浙江': 0,
+          '福建': 0,
+          '江西': 0,
+          '湖南': 0,
+          '贵州': 0,
+          '云南': 0,
+          '广东': 0,
+          '广西': 0,
+          '海南': 0,
+          '上海': 0
+        };
+        var d3 = {
+          '江苏': 11788,
+          '黑龙江': 1944,
+          '内蒙古': 2954,
+          '吉林': 3482,
+          '北京市': 1808,
+          '辽宁': 5488,
+          '河北': 27035,
+          '天津': 2270,
+          '山西': 13623,
+          '陕西': 4221,
+          '甘肃': 754,
+          '宁夏': 1783,
+          '青海': 91,
+          '新疆': 1907,
+          '四川': 4905,
+          '重庆': 1420,
+          '山东': 39781,
+          '河南': 16154,
+          '安徽': 7914,
+          '湖北': 6802,
+          '浙江': 5812,
+          '福建': 3345,
+          '江西': 4996,
+          '湖南': 5627,
+          '贵州': 1504,
+          '云南': 2725,
+          '广东': 6339,
+          '广西': 1009,
+          '海南': 0,
+          '上海': 1988
+        };
+        var d4 = {
+          '江苏': 0,
+          '黑龙江': 0,
+          '内蒙古': 0,
+          '吉林': 0,
+          '北京市': 0,
+          '辽宁': 0,
+          '河北': 0,
+          '天津': 0,
+          '山西': 0,
+          '陕西': 0,
+          '甘肃': 0,
+          '宁夏': 0,
+          '青海': 0,
+          '新疆': 0,
+          '四川': 0,
+          '重庆': 0,
+          '山东': 0,
+          '河南': 0,
+          '安徽': 0,
+          '湖北': 0,
+          '浙江': 0,
+          '福建': 0,
+          '江西': 0,
+          '湖南': 0,
+          '贵州': 0,
+          '云南': 0,
+          '广东': 0,
+          '广西': 0,
+          '海南': 0,
+          '上海': 0
+        };
+        var d5 = {
+          '江苏': 159,
+          '黑龙江': 5,
+          '内蒙古': 54,
+          '吉林': 10,
+          '北京市': 0,
+          '辽宁': 0,
+          '河北': 1679,
+          '天津': 1,
+          '山西': 2698,
+          '陕西': 1744,
+          '甘肃': 362,
+          '宁夏': 429,
+          '青海': 122,
+          '新疆': 731,
+          '四川': 3925,
+          '重庆': 1480,
+          '山东': 79,
+          '河南': 1017,
+          '安徽': 208,
+          '湖北': 1209,
+          '浙江': 1418,
+          '福建': 1237,
+          '江西': 1004,
+          '湖南': 1511,
+          '贵州': 345,
+          '云南': 1429,
+          '广东': 2242,
+          '广西': 2271,
+          '海南': 59,
+          '上海': 8
+        };
+        var d6 = {
+          '江苏': 0,
+          '黑龙江': 0,
+          '内蒙古': 0,
+          '吉林': 0,
+          '北京市': 0,
+          '辽宁': 0,
+          '河北': 0,
+          '天津': 0,
+          '山西': 0,
+          '陕西': 0,
+          '甘肃': 0,
+          '宁夏': 0,
+          '青海': 0,
+          '新疆': 0,
+          '四川': 0,
+          '重庆': 0,
+          '山东': 0,
+          '河南': 0,
+          '安徽': 0,
+          '湖北': 0,
+          '浙江': 0,
+          '福建': 0,
+          '江西': 0,
+          '湖南': 0,
+          '贵州': 0,
+          '云南': 0,
+          '广东': 0,
+          '广西': 0,
+          '海南': 0,
+          '上海': 0
+        };
+        var colors = [['#1DE9B6', '#1DE9B6', '#FFDB5C', '#FFDB5C', '#04B9FF', '#04B9FF'], ['#1DE9B6', '#F46E36', '#04B9FF', '#5DBD32', '#FFC809', '#FB95D5', '#BDA29A', '#6E7074', '#546570', '#C4CCD3'], ['#37A2DA', '#67E0E3', '#32C5E9', '#9FE6B8', '#FFDB5C', '#FF9F7F', '#FB7293', '#E062AE', '#E690D1', '#E7BCF3', '#9D96F5', '#8378EA', '#8378EA'], ['#DD6B66', '#759AA0', '#E69D87', '#8DC1A9', '#EA7E53', '#EEDD78', '#73A373', '#73B9BC', '#7289AB', '#91CA8C', '#F49F42']];
+        var colorIndex = 0;
+        var year = ['长春', '长春', '青岛', '青岛', '成都', '成都'];
+        var mapData = [[], [], [], [], [], []];
+        /* 柱子Y名称 */
+
+        var categoryData = [];
+        var barData = [];
+
+        for (var key in geoCoordMap) {
+          mapData[0].push({
+            'year': '长春',
+            'name': key,
+            'value': d1[key] / 100,
+            'value1': d1[key] / 100
+          });
+          mapData[1].push({
+            'year': '长春',
+            'name': key,
+            'value': d1[key] / 100,
+            'value1': d2[key] / 100
+          });
+          mapData[2].push({
+            'year': '青岛',
+            'name': key,
+            'value': d3[key] / 100,
+            'value1': d3[key] / 100
+          });
+          mapData[3].push({
+            'year': '青岛',
+            'name': key,
+            'value': d3[key] / 100,
+            'value1': d4[key] / 100
+          });
+          mapData[4].push({
+            'year': '成都',
+            'name': key,
+            'value': d5[key] / 100,
+            'value1': d5[key] / 100
+          });
+          mapData[5].push({
+            'year': '成都',
+            'name': key,
+            'value': d5[key] / 100,
+            'value1': d6[key] / 100
+          });
+        }
+
+        for (var i = 0; i < mapData.length; i++) {
+          mapData[i].sort(function sortNumber(a, b) {
+            return a.value - b.value;
+          });
+          barData.push([]);
+          categoryData.push([]);
+
+          for (var j = 0; j < mapData[i].length; j++) {
+            barData[i].push(mapData[i][j].value1);
+            categoryData[i].push(mapData[i][j].name);
+          }
+        }
+
+        console.log(mapData, barData);
+        /********************************************************************* */
+
         Echarts$1.registerMap('china', data);
-        var citys = ['北京', '上海', '深圳', '广州'];
-        options.value = {
+        var _options = {
           timeline: {
-            data: citys,
+            data: year,
             axisType: 'category',
             autoPlay: true,
             //自动播放
@@ -108049,6 +109057,25 @@ var script$j = {
             }
           },
           baseOption: {
+            backgroundColor: '#424446',
+            grid: {
+              right: '5%',
+              top: '15%',
+              bottom: '15%',
+              width: '20%'
+            },
+            tooltip: {
+              //鼠标移上去出发提示
+              trigger: 'axis',
+              axisPointer: {
+                type: 'shadow',
+                //阴影显示样式
+                shadowStyle: {
+                  //修改阴影样式
+                  color: 'rgba(150,150,150,0.1)'
+                }
+              }
+            },
             geo: {
               map: 'china',
               zoom: 1.1,
@@ -108101,6 +109128,85 @@ var script$j = {
           },
           options: []
         };
+
+        for (var _i = 0; _i < year.length; _i++) {
+          _options.options.push({
+            title: [{
+              text: '游戏点卡销售大盘',
+              subtext: '数据由网络大数据提供',
+              left: '2%',
+              top: '2%',
+              textStyle: {
+                color: '#fff',
+                fontSize: 35,
+                fontWeight: 700
+              }
+            }, {
+              id: 'statistic',
+              text: "".concat(year[_i], "\u9500\u552E\u989D\u7EDF\u8BA1\u60C5\u51B5"),
+              left: '75%',
+              top: '8%',
+              textStyle: {
+                color: '#fff',
+                fontSize: 25
+              }
+            }],
+            xAxis: {
+              type: 'value',
+              position: 'top',
+              //坐标轴上方展示
+              min: 0,
+              //最小刻度为0
+              boundaryGap: false,
+              splitLine: {
+                show: false //隐藏分割线
+
+              },
+              axisLine: {
+                show: false
+              },
+              axisTick: {
+                show: false
+              },
+              axisLabel: {
+                margin: 2,
+                textStyle: {
+                  color: '#aaa'
+                }
+              }
+            },
+            yAxis: {
+              type: 'category',
+              data: categoryData[_i],
+              axisLine: {
+                lineStyle: {
+                  color: '#ddd'
+                }
+              },
+              axisTick: {
+                show: false
+              },
+              axisLabel: {
+                interval: 0,
+                //强制显示所有的坐标文本，不会自动隐藏
+                textStyle: {
+                  color: '#ddd'
+                }
+              }
+            },
+            series: [{
+              type: 'bar',
+              data: barData[_i],
+              itemStyle: {
+                normal: {
+                  color: colors[colorIndex][_i]
+                }
+              }
+            }]
+          });
+        }
+
+        options.value = _options;
         loading.value = false;
       });
     };
@@ -108138,7 +109244,7 @@ var render$j = /*#__PURE__*/_withId$h(function (_ctx, _cache, $props, $setup, $d
   , ["options"]))]);
 });
 
-var css_248z$k = ".order-map[data-v-5a2d2ce2] {\n  width: 100%;\n  height: 100%;\n  background: #303030;\n}\n.order-map[data-v-5a2d2ce2] .loading {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n  font-size: 36px;\n  background: #303030;\n  color: #fff;\n}";
+var css_248z$k = ".order-map[data-v-5a2d2ce2] {\n  width: 100%;\n  height: 100%;\n}\n.order-map[data-v-5a2d2ce2] .loading {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n  font-size: 36px;\n  background: #303030;\n  color: #fff;\n}";
 styleInject(css_248z$k);
 
 script$j.render = render$j;
