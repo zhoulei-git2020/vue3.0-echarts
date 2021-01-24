@@ -34,7 +34,7 @@ export default {
             initChart()
         })
         watch(()=>ctx.options,()=>{
-            console.log(ctx.options);
+        
             initChart()
          })
 

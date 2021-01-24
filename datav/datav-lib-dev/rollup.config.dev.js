@@ -21,7 +21,8 @@ module.exports= {
       format:'umd',
       name:'Datav',
       globals:{
-        'vue':'Vue' //更矮全局变量名称
+        'vue':'Vue', //更改全局变量名称
+
       }
     },
     {
@@ -54,7 +55,7 @@ module.exports= {
   ],
   external:[
     'vue', //将vue模块进行外部引用而不是将模块代码打包进文件
-    'echarts'
+    'echarts',
   ]
 
   

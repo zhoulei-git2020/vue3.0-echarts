@@ -1,6 +1,6 @@
 <template>
     <div  style="width:100%;height:100%;">
-      <RotatingEarth/>
+      <OrderMap/>
     </div> 
 </template>
 

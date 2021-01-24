@@ -75,7 +75,7 @@
                   <div class="right-bottom-left1">
                     <!-- <TimeLine/> -->
                     <!-- <CustomMap /> -->
-                    <RotatingEarth
+                    <FightEarth
                     />
                   </div>
                   <div class="right-bottom-left2">
