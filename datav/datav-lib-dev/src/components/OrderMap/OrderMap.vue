@@ -24,13 +24,13 @@ export default {
             .then (data =>{
             /********************************************************************* */
 
-                        const geoGpsMap = {
-          '1': [125.8154, 44.2584],
-          '2': [125.8154, 44.2584],
-          '3': [117.1582, 36.8701],
-          '4': [117.1582, 36.8701],
-          '5': [103.9526, 30.7617],
-          '6': [103.9526, 30.7617]
+        const geoGpsMap = {
+          '1': [116.4551, 40.2539],
+          '2': [121.4648, 31.2891],
+          '3': [113.12244, 23.009505],
+          '4': [117.29, 32.0581],
+          '5': [118.8062, 31.9208],
+          '6': [110.3893, 19.8516]
         }
         const geoCoordMap = {
           '江苏': [118.8062, 31.9208],
@@ -98,36 +98,36 @@ export default {
 
         }
         const d2 = {
-          '江苏': 0,
-          '黑龙江': 0,
-          '内蒙古': 0,
-          '吉林': 0,
-          '北京市': 0,
-          '辽宁': 0,
-          '河北': 0,
-          '天津': 0,
-          '山西': 0,
-          '陕西': 0,
-          '甘肃': 0,
-          '宁夏': 0,
-          '青海': 0,
-          '新疆': 0,
-          '四川': 0,
-          '重庆': 0,
-          '山东': 0,
-          '河南': 0,
-          '安徽': 0,
-          '湖北': 0,
-          '浙江': 0,
-          '福建': 0,
-          '江西': 0,
-          '湖南': 0,
-          '贵州': 0,
-          '云南': 0,
-          '广东': 0,
-          '广西': 0,
-          '海南': 0,
-          '上海': 0
+           '江苏': 10041,
+          '黑龙江': 4093,
+          '内蒙古': 1157,
+          '吉林': 4903,
+          '北京市': 2667,
+          '辽宁': 8331,
+          '河北': 23727,
+          '天津': 681,
+          '山西': 5352,
+          '陕西': 38,
+          '甘肃': 77,
+          '宁夏': 65,
+          '青海': 10,
+          '新疆': 193,
+          '四川': 309,
+          '重庆': 77,
+          '山东': 343,
+          '河南': 15717,
+          '安徽': 1671,
+          '湖北': 3714,
+          '浙江': 3141,
+          '福建': 955,
+          '江西': 4978,
+          '湖南': 778,
+          '贵州': 33,
+          '云南': 149,
+          '广东': 1124,
+          '广西': 125,
+          '海南': 7,
+          '上海': 2155
 
         }
         const d3 = {
@@ -164,36 +164,36 @@ export default {
 
         }
         const d4 = {
-          '江苏': 0,
-          '黑龙江': 0,
-          '内蒙古': 0,
-          '吉林': 0,
-          '北京市': 0,
-          '辽宁': 0,
-          '河北': 0,
-          '天津': 0,
-          '山西': 0,
-          '陕西': 0,
-          '甘肃': 0,
-          '宁夏': 0,
-          '青海': 0,
-          '新疆': 0,
-          '四川': 0,
-          '重庆': 0,
-          '山东': 0,
-          '河南': 0,
-          '安徽': 0,
-          '湖北': 0,
-          '浙江': 0,
-          '福建': 0,
-          '江西': 0,
-          '湖南': 0,
-          '贵州': 0,
-          '云南': 0,
-          '广东': 0,
-          '广西': 0,
-          '海南': 0,
-          '上海': 0
+          '江苏': 10041,
+          '黑龙江': 4093,
+          '内蒙古': 1157,
+          '吉林': 4903,
+          '北京市': 2667,
+          '辽宁': 8331,
+          '河北': 23727,
+          '天津': 681,
+          '山西': 5352,
+          '陕西': 38,
+          '甘肃': 77,
+          '宁夏': 65,
+          '青海': 10,
+          '新疆': 193,
+          '四川': 309,
+          '重庆': 77,
+          '山东': 21666,
+          '河南': 15717,
+          '安徽': 15671,
+          '湖北': 3714,
+          '浙江': 3141,
+          '福建': 955,
+          '江西': 4978,
+          '湖南': 778,
+          '贵州': 33,
+          '云南': 149,
+          '广东': 1124,
+          '广西': 125,
+          '海南': 7,
+          '上海': 2155
         }
         const d5 = {
           '江苏': 159,
@@ -229,36 +229,36 @@ export default {
 
         }
         const d6 = {
-          '江苏': 0,
-          '黑龙江': 0,
-          '内蒙古': 0,
-          '吉林': 0,
-          '北京市': 0,
-          '辽宁': 0,
-          '河北': 0,
-          '天津': 0,
-          '山西': 0,
-          '陕西': 0,
-          '甘肃': 0,
-          '宁夏': 0,
-          '青海': 0,
-          '新疆': 0,
-          '四川': 0,
-          '重庆': 0,
-          '山东': 0,
-          '河南': 0,
-          '安徽': 0,
-          '湖北': 0,
-          '浙江': 0,
-          '福建': 0,
-          '江西': 0,
-          '湖南': 0,
-          '贵州': 0,
-          '云南': 0,
-          '广东': 0,
-          '广西': 0,
-          '海南': 0,
-          '上海': 0
+          '江苏': 10041,
+          '黑龙江': 4093,
+          '内蒙古': 1157,
+          '吉林': 4903,
+          '北京市': 2667,
+          '辽宁': 8331,
+          '河北': 23727,
+          '天津': 681,
+          '山西': 5352,
+          '陕西': 38,
+          '甘肃': 77,
+          '宁夏': 65,
+          '青海': 10,
+          '新疆': 193,
+          '四川': 309,
+          '重庆': 77,
+          '山东': 21666,
+          '河南': 15717,
+          '安徽': 15671,
+          '湖北': 3714,
+          '浙江': 3141,
+          '福建': 955,
+          '江西': 4978,
+          '湖南': 778,
+          '贵州': 33,
+          '云南': 149,
+          '广东': 1124,
+          '广西': 125,
+          '海南': 7,
+          '上海': 2155
         }
         const colors = [
           ['#1DE9B6', '#1DE9B6', '#FFDB5C', '#FFDB5C', '#04B9FF', '#04B9FF'],
@@ -267,7 +267,7 @@ export default {
           ['#DD6B66', '#759AA0', '#E69D87', '#8DC1A9', '#EA7E53', '#EEDD78', '#73A373', '#73B9BC', '#7289AB', '#91CA8C', '#F49F42']
         ]
         const colorIndex = 0
-        const year = ['长春', '长春', '青岛', '青岛', '成都', '成都']
+        const year = ['北京市', '上海', '广东', '安徽', '江苏', '海南']
         const mapData = [
           [],
           [],
@@ -328,10 +328,46 @@ export default {
             categoryData[i].push(mapData[i][j].name)
           }
         }
-        console.log(mapData,barData);
+       
 
 
-            /********************************************************************* */
+/********************************************************************* */
+
+         const convertData = function(data) {
+          const res = []
+          for (let i = 0; i < data.length; i++) {
+            const geoCoord = geoCoordMap[data[i].name]
+            if (geoCoord) {
+              res.push({
+                name: data[i].name,
+                value: geoCoord.concat(data[i].value)
+              })
+            }
+          }
+          return res
+        }
+
+          const convertToLineData = function(data, gps) {
+          const res = []
+          for (let i = 0; i < data.length; i++) {
+            const dataItem = data[i]
+            const toCoord = geoCoordMap[dataItem.name]
+            const fromCoord = gps // 郑州
+            //  var toCoord = geoGps[Math.random()*3];
+            if (fromCoord && toCoord) {
+              res.push([{
+                coord: fromCoord,
+                value: dataItem.value
+              }, {
+                coord: toCoord
+              }])
+            }
+          }
+          return res
+        }
+
+
+        console.log(convertToLineData(mapData[0],geoGpsMap[1]));
              echarts.registerMap('china',data)
              
             const _options = {
@@ -400,7 +436,7 @@ export default {
                    geo:{
                       map:'china' ,
                       zoom:1.1,
-                      roam:true,
+                      roam:false, //鼠标交互
                       scaleLimit:{
                           min:0.5,
                           max:3
@@ -434,6 +470,11 @@ export default {
                               areaColor:'#389BB7',
                               borderWidth:0
                           }
+                      },
+                      label:{
+                         emphasis:{
+                            show:false 
+                         }
                       }
                    }
                },
@@ -502,11 +543,62 @@ export default {
                          }
                      },
                    series:[{
+                       type:'lines',
+                       data:convertToLineData(mapData[i],geoGpsMap[i+1]),
+                       effect:{
+                          show:true,  //开启线特效
+                          period:4,    //线的速度数值越小越快
+                          symbol:'arrow', //线的形状
+                          symbolSize:3,  //箭头的大小
+                          trailLength:0.02 //尾部动画
+                       },
+                       lineStyle:{
+                          normal:{
+                            color:colors[colorIndex][i],  //线颜色
+                            width:0.1, //线宽
+                            opacity:0.5, //透明度
+                            curveness:0.3 //线的弯曲度
+                          } 
+                       },
+                       zlevel:2 //图层值小的覆盖大的图层
+                   },{
+                      type:'effectScatter',
+                      coordinateSystem:'geo',
+                      data:convertData(mapData[i]),
+                      symbolSize:function(val){
+                        return val[2]/10
+                      },
+                      rippleEffect:{
+                          brushType:'stroke'
+                      },
+                      hoverAnimation:true,
+                      label:{
+                          normal:{
+                              show:true,
+                              position:'right',
+                              formatter:function(val){
+                                  return val.data.name
+                              }
+                          }
+                      },
+                      itemStyle:{
+                         normal:{
+                           color:colors[colorIndex][i],
+                           shadowColor:colors[colorIndex][i],
+                           shadowBlur:colors[colorIndex][i], 
+
+                         } 
+                      },
+                      zlevel:1 //图层值小的覆盖大的图层
+
+                   },{
                       type:'bar',
                       data:barData[i],
                       itemStyle:{
                           normal:{
-                            color:colors[colorIndex][i]
+                            color:colors[colorIndex][i],
+                            shadowColor:colors[colorIndex][i],
+                            shadowBlur:colors[colorIndex][i],
                           }
                       }
                    }]
