@@ -125,7 +125,7 @@ export default {
     .fly-box-content{
         width:100%;
         height:100%;
-        padding: 5px;
+        padding: 2px;
         box-sizing: border-box;
      }
 

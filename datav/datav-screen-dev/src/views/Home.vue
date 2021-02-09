@@ -84,8 +84,19 @@
                       :color="['rgb(178,209,126)','rgb(116,116,49)']"
                      />    
                   </div>
-                  <div class="right-bottom-left3">333</div>
-                  <div class="right-bottom-left4">444</div>
+                  <div class="right-bottom-left3">
+                    <flybox>
+                      <RealTimeOrder
+                        :data="realTimeOrderData"
+                      />
+                    </flybox>
+                  
+                  </div>
+                  <div class="right-bottom-left4">
+                    <ScheduleView
+                     :data="scheduleViewData"
+                    />
+                  </div>
                </div>
                <div class="right-bottom-right">
                  <div class="right-bottom-right1">
@@ -93,7 +104,11 @@
                     :data="salesListData"
                    />
                  </div>
-                 <div class="right-bottom-right2">555</div>
+                 <div class="right-bottom-right2">
+                  <RotatingEarth
+                   :data="salesRankData"
+                  />
+                 </div>
                </div>
              </div>
             
@@ -245,7 +260,7 @@ export default {
               }
               .right-bottom-left3{
                 height: 350px;
-                background: maroon;
+                
               }
               .right-bottom-left4{
                 height: 220px;
@@ -269,7 +284,7 @@ export default {
                 margin-top: 20PX;
                 width: 100%;
                 flex: 1;
-                background: midnightblue;
+              
               }
 
             }

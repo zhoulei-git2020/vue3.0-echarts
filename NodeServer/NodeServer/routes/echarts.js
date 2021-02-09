@@ -14,9 +14,10 @@ router.all('*', function(req, res, next) {
 
 /* GET users listing. */
 router.get('/', function(req, res, next) {
+    const data = req.query 
+    console.log(data);
     res.json({
-        error:0,
-        data:30,
+        data:111
     })
 });
 

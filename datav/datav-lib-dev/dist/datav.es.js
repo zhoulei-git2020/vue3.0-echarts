@@ -378,7 +378,7 @@ var render$1 = /*#__PURE__*/_withId$1(function (_ctx, _cache, $props, $setup, $d
   );
 });
 
-var css_248z$1 = ".flybox[data-v-513cc2e2] {\n  position: relative;\n  width: 100%;\n  height: 100%;\n}\n.flybox[data-v-513cc2e2] svg {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n}\n\n.fly-box-content[data-v-513cc2e2] {\n  width: 100%;\n  height: 100%;\n  padding: 5px;\n  box-sizing: border-box;\n}";
+var css_248z$1 = ".flybox[data-v-513cc2e2] {\n  position: relative;\n  width: 100%;\n  height: 100%;\n}\n.flybox[data-v-513cc2e2] svg {\n  position: absolute;\n  top: 0;\n  left: 0;\n  width: 100%;\n  height: 100%;\n}\n\n.fly-box-content[data-v-513cc2e2] {\n  width: 100%;\n  height: 100%;\n  padding: 2px;\n  box-sizing: border-box;\n}";
 styleInject(css_248z$1);
 
 script$1.render = render$1;
@@ -49420,12 +49420,294 @@ function TimeLine (Vue) {
   Vue.component(script$h.name, script$h);
 }
 
+var script$i = {
+  name: 'CustomMap',
+  setup: function setup() {
+    var options = ref({});
+    var timer = null;
+
+    var update = function update() {
+      fetch('http://www.youbaobao.xyz/datav-res/datav/jiangsuMapData.json').then(function (response) {
+        return response.json();
+      }).then(function (data) {
+        Echarts$1.registerMap('js', data); //注册地图
+
+        var center = [];
+        data.features.forEach(function (item) {
+          if (item.properties) {
+            center.push({
+              key: item.properties.name,
+              value: item.properties.center
+            });
+          }
+        });
+        options.value = {
+          visualMap: {
+            show: true,
+            //标识是否展示
+            max: 100,
+            //表示最大值100
+            seriesIndex: [0],
+            //使用第几组数据
+            inRange: {
+              color: ['#a5dcf4', '#006edd']
+            }
+          },
+          geo: [{
+            map: 'js',
+            //使用自定义地图
+            zoom: 1,
+            //默认地图放大倍数
+            roam: false,
+            //启动鼠标滚轮地图缩放
+            //zoom放大系数调节
+            scaleLimit: {
+              min: 0,
+              //最小为0
+              max: 3 //最大为3
+
+            },
+            itemStyle: {
+              areaColor: '#013c62',
+              //背景颜色
+              shadowColor: '#013c62',
+              //阴影色
+              shadowBlur: 20,
+              //阴影长度
+              shadowOffsteX: -5,
+              //阴影位移X轴
+              shadowOffsetY: 15 //阴影Y轴向上偏移10像素
+
+            }
+          }],
+          series: [{
+            type: 'map',
+            mapType: 'js',
+            zoom: 1,
+            roam: false,
+            label: {
+              show: true,
+              color: '#fff',
+              emphasis: {
+                color: '#fff',
+                show: false
+              }
+            },
+            itemStyle: {
+              //边框默认状态
+              normal: {
+                borderColor: '#2980b9',
+                borderWidth: 1,
+                areaColor: '12235c'
+              },
+              //边框高亮状态
+              emphasis: {
+                areaColor: '#fa8c16',
+                borderWidth: 0
+              }
+            },
+            //绑定数据
+            data: center.map(function (centerItem) {
+              var value = Math.random() * 100;
+              return {
+                name: centerItem.key,
+                value: value
+              };
+            })
+          }, //地图报警点绘制
+          {
+            type: 'effectScatter',
+            data: [],
+            coordinateSystem: 'geo',
+            symbolSize: 16,
+            //散点大小
+            itemStyle: {
+              color: '#feae21'
+            },
+            label: {
+              //默认的展示形式
+              normal: {
+                show: true,
+                //是否展示
+                position: 'top',
+                //展示位置
+                formatter: function formatter(params) {
+                  console.log(params);
+                  return "{titel|".concat(params.data.city, "}\n{content|\u53D1\u751FXXX\u4E8B\u4EF6}");
+                },
+                backgroundColor: 'rgba(254,174,33,.8)',
+                padding: [0, 0],
+                borderRadius: 3,
+                lineHeight: 32,
+                color: '#f7fafb',
+                rich: {
+                  title: {
+                    padding: [0, 10, 10, 10],
+                    color: ''
+                  },
+                  content: {
+                    padding: [10, 10, 0, 10],
+                    color: '#fff'
+                  }
+                }
+              },
+              //鼠标选中高亮展示形式
+              emphasis: {
+                show: true
+              }
+            }
+          }, {
+            type: 'effectScatter',
+            data: [],
+            coordinateSystem: 'geo',
+            symbolSize: 16,
+            //散点大小
+            itemStyle: {
+              color: '#e93f42'
+            },
+            label: {
+              //默认的展示形式
+              normal: {
+                show: true,
+                //是否展示
+                position: 'top',
+                //展示位置
+                formatter: function formatter(params) {
+                  console.log(params);
+                  return "{titel|".concat(params.data.city, "}\n{content|\u53D1\u751FXXX\u4E8B\u4EF6}");
+                },
+                backgroundColor: 'rgba(233,63,66,.9)',
+                padding: [0, 0],
+                borderRadius: 3,
+                lineHeight: 32,
+                color: '#ffffff',
+                rich: {
+                  title: {
+                    padding: [0, 10, 10, 10],
+                    color: '#fff'
+                  },
+                  content: {
+                    padding: [10, 10, 0, 10],
+                    color: '#fff'
+                  }
+                }
+              },
+              //鼠标选中高亮展示形式
+              emphasis: {
+                show: true
+              }
+            }
+          }, {
+            type: 'effectScatter',
+            data: [{
+              value: center[0].value,
+              city: center[0].key
+            }],
+            coordinateSystem: 'geo',
+            symbolSize: 16,
+            //散点大小
+            itemStyle: {
+              color: '#08baec'
+            },
+            label: {
+              //默认的展示形式
+              normal: {
+                show: true,
+                //是否展示
+                position: 'top',
+                //展示位置
+                formatter: function formatter(params) {
+                  console.log(params);
+                  return "{titel|".concat(params.data.city, "}\n{content|\u53D1\u751FXXX\u4E8B\u4EF6}");
+                },
+                backgroundColor: 'rgba(8,186,236,.9)',
+                padding: [0, 0],
+                borderRadius: 3,
+                lineHeight: 32,
+                color: '#ffffff',
+                rich: {
+                  title: {
+                    padding: [0, 10, 10, 10],
+                    color: '#fff'
+                  },
+                  content: {
+                    padding: [10, 10, 0, 10],
+                    color: '#fff'
+                  }
+                }
+              },
+              //鼠标选中高亮展示形式
+              emphasis: {
+                show: true
+              }
+            }
+          }]
+        }; //测试：随机展示事件信息
+
+        timer = setInterval(function () {
+          var _options = cloneDeep_1(options.value); //初始化数组
+
+
+          for (var i = 1; i < 4; i++) {
+            _options.series[i].data = [];
+          } //生成城市随机数
+
+
+          var Citylength = center.length;
+          var cityIndex = Math.floor(Math.random() * Citylength);
+          var eventIndex = Math.floor(Math.random() * 3) + 1;
+          _options.series[eventIndex].data = [{
+            city: center[cityIndex].key,
+            value: center[cityIndex].value
+          }];
+          options.value = _options;
+        }, 2000);
+      });
+    };
+
+    onMounted(update);
+    onUnmounted(function () {
+      return timer && clearInterval(timer);
+    });
+    return {
+      options: options
+    };
+  }
+};
+
+var _withId$g = /*#__PURE__*/withScopeId("data-v-5e44d4b2");
+
 pushScopeId("data-v-5e44d4b2");
+
+var _hoisted_1$e = {
+  style: {
+    "width": "100%",
+    "height": "100%"
+  }
+};
 
 popScopeId();
 
+var render$i = /*#__PURE__*/_withId$g(function (_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_VueEcharts = resolveComponent("VueEcharts");
+
+  return openBlock(), createBlock("div", _hoisted_1$e, [createVNode(_component_VueEcharts, {
+    options: $setup.options
+  }, null, 8
+  /* PROPS */
+  , ["options"])]);
+});
+
 var css_248z$h = "";
 styleInject(css_248z$h);
+
+script$i.render = render$i;
+script$i.__scopeId = "data-v-5e44d4b2";
+script$i.__file = "src/components/CustomMap/CustomMap.vue";
+
+function CustomMap (Vue) {
+  Vue.component(script$i.name, script$i);
+}
 
 var echartsGl = createCommonjsModule(function (module, exports) {
 (function webpackUniversalModuleDefinition(root, factory) {
@@ -107802,15 +108084,85 @@ __WEBPACK_IMPORTED_MODULE_0_echarts_lib_echarts___default.a.extendChartView({
 
 unwrapExports(echartsGl);
 
+var ROOT_PATH = './';
+var script$j = {
+  name: 'RotatingEarth',
+  setup: function setup() {
+    var options = ref({});
+
+    var update = function update() {
+      options.value = {
+        globe: {
+          baseTexture: "".concat(ROOT_PATH, "assets/datav-gl-texture.jpg"),
+          //基础纹理贴图
+          heightTexture: "".concat(ROOT_PATH, "assets/datav-gl-texture.jpg"),
+          //高度纹理贴图
+          displacementScale: 0.04,
+          //地球顶点位置可以使地球更加立体
+          environment: "".concat(ROOT_PATH, "assets/star-bg.jpg"),
+          //环境贴图
+          shading: 'realistic',
+          realisticMaterial: {
+            roughness: 0.6
+          },
+          postEffect: {
+            enable: true
+          },
+          light: {
+            main: {
+              intensity: 4,
+              //主光源强度
+              shadow: true //主光源是否有投射阴影
+
+            },
+            ambient: {
+              intensity: 1
+            }
+          }
+        }
+      };
+    };
+
+    onMounted(update);
+    return {
+      options: options
+    };
+  }
+};
+
+var _withId$h = /*#__PURE__*/withScopeId("data-v-1bc047b5");
+
 pushScopeId("data-v-1bc047b5");
 
+var _hoisted_1$f = {
+  "class": "rotating-earth"
+};
+
 popScopeId();
+
+var render$j = /*#__PURE__*/_withId$h(function (_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_VueEcharts = resolveComponent("VueEcharts");
+
+  return openBlock(), createBlock("div", _hoisted_1$f, [createVNode(_component_VueEcharts, {
+    options: $setup.options
+  }, null, 8
+  /* PROPS */
+  , ["options"])]);
+});
 
 var css_248z$i = ".rotating-earth[data-v-1bc047b5] {\n  width: 100%;\n  height: 100%;\n}";
 styleInject(css_248z$i);
 
-var ROOT_PATH = './';
-var script$i = {
+script$j.render = render$j;
+script$j.__scopeId = "data-v-1bc047b5";
+script$j.__file = "src/components/RotatingEarth/RotatingEarth.vue";
+
+function RotatingEarth (Vue) {
+  Vue.component(script$j.name, script$j);
+}
+
+var ROOT_PATH$1 = './';
+var script$k = {
   name: 'FightEarth',
   setup: function setup() {
     var options = ref({});
@@ -107900,10 +108252,10 @@ var script$i = {
             }
           },
           globe: {
-            baseTexture: "".concat(ROOT_PATH, "assets/datav-gl-texture.jpg"),
+            baseTexture: "".concat(ROOT_PATH$1, "assets/datav-gl-texture.jpg"),
             //基础纹理贴图
-            environment: "".concat(ROOT_PATH, "assets/star-bg.jpg"),
-            heightTexture: "".concat(ROOT_PATH, "assets/datav-gl-texture.jpg"),
+            environment: "".concat(ROOT_PATH$1, "assets/star-bg.jpg"),
+            heightTexture: "".concat(ROOT_PATH$1, "assets/datav-gl-texture.jpg"),
             displacementScale: 0.04,
             displacementQuality: 'high',
             // baseColor: '#000',
@@ -107931,7 +108283,7 @@ var script$i = {
                 shadow: true
               },
               ambientCubemap: {
-                texture: "".concat(ROOT_PATH, "assets/lake.hdr"),
+                texture: "".concat(ROOT_PATH$1, "assets/lake.hdr"),
                 exposure: 1,
                 diffuseIntensity: 0.5,
                 specularIntensity: 2
@@ -107956,20 +108308,20 @@ var script$i = {
   }
 };
 
-var _withId$g = /*#__PURE__*/withScopeId("data-v-548215cf");
+var _withId$i = /*#__PURE__*/withScopeId("data-v-548215cf");
 
 pushScopeId("data-v-548215cf");
 
-var _hoisted_1$e = {
+var _hoisted_1$g = {
   "class": "flight-earth"
 };
 
 popScopeId();
 
-var render$i = /*#__PURE__*/_withId$g(function (_ctx, _cache, $props, $setup, $data, $options) {
+var render$k = /*#__PURE__*/_withId$i(function (_ctx, _cache, $props, $setup, $data, $options) {
   var _component_VueEcharts = resolveComponent("VueEcharts");
 
-  return openBlock(), createBlock("div", _hoisted_1$e, [createVNode(_component_VueEcharts, {
+  return openBlock(), createBlock("div", _hoisted_1$g, [createVNode(_component_VueEcharts, {
     options: $setup.options
   }, null, 8
   /* PROPS */
@@ -107979,15 +108331,15 @@ var render$i = /*#__PURE__*/_withId$g(function (_ctx, _cache, $props, $setup, $d
 var css_248z$j = ".flight-earth[data-v-548215cf] {\n  width: 100%;\n  height: 100%;\n}";
 styleInject(css_248z$j);
 
-script$i.render = render$i;
-script$i.__scopeId = "data-v-548215cf";
-script$i.__file = "src/components/FightEarth/FightEarth.vue";
+script$k.render = render$k;
+script$k.__scopeId = "data-v-548215cf";
+script$k.__file = "src/components/FightEarth/FightEarth.vue";
 
 function FightEarth (Vue) {
-  Vue.component(script$i.name, script$i);
+  Vue.component(script$k.name, script$k);
 }
 
-var script$j = {
+var script$l = {
   name: 'OrderMap',
   setup: function setup(props) {
     var options = ref({});
@@ -108612,11 +108964,11 @@ var script$j = {
   }
 };
 
-var _withId$h = /*#__PURE__*/withScopeId("data-v-5a2d2ce2");
+var _withId$j = /*#__PURE__*/withScopeId("data-v-5a2d2ce2");
 
 pushScopeId("data-v-5a2d2ce2");
 
-var _hoisted_1$f = {
+var _hoisted_1$h = {
   "class": "order-map"
 };
 var _hoisted_2$b = {
@@ -108626,10 +108978,10 @@ var _hoisted_2$b = {
 
 popScopeId();
 
-var render$j = /*#__PURE__*/_withId$h(function (_ctx, _cache, $props, $setup, $data, $options) {
+var render$l = /*#__PURE__*/_withId$j(function (_ctx, _cache, $props, $setup, $data, $options) {
   var _component_VueEcharts = resolveComponent("VueEcharts");
 
-  return openBlock(), createBlock("div", _hoisted_1$f, [$setup.loading ? (openBlock(), createBlock("div", _hoisted_2$b, "加载中...")) : (openBlock(), createBlock(_component_VueEcharts, {
+  return openBlock(), createBlock("div", _hoisted_1$h, [$setup.loading ? (openBlock(), createBlock("div", _hoisted_2$b, "加载中...")) : (openBlock(), createBlock(_component_VueEcharts, {
     key: 1,
     options: $setup.options
   }, null, 8
@@ -108640,12 +108992,564 @@ var render$j = /*#__PURE__*/_withId$h(function (_ctx, _cache, $props, $setup, $d
 var css_248z$k = ".order-map[data-v-5a2d2ce2] {\n  width: 100%;\n  height: 100%;\n}\n.order-map[data-v-5a2d2ce2] .loading {\n  display: flex;\n  justify-content: center;\n  align-items: center;\n  width: 100%;\n  height: 100%;\n  font-size: 36px;\n  background: #303030;\n  color: #fff;\n}";
 styleInject(css_248z$k);
 
-script$j.render = render$j;
-script$j.__scopeId = "data-v-5a2d2ce2";
-script$j.__file = "src/components/OrderMap/OrderMap.vue";
+script$l.render = render$l;
+script$l.__scopeId = "data-v-5a2d2ce2";
+script$l.__file = "src/components/OrderMap/OrderMap.vue";
 
 function OrderMap (Vue) {
-  Vue.component(script$j.name, script$j);
+  Vue.component(script$l.name, script$l);
+}
+
+var kpi = 999999;
+var script$m = {
+  name: 'RealTimeOrder',
+  props: {
+    data: Object
+  },
+  setup: function setup(props) {
+    var options = ref({});
+
+    var update = function update() {
+      options.value = {
+        xAxis: {
+          type: 'category',
+          boundaryGap: false,
+          data: props.data.date,
+          axisLine: {
+            lineStyle: {
+              color: 'rgba(200, 200, 200)'
+            }
+          },
+          axisLabel: {
+            fontSize: 16
+          }
+        },
+        yAxis: {
+          type: 'value',
+          splitLine: {
+            lineStyle: {
+              color: 'rgb(50, 50, 50)'
+            }
+          },
+          axisLine: {
+            lineStyle: {
+              color: 'rgba(200, 200, 200)'
+            }
+          },
+          axisLabel: {
+            fontSize: 16
+          }
+        },
+        dataZoom: [{
+          type: 'inside',
+          start: 0,
+          end: 100
+        }, {
+          start: 0,
+          end: 100,
+          handleIcon: 'M 0.0525 0.5656 L 0.0525 0 L -0.0583 0 L -0.0583 0.5656 L -0.2449 0.5656 L -0.2449 1.4344 L -0.0525 1.4344 L -0.0525 2 L 0.0525 2 L 0.0525 1.4344 L 0.2449 1.4344 L 0.2449 0.5656 L 0.0525 0.5656 Z M 0.1399 1.1953 L -0.1458 1.1953 L -0.1458 1.1137 L 0.1399 1.1137 L 0.1399 1.1953 Z M 0.1399 0.8863 L -0.1458 0.8863 L -0.1458 0.8047 L 0.1399 0.8047 L 0.1399 0.8863 Z',
+          handleSize: '100%',
+          handleStyle: {
+            color: '#a7b7cc'
+          },
+          textStyle: {
+            color: 'rgb(200, 200, 200)'
+          },
+          fillerColor: 'rgba(120,126,134,.3)',
+          dataBackground: {
+            lineStyle: {
+              color: 'grey'
+            },
+            areaStyle: {
+              color: 'gray'
+            }
+          },
+          borderColor: 'rgb(200, 200, 200)'
+        }],
+        series: [{
+          name: '模拟数据',
+          type: 'line',
+          smooth: true,
+          symbol: 'none',
+          sampling: 'average',
+          itemStyle: {
+            color: new Echarts$1.graphic.LinearGradient(0, 0, 0, 1, [{
+              offset: 0,
+              color: '#C2C90B'
+            }, {
+              offset: 0.5,
+              color: '#A1DC14'
+            }, {
+              offset: 1,
+              color: 'rgb(188, 222, 129)'
+            }])
+          },
+          data: props.data.data
+        }],
+        grid: {
+          top: 40,
+          bottom: 80,
+          right: 40,
+          left: 80
+        }
+      };
+    };
+
+    onMounted(update);
+    watch(function () {
+      return props.data;
+    }, function () {
+      update();
+    });
+    return {
+      options: options
+    };
+  },
+  data: function data() {
+    return {
+      startVal: 0,
+      endVal: 23242,
+      startPercent: 0,
+      percent: 23242 / kpi * 100
+    };
+  }
+};
+
+var _withId$k = /*#__PURE__*/withScopeId("data-v-1feab352");
+
+pushScopeId("data-v-1feab352");
+
+var _hoisted_1$i = {
+  "class": "real-time-order"
+};
+var _hoisted_2$c = {
+  "class": "real-time-order-left"
+};
+
+var _hoisted_3$9 = /*#__PURE__*/createVNode("div", {
+  "class": "title"
+}, "实时订单趋势图", -1
+/* HOISTED */
+);
+
+var _hoisted_4$6 = /*#__PURE__*/createVNode("div", {
+  "class": "sub-title"
+}, "Number Of Real-time Orders", -1
+/* HOISTED */
+);
+
+var _hoisted_5$6 = {
+  "class": "total"
+};
+
+var _hoisted_6$6 = /*#__PURE__*/createVNode("div", {
+  "class": "tiny-title"
+}, "周同比增长率", -1
+/* HOISTED */
+);
+
+var _hoisted_7$5 = {
+  "class": "percent-text"
+};
+var _hoisted_8$5 = {
+  "class": "percent-text-1"
+};
+var _hoisted_9$5 = {
+  "class": "real-time-order-right"
+};
+
+popScopeId();
+
+var render$m = /*#__PURE__*/_withId$k(function (_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_count_to = resolveComponent("count-to");
+
+  var _component_VueEcharts = resolveComponent("VueEcharts");
+
+  return openBlock(), createBlock("div", _hoisted_1$i, [createVNode("div", _hoisted_2$c, [_hoisted_3$9, _hoisted_4$6, createVNode("div", _hoisted_5$6, [createVNode(_component_count_to, {
+    "start-val": $data.startVal,
+    "end-val": $data.endVal,
+    duration: 1000,
+    separator: ",",
+    autoplay: ""
+  }, null, 8
+  /* PROPS */
+  , ["start-val", "end-val"])]), _hoisted_6$6, createVNode("div", _hoisted_7$5, [createVNode("span", _hoisted_8$5, [createVNode(_component_count_to, {
+    "start-val": $data.startPercent,
+    "end-val": $data.percent,
+    duration: 1000,
+    decimals: 2,
+    suffix: "%"
+  }, null, 8
+  /* PROPS */
+  , ["start-val", "end-val"])])])]), createVNode("div", _hoisted_9$5, [createVNode(_component_VueEcharts, {
+    options: _ctx.options
+  }, null, 8
+  /* PROPS */
+  , ["options"])])]);
+});
+
+var css_248z$l = ".real-time-order[data-v-1feab352] {\n  display: flex;\n  width: 100%;\n  height: 100%;\n  background: #1c1c1c;\n}\n.real-time-order[data-v-1feab352] .real-time-order-left {\n  display: flex;\n  flex-direction: column;\n  justify-content: center;\n  align-items: flex-start;\n  flex: 0 0 320px;\n  width: 320px;\n  padding-left: 40px;\n  box-sizing: border-box;\n}\n.real-time-order[data-v-1feab352] .real-time-order-left .title {\n  font-size: 32px;\n}\n.real-time-order[data-v-1feab352] .real-time-order-left .sub-title {\n  font-size: 16px;\n  letter-spacing: 1px;\n  margin-top: 10px;\n}\n.real-time-order[data-v-1feab352] .real-time-order-left .total {\n  font-family: DIN;\n  font-size: 68px;\n  font-weight: bolder;\n  letter-spacing: 2px;\n  padding: 10px 0;\n}\n.real-time-order[data-v-1feab352] .real-time-order-left .tiny-title {\n  font-size: 18px;\n  color: #fff;\n  line-height: 36px;\n}\n.real-time-order[data-v-1feab352] .real-time-order-left .percent-text {\n  font-size: 28px;\n  font-family: DIN;\n  letter-spacing: 2px;\n}\n.real-time-order[data-v-1feab352] .real-time-order-left .percent-text .percent-text-1 {\n  color: #c5fb79;\n  font-weight: bolder;\n}\n.real-time-order[data-v-1feab352] .real-time-order-right {\n  flex: 1;\n}\n.real-time-order[data-v-1feab352] .real-time-order-right #real-time-order-chart {\n  width: 100%;\n  height: 100%;\n}";
+styleInject(css_248z$l);
+
+script$m.render = render$m;
+script$m.__scopeId = "data-v-1feab352";
+script$m.__file = "src/components/RealTimeOrder/RealTimeOrder.vue";
+
+function RealTimeOrder (Vue) {
+  Vue.component(script$m.name, script$m);
+}
+
+var script$n = {
+  name: 'ScheduleView',
+  setup: function setup() {
+    var options = ref({});
+
+    var update = function update() {
+      function getVirtualData(year) {
+        year = year || '2020';
+        var date = +Echarts$1.number.parseDate(year + '-06-01');
+        var end = +Echarts$1.number.parseDate(+year + 1 + '-12-31');
+        var dayTime = 3600 * 24 * 1000;
+        var data = [];
+
+        for (var time = date; time < end; time += dayTime) {
+          data.push([Echarts$1.format.formatTime('yyyy-MM-dd', time), Math.floor(Math.random() * 10000)]);
+        }
+
+        return data;
+      }
+
+      var data = getVirtualData(2020);
+      console.log(JSON.stringify(data));
+      options.value = {
+        calendar: [{
+          top: 30,
+          left: 80,
+          right: 40,
+          bottom: 10,
+          range: ['2020-06-01', '2020-12-31'],
+          splitLine: {
+            show: true,
+            lineStyle: {
+              color: 'rgb(127, 127, 127)'
+            }
+          },
+          yearLabel: {
+            show: false
+          },
+          dayLabel: {
+            color: 'rgb(127, 127, 127)',
+            fontSize: 18
+          },
+          monthLabel: {
+            color: 'rgb(127, 127, 127)',
+            fontSize: 18
+          },
+          itemStyle: {
+            color: 'rgb(48, 48, 48)',
+            borderWidth: 1,
+            borderColor: 'rgb(48, 48, 48)'
+          }
+        }],
+        series: [{
+          name: '步数',
+          type: 'scatter',
+          coordinateSystem: 'calendar',
+          data: data,
+          symbolSize: function symbolSize(val) {
+            return val[1] / 600;
+          },
+          itemStyle: {
+            color: 'rgb(208,248,138)'
+          }
+        }, {
+          name: 'Top 12',
+          type: 'effectScatter',
+          coordinateSystem: 'calendar',
+          data: data.sort(function (a, b) {
+            return b[1] - a[1];
+          }).slice(0, 12),
+          symbolSize: function symbolSize(val) {
+            return val[1] / 500;
+          },
+          showEffectOn: 'render',
+          rippleEffect: {
+            brushType: 'stroke'
+          },
+          hoverAnimation: true,
+          itemStyle: {
+            color: 'rgb(208,248,138)',
+            shadowBlur: 10,
+            shadowColor: '#333'
+          },
+          zlevel: 1
+        }]
+      };
+    };
+
+    onMounted(update);
+    return {
+      options: options
+    };
+  }
+};
+
+var _withId$l = /*#__PURE__*/withScopeId("data-v-842dc062");
+
+pushScopeId("data-v-842dc062");
+
+var _hoisted_1$j = {
+  "class": "schedule-view"
+};
+
+var _hoisted_2$d = /*#__PURE__*/createVNode("div", {
+  "class": "bg1 bg"
+}, null, -1
+/* HOISTED */
+);
+
+var _hoisted_3$a = /*#__PURE__*/createVNode("div", {
+  "class": "bg2 bg"
+}, null, -1
+/* HOISTED */
+);
+
+popScopeId();
+
+var render$n = /*#__PURE__*/_withId$l(function (_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_VueEcharts = resolveComponent("VueEcharts");
+
+  return openBlock(), createBlock("div", _hoisted_1$j, [createVNode(_component_VueEcharts, {
+    options: $setup.options
+  }, null, 8
+  /* PROPS */
+  , ["options"]), _hoisted_2$d, _hoisted_3$a]);
+});
+
+var css_248z$m = ".schedule-view[data-v-842dc062] {\n  position: relative;\n  display: flex;\n  width: 100%;\n  height: 100%;\n  background: #303030;\n  padding: 20px 0;\n  box-sizing: border-box;\n}\n.schedule-view[data-v-842dc062] #schedule-view-chart {\n  width: 100%;\n  height: 100%;\n}\n.schedule-view[data-v-842dc062] .bg {\n  width: 100%;\n  height: 20px;\n  background: #487a48;\n}\n.schedule-view[data-v-842dc062] .bg1 {\n  position: absolute;\n  top: 0;\n  left: 0;\n}\n.schedule-view[data-v-842dc062] .bg2 {\n  position: absolute;\n  left: 0;\n  bottom: 0;\n}";
+styleInject(css_248z$m);
+
+script$n.render = render$n;
+script$n.__scopeId = "data-v-842dc062";
+script$n.__file = "src/components/scheduleView/scheduleView.vue";
+
+function scheduleView (Vue) {
+  Vue.component(script$n.name, script$n);
+}
+
+var script$o = {
+  name: 'SalesRank',
+  components: {
+    TransformCategory: TransformCategory
+  },
+  props: {
+    data: Array
+  },
+  setup: function setup(props) {
+    var headerData = ref([]);
+    var listData = ref([]);
+    var currentIndex = 0;
+
+    var update = function update() {
+      var currentData = props.data.slice(currentIndex, currentIndex + 3);
+      headerData.value = [{
+        title: currentData[0].city,
+        img: 'https://img.alicdn.com/tfs/TB1Z171qebviK0jSZFNXXaApXXa-30-29.png'
+      }, {
+        title: currentData[1].city,
+        img: 'https://img.alicdn.com/tfs/TB1b8Tzq7T2gK0jSZFkXXcIQFXa-28-24.png'
+      }, {
+        title: currentData[2].city,
+        img: 'https://img.alicdn.com/tfs/TB12MbzqYY1gK0jSZTEXXXDQVXa-28-30.png'
+      }];
+      listData.value = currentData;
+      console.log(currentData);
+
+      function createOption() {
+        var data = [];
+        data[0] = Math.ceil(Math.random() * 100);
+        data[1] = 100 - data[0];
+        return {
+          color: ['rgb(210, 244, 148)', 'rgb(79, 79, 79)'],
+          grid: {
+            left: 0,
+            top: 0,
+            right: 0,
+            bottom: 0
+          },
+          title: {
+            text: "".concat(data[0], "%"),
+            left: 'center',
+            top: '60%',
+            textStyle: {
+              color: 'rgb(210, 244, 148)',
+              fontSize: 18,
+              align: 'center'
+            }
+          },
+          series: [{
+            name: '访问来源',
+            type: 'pie',
+            radius: ['70%', '90%'],
+            avoidLabelOverlap: false,
+            label: {
+              normal: {
+                show: false,
+                position: 'center'
+              }
+            },
+            labelLine: {
+              normal: {
+                show: false
+              }
+            },
+            data: [{
+              value: data[0],
+              name: '活跃用户'
+            }, {
+              value: data[1],
+              name: '非活跃用户'
+            }]
+          }]
+        };
+      }
+
+      nextTick(function () {
+        var chart = [];
+        headerData.value.forEach(function (item, index) {
+          var id = "activate-user-chart".concat(index + 1);
+          chart[index] = Echarts$1.init(document.getElementById(id));
+          chart[index].setOption(createOption());
+        });
+
+        if (currentIndex >= props.data.length - 3) {
+          currentIndex = 0;
+        } else {
+          currentIndex++;
+        }
+      });
+    };
+
+    onMounted(update);
+    watch(function () {
+      return props.data;
+    }, function () {
+      update();
+    });
+    return {
+      headerData: headerData,
+      listData: listData
+    };
+  }
+};
+
+var _withId$m = /*#__PURE__*/withScopeId("data-v-1911a301");
+
+pushScopeId("data-v-1911a301");
+
+var _hoisted_1$k = {
+  "class": "activate-user"
+};
+
+var _hoisted_2$e = /*#__PURE__*/createVNode("div", {
+  "class": "title"
+}, "地区商家销售排行", -1
+/* HOISTED */
+);
+
+var _hoisted_3$b = {
+  "class": "list-wrapper"
+};
+var _hoisted_4$7 = {
+  "class": "list"
+};
+var _hoisted_5$7 = {
+  "class": "list-title"
+};
+
+var _hoisted_6$7 = /*#__PURE__*/createVNode("div", {
+  "class": "list-separator-wrapper"
+}, [/*#__PURE__*/createVNode("div", {
+  "class": "list-separator"
+})], -1
+/* HOISTED */
+);
+
+var _hoisted_7$6 = {
+  "class": "chart-wrapper"
+};
+var _hoisted_8$6 = {
+  "class": "img-wrapper"
+};
+var _hoisted_9$6 = {
+  "class": "category-wrapper"
+};
+var _hoisted_10$5 = {
+  "class": "list-content-wrapper"
+};
+var _hoisted_11$5 = {
+  "class": "list-item"
+};
+var _hoisted_12$3 = {
+  "class": "list-item"
+};
+var _hoisted_13$2 = {
+  "class": "list-item list-item-sales"
+};
+
+popScopeId();
+
+var render$o = /*#__PURE__*/_withId$m(function (_ctx, _cache, $props, $setup, $data, $options) {
+  var _component_transform_category = resolveComponent("transform-category");
+
+  return openBlock(), createBlock("div", _hoisted_1$k, [_hoisted_2$e, createVNode("div", _hoisted_3$b, [(openBlock(true), createBlock(Fragment, null, renderList($setup.headerData, function (item, index) {
+    return openBlock(), createBlock("div", {
+      "class": "list-inner",
+      key: index
+    }, [createVNode("div", _hoisted_4$7, [createVNode("div", _hoisted_5$7, toDisplayString(item.title), 1
+    /* TEXT */
+    ), _hoisted_6$7, createVNode("div", _hoisted_7$6, [createVNode("div", _hoisted_8$6, [createVNode("img", {
+      src: item.img
+    }, null, 8
+    /* PROPS */
+    , ["src"])]), createVNode("div", {
+      "class": "chart",
+      id: "activate-user-chart".concat(index + 1)
+    }, null, 8
+    /* PROPS */
+    , ["id"])]), createVNode("div", _hoisted_9$6, [createVNode(_component_transform_category, {
+      data: ['商家', '订单数', '销售额'],
+      color: ['rgb(178, 209, 126)', 'rgb(116, 166, 49)']
+    }, null, 8
+    /* PROPS */
+    , ["color"])]), createVNode("div", _hoisted_10$5, [(openBlock(true), createBlock(Fragment, null, renderList($setup.listData[index].shop, function (listItem, index) {
+      return openBlock(), createBlock("div", {
+        "class": "list-item-wrapper",
+        key: index
+      }, [createVNode("div", _hoisted_11$5, toDisplayString(listItem.shop), 1
+      /* TEXT */
+      ), createVNode("div", _hoisted_12$3, toDisplayString(listItem.order), 1
+      /* TEXT */
+      ), createVNode("div", _hoisted_13$2, toDisplayString(listItem.sales), 1
+      /* TEXT */
+      )]);
+    }), 128
+    /* KEYED_FRAGMENT */
+    ))])])]);
+  }), 128
+  /* KEYED_FRAGMENT */
+  ))])]);
+});
+
+var css_248z$n = ".activate-user[data-v-1911a301] {\n  width: 100%;\n  height: 100%;\n  background: #373737;\n  padding-right: 20px;\n  box-sizing: border-box;\n}\n.activate-user[data-v-1911a301] .title {\n  font-size: 36px;\n  margin-left: 20px;\n  padding: 20px 40px 0;\n  box-sizing: border-box;\n}\n.activate-user[data-v-1911a301] .list-wrapper {\n  display: flex;\n  width: 100%;\n  height: 563px;\n  margin-top: 20px;\n  padding: 0 10px;\n  box-sizing: border-box;\n}\n.activate-user[data-v-1911a301] .list-wrapper .list-inner {\n  flex: 0 0 33.33%;\n  width: 33.33%;\n  padding: 0 10px;\n  box-sizing: border-box;\n}\n.activate-user[data-v-1911a301] .list-wrapper .list-inner .list {\n  display: flex;\n  flex-direction: column;\n  width: 100%;\n  height: 100%;\n  background: #2d2d2d;\n}\n.activate-user[data-v-1911a301] .list-wrapper .list-inner .list .list-title {\n  font-size: 24px;\n  padding: 10px 20px;\n  box-sizing: border-box;\n}\n.activate-user[data-v-1911a301] .list-wrapper .list-inner .list .list-separator-wrapper {\n  position: relative;\n  height: 30px;\n  background: #5d5d5d;\n}\n.activate-user[data-v-1911a301] .list-wrapper .list-inner .list .list-separator-wrapper .list-separator {\n  position: absolute;\n  top: 7.5px;\n  right: 15px;\n  width: 15px;\n  height: 15px;\n  background: #323232;\n}\n.activate-user[data-v-1911a301] .list-wrapper .list-inner .list .chart-wrapper {\n  position: relative;\n  width: 100%;\n  height: 200px;\n  margin-top: 20px;\n}\n.activate-user[data-v-1911a301] .list-wrapper .list-inner .list .chart-wrapper .img-wrapper {\n  position: absolute;\n  top: 0;\n  left: 0;\n  display: flex;\n  justify-content: center;\n  width: 100%;\n  height: 100%;\n}\n.activate-user[data-v-1911a301] .list-wrapper .list-inner .list .chart-wrapper .img-wrapper img {\n  width: 42px;\n  height: 42px;\n  margin-top: 60px;\n}\n.activate-user[data-v-1911a301] .list-wrapper .list-inner .list .chart-wrapper .chart {\n  width: 100%;\n  height: 100%;\n}\n.activate-user[data-v-1911a301] .list-wrapper .list-inner .list .category-wrapper {\n  margin-top: 20px;\n}\n.activate-user[data-v-1911a301] .list-wrapper .list-inner .list .list-content-wrapper {\n  flex: 1;\n  margin-top: 20px;\n  overflow: hidden;\n}\n.activate-user[data-v-1911a301] .list-wrapper .list-inner .list .list-content-wrapper .list-item-wrapper {\n  display: flex;\n  height: 33.33%;\n}\n.activate-user[data-v-1911a301] .list-wrapper .list-inner .list .list-content-wrapper .list-item-wrapper .list-item {\n  display: flex;\n  justify-content: center;\n  flex: 0 0 33.33%;\n  width: 33.33%;\n  font-size: 28px;\n}\n.activate-user[data-v-1911a301] .list-wrapper .list-inner .list .list-content-wrapper .list-item-wrapper .list-item-sales {\n  color: #b2d17e;\n}";
+styleInject(css_248z$n);
+
+script$o.render = render$o;
+script$o.__scopeId = "data-v-1911a301";
+script$o.__file = "src/components/salesRank/salesRank.vue";
+
+function salesRank (Vue) {
+  Vue.component(script$o.name, script$o);
 }
 
 function index (Vue) {
@@ -108666,11 +109570,14 @@ function index (Vue) {
   Vue.use(TransformCategory);
   Vue.use(SalesList);
   Vue.use(SalesList);
-  Vue.use(TimeLine); //Vue.use(CustomMap)
-  //Vue.use(RotatingEarth)
-
+  Vue.use(TimeLine);
+  Vue.use(CustomMap);
+  Vue.use(RotatingEarth);
   Vue.use(FightEarth);
   Vue.use(OrderMap);
+  Vue.use(RealTimeOrder);
+  Vue.use(scheduleView);
+  Vue.use(salesRank);
 }
 
 export default index;

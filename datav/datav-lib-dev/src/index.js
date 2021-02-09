@@ -20,6 +20,9 @@ import CustomMap from './components/CustomMap/index'
 import RotatingEarth from './components/RotatingEarth/index'
 import FightEarth from './components/FightEarth/index'
 import OrderMap from './components/OrderMap/index'
+import RealTimeOrder from './components/RealTimeOrder/index'
+import scheduleView from './components/scheduleView/index'
+import salesRank from './components/salesRank/index'
 export default function(Vue){
     Vue.use(Loading)
     Vue.use(flybox)
@@ -39,10 +42,12 @@ export default function(Vue){
     Vue.use(BaseScrollList)
     Vue.use(SalesList)
     Vue.use(TimeLine)
-    //Vue.use(CustomMap)
-    //Vue.use(RotatingEarth)
+    Vue.use(CustomMap)
+    Vue.use(RotatingEarth)
     Vue.use(FightEarth)
     Vue.use(OrderMap)
-
+    Vue.use(RealTimeOrder)
+    Vue.use(scheduleView)
+    Vue.use(salesRank)
     
 }
